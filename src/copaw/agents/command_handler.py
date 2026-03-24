@@ -15,6 +15,7 @@ from ..constant import DEBUG_HISTORY_FILE, MAX_LOAD_HISTORY_COUNT
 
 if TYPE_CHECKING:
     from .memory import MemoryManager
+    from .memory.adbpg_memory_manager import ADBPGMemoryManager
     from reme.memory.file_based import ReMeInMemoryMemory
 
 logger = logging.getLogger(__name__)
@@ -63,7 +64,7 @@ class CommandHandler(ConversationCommandHandlerMixin):
         self,
         agent_name: str,
         memory: "ReMeInMemoryMemory",
-        memory_manager: "MemoryManager | None" = None,
+        memory_manager: "MemoryManager | ADBPGMemoryManager | None" = None,
         enable_memory_manager: bool = True,
     ):
         """Initialize command handler.

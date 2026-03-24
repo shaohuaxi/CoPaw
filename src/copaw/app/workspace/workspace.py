@@ -27,13 +27,55 @@ from ..runner.task_tracker import TaskTracker
 from ..mcp import MCPClientManager
 from ..crons.manager import CronManager
 from ..crons.repo.json_repo import JsonJobRepository
-from ...agents.memory import MemoryManager
+from ...agents.memory import MemoryManager, create_memory_manager
 from ...config.config import load_agent_config
 
 if TYPE_CHECKING:
     from ..channels.base import BaseChannel
 
 logger = logging.getLogger(__name__)
+
+
+async def _create_memory_manager_post_init(ws: "Workspace", old_service):
+    """Create a memory manager via factory and set it on the runner.
+
+    Uses ``create_memory_manager`` (from ``memory.factory``) to select
+    the appropriate backend (local ``MemoryManager`` or
+    ``ADBPGMemoryManager``) based on per-agent config.
+
+    During reload (when ``old_service`` is not None), the old memory
+    manager is closed and a new one is created and started, so that
+    backend switches (e.g. local → adbpg) take effect immediately.
+
+    Args:
+        ws: The Workspace instance being initialised.
+        old_service: Previous memory manager (non-None during hot-reload).
+
+    Returns:
+        The created memory manager instance (already started on reload).
+    """
+    # During reload: close old memory manager first
+    if old_service is not None:
+        try:
+            await old_service.close()
+        except Exception:
+            pass  # best-effort cleanup
+
+    mm = create_memory_manager(
+        working_dir=str(ws.workspace_dir),
+        agent_id=ws.agent_id,
+    )
+
+    # During reload: start the new memory manager since
+    # _run_start_method skips reused services
+    if old_service is not None:
+        await mm.start()
+
+    # Wire memory manager to runner
+    runner = ws._service_manager.services.get("runner")  # noqa: SLF001
+    if runner is not None:
+        runner.memory_manager = mm
+    return mm
 
 
 class Workspace:
@@ -161,16 +203,8 @@ class Workspace:
         sm.register(
             ServiceDescriptor(
                 name="memory_manager",
-                service_class=MemoryManager,
-                init_args=lambda ws: {
-                    "working_dir": str(ws.workspace_dir),
-                    "agent_id": ws.agent_id,
-                },
-                post_init=lambda ws, mm: setattr(
-                    ws._service_manager.services["runner"],
-                    "memory_manager",
-                    mm,
-                ),
+                service_class=None,
+                post_init=_create_memory_manager_post_init,
                 start_method="start",
                 stop_method="close",
                 reusable=True,

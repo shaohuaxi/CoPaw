@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 """Agent file management API."""
 
+import asyncio
+import logging
+
 from fastapi import APIRouter, Body, HTTPException, Request
 from pydantic import BaseModel, Field
 
@@ -10,8 +13,13 @@ from ...config import (
     save_config,
     AgentsRunningConfig,
 )
-from ...config.config import load_agent_config, save_agent_config
+from ...config.config import (
+    load_agent_config,
+    save_agent_config,
+    MemoryManagerConfig,
+)
 from ...agents.memory.agent_md_manager import AgentMdManager
+from ...agents.memory.adbpg_memory_manager import strip_local_memory_from_agents_md
 from ...agents.utils import copy_builtin_qa_md_files, copy_md_files
 from ...constant import BUILTIN_QA_AGENT_ID
 from ..agent_context import get_agent_for_request
@@ -502,3 +510,163 @@ async def put_system_prompt_files(
     schedule_agent_reload(request, workspace.agent_id)
 
     return files
+
+
+@router.get(
+    "/memory-manager-config",
+    response_model=MemoryManagerConfig,
+    summary="Get memory manager config",
+    description="Get memory manager configuration for active agent",
+)
+async def get_memory_manager_config(
+    request: Request,
+) -> MemoryManagerConfig:
+    """Get memory manager configuration.
+
+    Returns the per-agent ``MemoryManagerConfig`` which includes the
+    selected backend (``local`` or ``adbpg``) and, when applicable,
+    the full ADBPG connection / LLM / embedding settings.
+    """
+    workspace = await get_agent_for_request(request)
+    agent_config = load_agent_config(workspace.agent_id)
+    return agent_config.memory_manager or MemoryManagerConfig()
+
+
+@router.put(
+    "/memory-manager-config",
+    response_model=MemoryManagerConfig,
+    summary="Update memory manager config",
+    description="Update memory manager configuration for active agent",
+)
+async def put_memory_manager_config(
+    memory_manager_config: MemoryManagerConfig = Body(
+        ...,
+        description="Updated memory manager configuration",
+    ),
+    request: Request = None,
+) -> MemoryManagerConfig:
+    """Update memory manager configuration.
+
+    Persists the new config to ``agent.json`` and triggers a
+    non-blocking agent reload so that the memory backend switch
+    (e.g. local → adbpg) takes effect without restarting the server.
+    """
+    workspace = await get_agent_for_request(request)
+    agent_config = load_agent_config(workspace.agent_id)
+    agent_config.memory_manager = memory_manager_config
+    save_agent_config(workspace.agent_id, agent_config)
+
+    # When switching to ADBPG and user opted to strip local memory
+    # instructions, directly remove the memory section from AGENTS.md
+    # so the agent won't be instructed to use write_file/read_file
+    # for memory management.
+    if (
+        memory_manager_config.backend == "adbpg"
+        and memory_manager_config.strip_local_memory_instructions
+    ):
+        strip_local_memory_from_agents_md(workspace.workspace_dir)
+
+    # Hot reload config (async, non-blocking)
+    manager = request.app.state.multi_agent_manager
+    agent_id = workspace.agent_id
+
+    async def reload_in_background():
+        try:
+            await manager.reload_agent(agent_id)
+        except Exception as e:
+            logging.getLogger(__name__).warning(
+                f"Background reload failed: {e}",
+            )
+
+    asyncio.create_task(reload_in_background())
+
+    return memory_manager_config
+
+
+class ADBPGTestConnectionRequest(BaseModel):
+    """Request body for ADBPG connection test."""
+
+    host: str = Field(..., description="Database host")
+    port: int = Field(5432, description="Database port")
+    user: str = Field(..., description="Database user")
+    password: str = Field(..., description="Database password")
+    dbname: str = Field(..., description="Database name")
+
+
+class ADBPGTestConnectionResponse(BaseModel):
+    """Response for ADBPG connection test."""
+
+    success: bool
+    message: str
+
+
+@router.post(
+    "/test-adbpg-connection",
+    response_model=ADBPGTestConnectionResponse,
+    summary="Test ADBPG database connectivity",
+)
+async def test_adbpg_connection(
+    body: ADBPGTestConnectionRequest = Body(...),
+) -> ADBPGTestConnectionResponse:
+    """Test connectivity to an ADBPG instance.
+
+    Attempts to connect using the provided credentials, then queries
+    ``gp_segment_configuration`` to verify the instance is a valid
+    ADBPG database with the expected catalog table.
+
+    The blocking ``psycopg2.connect`` call is offloaded to a thread
+    so it does not block the async event loop.
+    """
+    try:
+        import psycopg2
+    except ImportError:
+        return ADBPGTestConnectionResponse(
+            success=False,
+            message="psycopg2 is not installed on the server.",
+        )
+
+    import asyncio
+
+    def _test_sync() -> ADBPGTestConnectionResponse:
+        conn = None
+        try:
+            conn = psycopg2.connect(
+                host=body.host,
+                port=body.port,
+                user=body.user,
+                password=body.password,
+                dbname=body.dbname,
+                connect_timeout=10,
+            )
+            with conn.cursor() as cur:
+                cur.execute(
+                    "SELECT port FROM gp_segment_configuration "
+                    "WHERE content = -1 AND role = 'p'",
+                )
+                row = cur.fetchone()
+                if row and row[0]:
+                    return ADBPGTestConnectionResponse(
+                        success=True,
+                        message=f"Connection successful (internal port: {row[0]}).",
+                    )
+                return ADBPGTestConnectionResponse(
+                    success=False,
+                    message=(
+                        "Connected but gp_segment_configuration "
+                        "returned no master row."
+                    ),
+                )
+        except Exception as e:
+            return ADBPGTestConnectionResponse(
+                success=False,
+                message=str(e),
+            )
+        finally:
+            if conn is not None:
+                try:
+                    conn.close()
+                except Exception:
+                    pass
+
+    loop = asyncio.get_event_loop()
+    return await loop.run_in_executor(None, _test_sync)

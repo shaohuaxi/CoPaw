@@ -35,9 +35,11 @@ from ...security.tool_guard.approval import ApprovalDecision
 
 if TYPE_CHECKING:
     from ...agents.memory import MemoryManager
+    from ...agents.memory.adbpg_memory_manager import ADBPGMemoryManager
 
 logger = logging.getLogger(__name__)
 
+# Exact strings accepted as approval responses (case-insensitive).
 _APPROVE_EXACT = frozenset(
     {
         "approve",
@@ -72,7 +74,9 @@ class AgentRunner(Runner):
         )
         self._chat_manager = None  # Store chat_manager reference
         self._mcp_manager = None  # MCP client manager for hot-reload
-        self.memory_manager: MemoryManager | None = None
+        # Memory manager: either MemoryManager (local) or
+        # ADBPGMemoryManager (ADBPG), set by Workspace during startup.
+        self.memory_manager: MemoryManager | ADBPGMemoryManager | None = None
 
     def set_chat_manager(self, chat_manager):
         """Set chat manager for auto-registration.

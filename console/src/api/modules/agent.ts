@@ -1,5 +1,9 @@
 import { request } from "../request";
-import type { AgentRequest, AgentsRunningConfig } from "../types";
+import type {
+  AgentRequest,
+  AgentsRunningConfig,
+  MemoryManagerConfig,
+} from "../types";
 
 // Agent API
 export const agentApi = {
@@ -82,4 +86,28 @@ export const agentApi = {
       ffmpeg_installed: boolean;
       whisper_installed: boolean;
     }>("/agent/local-whisper-status"),
+
+  getMemoryManagerConfig: () =>
+    request<MemoryManagerConfig>("/agent/memory-manager-config"),
+
+  updateMemoryManagerConfig: (config: MemoryManagerConfig) =>
+    request<MemoryManagerConfig>("/agent/memory-manager-config", {
+      method: "PUT",
+      body: JSON.stringify(config),
+    }),
+
+  testAdbpgConnection: (params: {
+    host: string;
+    port: number;
+    user: string;
+    password: string;
+    dbname: string;
+  }) =>
+    request<{ success: boolean; message: string }>(
+      "/agent/test-adbpg-connection",
+      {
+        method: "POST",
+        body: JSON.stringify(params),
+      },
+    ),
 };

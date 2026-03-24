@@ -20,6 +20,9 @@ from ...config.config import load_agent_config
 
 if TYPE_CHECKING:
     from ..memory import MemoryManager
+    from ..memory.adbpg_memory_manager import ADBPGMemoryManager
+    # ReMeInMemoryMemory is the base in-memory store; ADBPGInMemoryMemory
+    # extends it with compressed-summary and marking support.
     from reme.memory.file_based import ReMeInMemoryMemory
 
 logger = logging.getLogger(__name__)
@@ -33,8 +36,16 @@ class MemoryCompactionHook:
     messages while summarizing older conversation history.
     """
 
-    def __init__(self, memory_manager: "MemoryManager"):
+    def __init__(
+        self,
+        memory_manager: "MemoryManager | ADBPGMemoryManager",
+    ):
         """Initialize memory compaction hook.
+
+        Works with both ``MemoryManager`` (local) and
+        ``ADBPGMemoryManager`` (ADBPG) backends since they share the
+        same public interface (``compact_memory``, ``check_context``,
+        ``compact_tool_result``, ``add_async_summary_task``).
 
         Args:
             memory_manager: Memory manager instance for compaction

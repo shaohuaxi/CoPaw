@@ -53,12 +53,15 @@ from .utils import process_file_and_media_blocks_in_message
 from ..constant import (
     WORKING_DIR,
 )
-from ..agents.memory import MemoryManager
+from ..agents.memory import MemoryManager, ADBPGMemoryManager
 
 if TYPE_CHECKING:
     from ..config.config import AgentProfileConfig
 
 logger = logging.getLogger(__name__)
+
+# Type alias for any memory manager backend
+AnyMemoryManager = MemoryManager | ADBPGMemoryManager
 
 # Valid namesake strategies for tool registration
 NamesakeStrategy = Literal["override", "skip", "raise", "rename"]
@@ -90,7 +93,7 @@ class CoPawAgent(ToolGuardMixin, ReActAgent):
         env_context: Optional[str] = None,
         enable_memory_manager: bool = True,
         mcp_clients: Optional[List[Any]] = None,
-        memory_manager: "MemoryManager | None" = None,
+        memory_manager: "AnyMemoryManager | None" = None,
         request_context: Optional[dict[str, str]] = None,
         namesake_strategy: NamesakeStrategy = "skip",
         workspace_dir: Path | None = None,
@@ -317,7 +320,7 @@ class CoPawAgent(ToolGuardMixin, ReActAgent):
     def _setup_memory_manager(
         self,
         enable_memory_manager: bool,
-        memory_manager: MemoryManager | None,
+        memory_manager: AnyMemoryManager | None,
         namesake_strategy: NamesakeStrategy,
     ) -> None:
         """Setup memory manager and register memory search tool if enabled.
