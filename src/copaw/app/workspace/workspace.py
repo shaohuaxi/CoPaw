@@ -41,6 +41,9 @@ def _resolve_memory_class(backend: str) -> type:
 
     if backend == "remelight":
         return ReMeLightMemoryManager
+    if backend == "adbpg":
+        from ...agents.memory import ADBPGMemoryManager
+        return ADBPGMemoryManager
     raise ValueError(f"Unsupported memory manager backend: '{backend}'")
 
 
@@ -175,6 +178,9 @@ class Workspace:
                 init_args=lambda ws: {
                     "working_dir": str(ws.workspace_dir),
                     "agent_id": ws.agent_id,
+                    **({"adbpg_config": ws._config.running.adbpg}
+                       if ws._config.running.memory_manager_backend == "adbpg"
+                       else {}),
                 },
                 post_init=lambda ws, mm: setattr(
                     ws._service_manager.services["runner"],

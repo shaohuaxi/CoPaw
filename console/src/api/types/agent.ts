@@ -1,3 +1,4 @@
+/** Agent query request payload. */
 export interface AgentRequest {
   input: unknown;
   session_id?: string | null;
@@ -45,6 +46,7 @@ export interface EmbeddingConfig {
   max_batch_size: number;
 }
 
+/** Mirrors Python AgentsRunningConfig. */
 export interface AgentsRunningConfig {
   max_iters: number;
   llm_retry_enabled: boolean;
@@ -62,5 +64,54 @@ export interface AgentsRunningConfig {
   tool_result_compact: ToolResultCompactConfig;
   memory_summary: MemorySummaryConfig;
   embedding_config: EmbeddingConfig;
-  memory_manager_backend: "remelight";
+  /** Memory backend: 'remelight' (default) or 'adbpg'. */
+  memory_manager_backend: "remelight" | "adbpg";
+  /** ADBPG connection config (required when memory_manager_backend is 'adbpg'). */
+  adbpg?: ADBPGConnectionConfig | null;
+  /** When true, strip local-file memory instructions from AGENTS.md system prompt. */
+  strip_local_memory_instructions: boolean;
+}
+
+/** ADBPG connection and LLM/Embedding configuration. */
+export interface ADBPGConnectionConfig {
+  // --- Database connection ---
+  host: string;
+  port: number;
+  user: string;
+  password: string;
+  dbname: string;
+  // --- LLM configuration (used by adbpg_llm_memory) ---
+  llm_model: string;
+  llm_api_key: string;
+  llm_base_url: string;
+  // --- Embedding configuration ---
+  embedding_model: string;
+  embedding_api_key: string;
+  embedding_base_url: string;
+  embedding_dims: number;
+  // --- Optional tuning ---
+  /** HNSW index configuration string (optional). */
+  hnsw?: string | null;
+  /** Memory search timeout in seconds (default 10.0). */
+  search_timeout: number;
+  // --- Connection pool tuning ---
+  /** Minimum connections in the shared pool (default 2). */
+  pool_minconn: number;
+  /** Maximum connections in the shared pool (default 10). */
+  pool_maxconn: number;
+  // --- Tool result compaction ---
+  /** Compaction mode: 'summarize' (LLM) or 'truncate' (default 'summarize'). */
+  tool_compact_mode: "summarize" | "truncate";
+  /** Max character length after tool output compaction (default 500). */
+  tool_compact_max_len: number;
+  // --- Memory isolation ---
+  /** When false (default), all agents share memory. When true, each agent's memory is isolated. */
+  memory_isolation: boolean;
+  // --- API mode ---
+  /** API mode: 'sql' (default, direct ADBPG SQL) or 'rest' (mem0 REST API). */
+  api_mode: "sql" | "rest";
+  /** mem0 REST API key (required when api_mode='rest'). */
+  rest_api_key: string;
+  /** mem0 REST API base URL (default: https://api.mem0.ai). */
+  rest_base_url: string;
 }

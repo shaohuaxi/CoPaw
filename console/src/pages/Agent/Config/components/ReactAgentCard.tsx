@@ -1,4 +1,4 @@
-import { Form, InputNumber, Select, Card, Alert } from "@agentscope-ai/design";
+import { Form, InputNumber, Select, Card } from "@agentscope-ai/design";
 import { useTranslation } from "react-i18next";
 import { TIMEZONE_OPTIONS } from "../../../../constants/timezone";
 import styles from "../index.module.less";
@@ -7,10 +7,6 @@ const LANGUAGE_OPTIONS = [
   { value: "zh", label: "中文" },
   { value: "en", label: "English" },
   { value: "ru", label: "Русский" },
-];
-
-const MEMORY_MANAGER_BACKEND_OPTIONS = [
-  { value: "remelight", label: "ReMeLight" },
 ];
 
 interface ReactAgentCardProps {
@@ -67,23 +63,6 @@ export function ReactAgentCard({
           style={{ width: "100%" }}
         />
       </Form.Item>
-
-      <Form.Item
-        label={t("agentConfig.memoryManagerBackend")}
-        name="memory_manager_backend"
-        tooltip={t("agentConfig.memoryManagerBackendTooltip")}
-      >
-        <Select
-          options={MEMORY_MANAGER_BACKEND_OPTIONS}
-          style={{ width: "100%" }}
-        />
-      </Form.Item>
-      <Alert
-        type="warning"
-        showIcon
-        message={t("agentConfig.memoryManagerBackendRestartWarning")}
-        style={{ marginBottom: 16 }}
-      />
 
       <Form.Item
         label={t("agentConfig.maxIters")}

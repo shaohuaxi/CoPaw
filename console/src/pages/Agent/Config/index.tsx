@@ -10,6 +10,7 @@ import {
   ToolResultCompactCard,
   MemorySummaryCard,
   EmbeddingConfigCard,
+  MemoryManagerCard,
 } from "./components";
 import styles from "./index.module.less";
 
@@ -81,6 +82,8 @@ function AgentConfigPage() {
         <MemorySummaryCard />
 
         <EmbeddingConfigCard />
+
+        <MemoryManagerCard />
       </Form>
 
       <div className={styles.footerActions}>
