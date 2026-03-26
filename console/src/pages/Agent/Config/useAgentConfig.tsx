@@ -3,6 +3,7 @@ import { Form, Modal, message } from "@agentscope-ai/design";
 import { useTranslation } from "react-i18next";
 import api from "../../../api";
 import type { AgentsRunningConfig } from "../../../api/types";
+import { useAgentStore } from "../../../stores/agentStore";
 
 export function useAgentConfig() {
   const { t } = useTranslation();
@@ -14,6 +15,7 @@ export function useAgentConfig() {
   const [savingLang, setSavingLang] = useState(false);
   const [timezone, setTimezone] = useState<string>("UTC");
   const [savingTimezone, setSavingTimezone] = useState(false);
+  const { selectedAgent } = useAgentStore();
 
   const fetchConfig = useCallback(async () => {
     setLoading(true);
@@ -38,7 +40,7 @@ export function useAgentConfig() {
 
   useEffect(() => {
     fetchConfig();
-  }, [fetchConfig]);
+  }, [fetchConfig, selectedAgent]);
 
   const handleSave = useCallback(async () => {
     try {

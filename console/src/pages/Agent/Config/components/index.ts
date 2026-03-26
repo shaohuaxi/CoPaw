@@ -8,3 +8,4 @@ export { ContextManagementCard } from "./ContextManagementCard";
 export { ToolResultCompactCard } from "./ToolResultCompactCard";
 export { MemorySummaryCard } from "./MemorySummaryCard";
 export { EmbeddingConfigCard } from "./EmbeddingConfigCard";
+export { ADBPGConfigCard } from "./ADBPGConfigCard";

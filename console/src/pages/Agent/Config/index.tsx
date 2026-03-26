@@ -11,6 +11,7 @@ import {
   MemorySummaryCard,
   EmbeddingConfigCard,
   ContextManagementCard,
+  ADBPGConfigCard,
 } from "./components";
 import styles from "./index.module.less";
 
@@ -85,6 +86,8 @@ function AgentConfigPage() {
             <MemorySummaryCard />
 
             <EmbeddingConfigCard />
+
+            <ADBPGConfigCard />
           </Form>
         </div>
       </div>
