@@ -1,0 +1,25 @@
+{
+  "name": "adbpg-memory-cli",
+  "version": "0.1.0",
+  "description": "ADBPG Memory CLI — manage ADBPG long-term memory from the command line",
+  "license": "MIT",
+  "bin": {
+    "adbpg-mem": "src/index.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "commander": "^12.0.0",
+    "chalk": "^4.1.2",
+    "pg": "^8.11.0",
+    "ora": "^5.4.1"
+  },
+  "devDependencies": {
+    "fast-check": "^3.15.0",
+    "jest": "^29.7.0"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "api_mode": "rest",
+  "rest_base_url": "https://your-adbpg-memory-api.example.com",
+  "rest_api_key": "your-rest-api-key",
+  "user_id": "default",
+  "search_timeout": 10.0
+}

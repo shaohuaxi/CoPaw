@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "adbpg-memory-cli"
+version = "0.1.0"
+description = "ADBPG Memory CLI — manage ADBPG long-term memory from the command line"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+dependencies = [
+    "click>=8.0",
+    "psycopg2-binary>=2.9",
+    "httpx>=0.24",
+    "rich>=13.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "hypothesis>=6.0",
+    "pytest>=7.0",
+]
+
+[project.scripts]
+adbpg-mem = "adbpg_memory_cli.cli:cli"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/adbpg_memory_cli"]
