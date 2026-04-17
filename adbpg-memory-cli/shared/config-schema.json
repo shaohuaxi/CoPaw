@@ -1,0 +1,130 @@
+{
+  "title": "ADBPG Memory CLI Configuration",
+  "description": "Configuration file schema for adbpg-mem CLI tool (~/.adbpg-mem/config.json)",
+  "type": "object",
+  "properties": {
+    "api_mode": {
+      "type": "string",
+      "enum": [
+        "sql",
+        "rest"
+      ],
+      "default": "sql",
+      "description": "API mode: sql (direct database) or rest (HTTP API)"
+    },
+    "host": {
+      "type": "string",
+      "description": "ADBPG database host (SQL mode)"
+    },
+    "port": {
+      "type": "integer",
+      "default": 5432,
+      "description": "ADBPG database port (SQL mode)"
+    },
+    "user": {
+      "type": "string",
+      "description": "ADBPG database user (SQL mode)"
+    },
+    "password": {
+      "type": "string",
+      "description": "ADBPG database password (SQL mode)"
+    },
+    "dbname": {
+      "type": "string",
+      "description": "ADBPG database name (SQL mode)"
+    },
+    "llm_model": {
+      "type": "string",
+      "description": "LLM model name for memory extraction (SQL mode)"
+    },
+    "llm_api_key": {
+      "type": "string",
+      "description": "LLM API key (SQL mode)"
+    },
+    "llm_base_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "LLM API base URL (SQL mode)"
+    },
+    "embedding_model": {
+      "type": "string",
+      "description": "Embedding model name (SQL mode)"
+    },
+    "embedding_api_key": {
+      "type": "string",
+      "description": "Embedding API key (SQL mode)"
+    },
+    "embedding_base_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "Embedding API base URL (SQL mode)"
+    },
+    "embedding_dims": {
+      "type": "integer",
+      "default": 1024,
+      "description": "Embedding vector dimensions (SQL mode)"
+    },
+    "rest_base_url": {
+      "type": "string",
+      "format": "uri",
+      "description": "ADBPG Memory REST API base URL (REST mode)"
+    },
+    "rest_api_key": {
+      "type": "string",
+      "description": "ADBPG Memory REST API key (REST mode)"
+    },
+    "user_id": {
+      "type": "string",
+      "default": "default",
+      "description": "Default user ID for memory scope"
+    },
+    "search_timeout": {
+      "type": "number",
+      "default": 10.0,
+      "description": "Search timeout in seconds"
+    }
+  },
+  "required": [
+    "api_mode"
+  ],
+  "if": {
+    "properties": {
+      "api_mode": {
+        "const": "sql"
+      }
+    }
+  },
+  "then": {
+    "required": [
+      "api_mode",
+      "host",
+      "port",
+      "user",
+      "password",
+      "dbname",
+      "llm_model",
+      "llm_api_key",
+      "llm_base_url",
+      "embedding_model",
+      "embedding_api_key",
+      "embedding_base_url",
+      "embedding_dims"
+    ]
+  },
+  "else": {
+    "if": {
+      "properties": {
+        "api_mode": {
+          "const": "rest"
+        }
+      }
+    },
+    "then": {
+      "required": [
+        "api_mode",
+        "rest_base_url",
+        "rest_api_key"
+      ]
+    }
+  }
+}

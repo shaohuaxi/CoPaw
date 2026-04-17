@@ -1,0 +1,17 @@
+{
+  "api_mode": "sql",
+  "host": "gp-xxx.gpdb.rds.aliyuncs.com",
+  "port": 5432,
+  "user": "your_username",
+  "password": "your_password",
+  "dbname": "your_database",
+  "llm_model": "qwen-plus",
+  "llm_api_key": "sk-your-llm-api-key",
+  "llm_base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+  "embedding_model": "text-embedding-v3",
+  "embedding_api_key": "sk-your-embedding-api-key",
+  "embedding_base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+  "embedding_dims": 1024,
+  "user_id": "default",
+  "search_timeout": 10.0
+}
