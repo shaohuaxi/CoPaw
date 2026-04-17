@@ -475,11 +475,83 @@ adbpg-mem config set rest_base_url "https://8.161.119.228"
 
 ---
 
-## 阶段八：输出格式验证
+---
+
+## 阶段八：多 Agent 部署验证
+
+> 目标：验证不同 Agent 独立部署 skill、独立配置隔离策略、连接不同服务的能力
+>
+> 前提：CoPaw 中存在至少两个 Agent（如 default 和 agent_B）
+
+### T8.1 Per-Agent Skill 部署
+
+```bash
+# 为 agent_B 部署 skill（agent_A/default 已有）
+AGENT_B_SKILLS=~/.copaw/workspaces/<agent_B_id>/skills
+mkdir -p "$AGENT_B_SKILLS/adbpg_memory"
+cp adbpg-memory-cli/SKILL.md "$AGENT_B_SKILLS/adbpg_memory/SKILL.md"
+
+# 启用
+curl -X POST http://127.0.0.1:8088/api/skills/adbpg_memory/enable \
+  -H "X-Agent-Id: <agent_B_id>"
+```
+
+- [ ] Agent A 的 skill 列表包含 adbpg_memory（enabled=True）
+- [ ] Agent B 的 skill 列表包含 adbpg_memory（enabled=True）
+- [ ] 未部署的 Agent C 的 skill 列表不包含 adbpg_memory
+
+### T8.2 不同 Agent 不同隔离策略
+
+Agent A 开启 agent 隔离，Agent B 不隔离：
+
+```bash
+# Agent A 存储（带 -a）
+NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add "Agent A 的专属记忆" -u test_multi -a agent_A --agent
+
+# Agent B 存储（不带 -a）
+NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add "Agent B 的共享记忆" -u test_multi --agent
+sleep 3
+
+# Agent A 只能搜到自己的
+NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search "记忆" -u test_multi -a agent_A --agent
+```
+
+- [ ] Agent A 搜索结果只包含"Agent A 的专属记忆"
+- [ ] Agent B 搜索结果包含"Agent B 的共享记忆"（可能也包含 Agent A 的，因为不带 -a 不过滤）
+
+### T8.3 不同 Agent 连不同服务
+
+```bash
+# Agent A 通过环境变量连生产环境
+ADBPG_MEM_REST_BASE_URL=https://prod.example.com \
+ADBPG_MEM_REST_API_KEY=prod-key \
+  adbpg-mem search "test" --agent 2>/dev/null
+
+# Agent B 用默认配置（config.json）
+adbpg-mem search "test" --agent 2>/dev/null
+```
+
+- [ ] 两个命令的 scope 或连接目标不同
+- [ ] 环境变量覆盖了 config.json 中的值
+
+### T8.4 未部署 Skill 的 Agent 不受影响
+
+对未部署 adbpg_memory skill 的 Agent C 发送记忆相关请求：
+
+```
+你：记住我喜欢蓝色
+```
+
+- [ ] Agent C 不调用 adbpg-mem（没有该 skill）
+- [ ] Agent C 使用本地文件记忆或直接回复
+
+---
+
+## 阶段九：输出格式验证
 
 > 目标：确认 --agent 输出格式符合 SKILL.md 规范
 
-### T8.1 成功 envelope
+### T9.1 成功 envelope
 
 ```bash
 adbpg-mem search "测试" --agent 2>/dev/null | python3 -c "
@@ -496,7 +568,7 @@ print('PASS: envelope format correct')
 
 - [ ] 输出 `PASS`
 
-### T8.2 错误 envelope
+### T9.2 错误 envelope
 
 ```bash
 adbpg-mem search "test" -u nonexistent --agent 2>/dev/null | python3 -c "
@@ -510,7 +582,7 @@ print(f'PASS: error envelope, status={d[\"status\"]}')
 
 - [ ] 输出 `PASS`
 
-### T8.3 stderr 不污染 stdout
+### T9.3 stderr 不污染 stdout
 
 ```bash
 adbpg-mem search "test" --agent 2>/dev/null | python3 -m json.tool > /dev/null
@@ -531,4 +603,5 @@ adbpg-mem search "test" --agent 2>/dev/null | python3 -m json.tool > /dev/null
 | 五、记忆检索行为 | T5.1 ~ T5.4 | |
 | 六、隔离配置交互 | T6.1 ~ T6.5 | |
 | 七、边界与异常 | T7.1 ~ T7.4 | |
-| 八、输出格式验证 | T8.1 ~ T8.3 | |
+| 八、多 Agent 部署 | T8.1 ~ T8.4 | |
+| 九、输出格式验证 | T9.1 ~ T9.3 | |
