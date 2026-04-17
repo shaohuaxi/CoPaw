@@ -442,6 +442,35 @@ adbpg-mem add --json-messages '[...]' \
 - **本地文件** 用于：当前工作区的上下文笔记、工具配置、每日日志
 - 两者互补，不冲突。重要事实同时存入 adbpg-mem 和本地文件是可以的
 
+### 切换为纯 adbpg-mem 模式
+
+当用户要求"去掉本地文件记忆"或"只用长期记忆"时，修改 AGENTS.md：
+
+1. 将「记忆」章节替换为：
+
+```markdown
+## 记忆
+
+每次会话都是全新的。你的长期记忆通过 `adbpg-mem` 技能实现，详见 `skills/adbpg_memory/SKILL.md`。
+
+- 需要记住信息时 → 使用 `adbpg-mem add` 存储
+- 需要回忆信息时 → 使用 `adbpg-mem search` 检索
+- 除非用户明确要求，否则不要在记忆中记录敏感信息
+```
+
+2. 删除「工具」章节中引用 `MEMORY.md` 的部分
+3. 删除「Heartbeat」章节中的「记忆维护」子章节（浏览 memory/*.md、更新 MEMORY.md 等）
+
+### 恢复本地文件记忆
+
+当用户要求"恢复本地记忆"或"同时使用两种记忆"时，将 AGENTS.md 的「记忆」章节恢复为 CoPaw 默认模板内容（位于 `src/copaw/agents/md_files/zh/AGENTS.md`），包括：
+
+- 每日笔记 `memory/YYYY-MM-DD.md`
+- 长期记忆 `MEMORY.md`
+- 主动记录规则
+- `memory_search` 检索工具
+- Heartbeat 期间的记忆维护
+
 ## Node.js 与 Python 对等性
 
 adbpg-mem 提供 Node.js 和 Python 两套实现，命令名、参数、输出格式、错误信息完全一致。选择已安装的运行时即可。
