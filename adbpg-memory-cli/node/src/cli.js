@@ -39,10 +39,23 @@ function _resolveOutputMode(opts) {
 
 /**
  * Build scope object from global options and merged config.
+ *
+ * user_id falls back to config default ONLY when no explicit scope flags
+ * (-u, -a, -r) are provided. When the user passes only -a or -r,
+ * user_id stays empty so it does not become an unintended AND filter.
  */
 function _buildScope(opts, config) {
+  const hasExplicitScope = opts.userId != null || opts.agentId != null || opts.runId != null;
+  let userId;
+  if (opts.userId != null) {
+    userId = opts.userId;
+  } else if (!hasExplicitScope) {
+    userId = config.user_id || 'default';
+  } else {
+    userId = '';
+  }
   return {
-    user_id: opts.userId || config.user_id || 'default',
+    user_id: userId,
     agent_id: opts.agentId || '',
     run_id: opts.runId || '',
   };

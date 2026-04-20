@@ -169,7 +169,14 @@ class OutputFormatter {
    */
   _formatText(data) {
     if (Array.isArray(data)) {
-      return data.map((item) => String(item)).join('\n');
+      return data.map((item) =>
+        typeof item === 'object' && item !== null
+          ? JSON.stringify(item, null, 2)
+          : String(item)
+      ).join('\n');
+    }
+    if (typeof data === 'object' && data !== null) {
+      return JSON.stringify(data, null, 2);
     }
     return String(data);
   }

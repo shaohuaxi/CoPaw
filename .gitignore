@@ -107,3 +107,5 @@ src/.hypothesis/
 
 # Worktrees
 .worktrees/
+.copaw-test/
+.copaw-test.secret/

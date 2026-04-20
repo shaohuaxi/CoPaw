@@ -88,8 +88,15 @@ def cli(ctx, output, json_flag, agent_flag, user_id, agent_id, run_id):
     ctx.obj["output"] = output
     ctx.obj["formatter"] = OutputFormatter(output)
     ctx.obj["config"] = merge_config(user_id=user_id, agent_id=agent_id, run_id=run_id)
+    has_explicit_scope = user_id is not None or agent_id is not None or run_id is not None
+    if user_id is not None:
+        effective_user_id = user_id
+    elif not has_explicit_scope:
+        effective_user_id = ctx.obj["config"].get("user_id", "default")
+    else:
+        effective_user_id = ""
     ctx.obj["scope"] = {
-        "user_id": user_id or ctx.obj["config"].get("user_id", "default"),
+        "user_id": effective_user_id,
         "agent_id": agent_id or "",
         "run_id": run_id or "",
     }
