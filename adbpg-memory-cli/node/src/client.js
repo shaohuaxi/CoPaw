@@ -438,6 +438,8 @@ class ADBPGMemoryCLIClient {
       } catch (_) {
         return { result: await resp.text() };
       }
+    } catch (e) {
+      throw new Error(ADBPGMemoryCLIClient._enhanceError(e, url));
     } finally {
       clearTimeout(timer);
     }
@@ -482,6 +484,9 @@ class ADBPGMemoryCLIClient {
         results = [];
       }
       return results.slice(0, limit);
+    } catch (e) {
+      if (e.message && e.message.startsWith('HTTP ')) throw e;
+      throw new Error(ADBPGMemoryCLIClient._enhanceError(e, url));
     } finally {
       clearTimeout(timer);
     }
@@ -599,6 +604,29 @@ class ADBPGMemoryCLIClient {
   // ------------------------------------------------------------------
 
   /**
+   * Enhance fetch/network errors with actionable hints.
+   * @param {Error} e
+   * @param {string} url
+   * @returns {string}
+   */
+  static _enhanceError(e, url) {
+    const msg = e.message || String(e);
+    if (/fetch failed|unable to get local issuer|self.signed|UNABLE_TO_VERIFY/i.test(msg)) {
+      return `${msg} (SSL certificate error? Try: NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem ...)`;
+    }
+    if (/ECONNREFUSED/i.test(msg)) {
+      return `${msg} (Connection refused. Check rest_base_url: ${url})`;
+    }
+    if (/abort/i.test(msg)) {
+      return `${msg} (Request timed out. Check network or increase search_timeout)`;
+    }
+    if (/401|unauthorized/i.test(msg)) {
+      return `${msg} (Authentication failed. Check rest_api_key with: adbpg-mem config show)`;
+    }
+    return msg;
+  }
+
+  /**
    * Parse a raw JSON result (string or object) into a plain object.
    * Used for add/delete results.
    * @param {*} raw
@@ -609,7 +637,11 @@ class ADBPGMemoryCLIClient {
       try {
         return JSON.parse(raw);
       } catch (_) {
-        return { result: raw };
+        try {
+          return JSON.parse(raw.replace(/'/g, '"').replace(/None/g, 'null').replace(/True/g, 'true').replace(/False/g, 'false'));
+        } catch (_2) {
+          return { result: raw };
+        }
       }
     }
     if (raw && typeof raw === 'object') {
@@ -630,7 +662,12 @@ class ADBPGMemoryCLIClient {
       try {
         parsed = JSON.parse(raw);
       } catch (_) {
-        return [];
+        // ADBPG SQL returns Python repr format (single quotes) — try converting
+        try {
+          parsed = JSON.parse(raw.replace(/'/g, '"').replace(/None/g, 'null').replace(/True/g, 'true').replace(/False/g, 'false'));
+        } catch (_2) {
+          return [];
+        }
       }
       if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
         return parsed.results || [];
@@ -661,7 +698,11 @@ class ADBPGMemoryCLIClient {
       try {
         parsed = JSON.parse(raw);
       } catch (_) {
-        return [];
+        try {
+          parsed = JSON.parse(raw.replace(/'/g, '"').replace(/None/g, 'null').replace(/True/g, 'true').replace(/False/g, 'false'));
+        } catch (_2) {
+          return [];
+        }
       }
       if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
         return parsed.results || parsed.memories || [];
