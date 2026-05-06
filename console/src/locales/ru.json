@@ -1104,7 +1104,7 @@
     "llmAcquireTimeoutGtPauseJitter": "Таймаут получения слота должен быть больше суммы паузы и джиттера",
     "contextManagementTitle": "Управление контекстом",
     "memoryManagerBackend": "Бэкенд менеджера памяти",
-    "memoryManagerBackendTooltip": "Тип бэкенда менеджера памяти. В настоящее время поддерживается только remelight.",
+    "memoryManagerBackendTooltip": "Тип бэкенда менеджера памяти. Выберите remelight (локальные файлы) или adbpg (облачная база данных).",
     "memoryManagerBackendRestartWarning": "Смена бэкенда менеджера памяти не поддерживает горячую перезагрузку. Сохраните и перезапустите QwenPaw для применения изменений.",
     "maxIters": "Макс. итераций",
     "maxItersTooltip": "Максимальное число итераций рассуждение-действие для агента ReAct",
@@ -1270,7 +1270,28 @@
       "offDesc": "Отключить все одобрения инструментов, все инструменты выполняются автоматически"
     },
     "saveLevelSuccess": "Уровень безопасности выполнения инструментов сохранён",
-    "saveLevelFailed": "Не удалось сохранить уровень безопасности выполнения инструментов"
+    "saveLevelFailed": "Не удалось сохранить уровень безопасности выполнения инструментов",
+    "adbpgMemoryTitle": "ADBPG Long-term Memory",
+    "adbpgConfig": {
+      "title": "ADBPG Memory Configuration",
+      "apiMode": "API Mode",
+      "host": "Host",
+      "port": "Port",
+      "user": "Username",
+      "password": "Password",
+      "dbname": "Database",
+      "llmModel": "LLM Model",
+      "llmApiKey": "LLM API Key",
+      "llmBaseUrl": "LLM Base URL",
+      "embeddingModel": "Embedding Model",
+      "embeddingApiKey": "Embedding API Key",
+      "embeddingBaseUrl": "Embedding Base URL",
+      "embeddingDims": "Embedding Dimensions",
+      "restBaseUrl": "REST Base URL",
+      "restApiKey": "REST API Key",
+      "memoryIsolation": "Memory Isolation (per-agent)",
+      "searchTimeout": "Search Timeout"
+    }
   },
   "tools": {
     "title": "Встроенные инструменты",

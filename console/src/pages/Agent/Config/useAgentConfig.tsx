@@ -67,6 +67,7 @@ export function useAgentConfig() {
         light_context_config: config.light_context_config,
         memory_manager_backend: memoryBackend,
         reme_light_memory_config: config.reme_light_memory_config,
+        adbpg_memory_config: config.adbpg_memory_config,
         auto_title_config: config.auto_title_config ?? {
           enabled: true,
           timeout_seconds: 30.0,

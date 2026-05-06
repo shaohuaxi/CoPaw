@@ -1089,7 +1089,7 @@
     "llmAcquireTimeoutGtPauseJitter": "スロット取得タイムアウトはレート制限一時停止とジッターの合計より大きい必要があります",
     "contextManagementTitle": "コンテキスト管理",
     "memoryManagerBackend": "メモリマネージャーバックエンド",
-    "memoryManagerBackendTooltip": "メモリマネージャーのバックエンドタイプ。現在は remelight のみサポートされています。",
+    "memoryManagerBackendTooltip": "メモリマネージャーのバックエンドタイプ。remelight（ローカルファイル）または adbpg（クラウドデータベース）から選択できます。",
     "memoryManagerBackendRestartWarning": "メモリマネージャーバックエンドの切り替えはホットリロードに対応していません。変更を反映するには保存後に QwenPaw を再起動してください。",
     "maxIters": "最大反復回数",
     "maxItersTooltip": "ReActエージェントの推論・行動サイクルの最大反復回数",
@@ -1255,7 +1255,28 @@
       "offDesc": "すべてのツール承認を無効化、すべてのツールが自動実行"
     },
     "saveLevelSuccess": "ツール実行セキュリティレベルを保存しました",
-    "saveLevelFailed": "ツール実行セキュリティレベルの保存に失敗しました"
+    "saveLevelFailed": "ツール実行セキュリティレベルの保存に失敗しました",
+    "adbpgMemoryTitle": "ADBPG Long-term Memory",
+    "adbpgConfig": {
+      "title": "ADBPG Memory Configuration",
+      "apiMode": "API Mode",
+      "host": "Host",
+      "port": "Port",
+      "user": "Username",
+      "password": "Password",
+      "dbname": "Database",
+      "llmModel": "LLM Model",
+      "llmApiKey": "LLM API Key",
+      "llmBaseUrl": "LLM Base URL",
+      "embeddingModel": "Embedding Model",
+      "embeddingApiKey": "Embedding API Key",
+      "embeddingBaseUrl": "Embedding Base URL",
+      "embeddingDims": "Embedding Dimensions",
+      "restBaseUrl": "REST Base URL",
+      "restApiKey": "REST API Key",
+      "memoryIsolation": "Memory Isolation (per-agent)",
+      "searchTimeout": "Search Timeout"
+    }
   },
   "tools": {
     "title": "ビルトインツール",
