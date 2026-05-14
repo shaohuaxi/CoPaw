@@ -382,9 +382,16 @@ node ./scripts/adbpg-mem.mjs search "颜色" --agent
 
 ### Agent 隔离（多 Agent 场景）
 
-当系统中有多个 Agent（如工作助手、生活助手），各自记忆需要独立时，在命令中加 `-a <agent_id>`。
+如果你（当前正在运行的这个 agent）希望自己的记忆与同平台上其他 agent 隔离开，开启 isolation_agent 即可，之后所有 add/search 都会按 `-a <你自己的agent_id>` 隔离。
 
-**如何获取你的 agent_id：** 你的 system prompt 开头有 `Agent Identity` 段落，其中 `` `agent_id` `` 就是你的唯一标识（可能是 `default`、`xK3mNp` 等值）。直接使用该值，不要猜测或编造。
+**重要：agent-config 是 per-agent self-configure** —— 你只能配置**你自己**的隔离状态，不能代别的 agent 配置。即使用户在 prompt 里提到其他 agent 名字（"工作助手"、"生活助手"等具体角色词只是用户的场景描述），不要把它们当成需要你去配置的目标 agent_id；你只关心**你自己**那一个 agent_id。如果用户要为其他 agent 也开启隔离，应让那些 agent 各自跑这个 skill 自配。
+
+**关键语义澄清：** "开启 Agent 隔离"指的是**让你（当前正在运行的这个 agent）**把自己的记忆与其他 agent 隔离。**不是让你去为别的 agent 配置**。具体做法：找到你**自己**的 agent_id，调一次 `agent-config set isolation_agent true -a <你自己的agent_id>` 即可，**不要**为用户提到的"工作助手/生活助手"等概念性角色编造 agent_id。
+
+**如何获取你自己的 agent_id（按优先级）：**
+1. **从 system prompt 找**：CoPaw 等平台的 system prompt 开头有 `Agent Identity` 段落，其中 `agent_id` 字段直接就是。
+2. **从环境变量找**：`$AGENT_ID` 或 `$WUKONG_AGENT_ID` 等（不同平台命名不同，可以试 `printenv | grep -i agent`）。
+3. **找不到时询问用户**：直接问"你想用什么字符串作为这个 agent 的标识？比如 `wukong-default`"。**绝不编造或假设**。
 
 示例（假设你的 agent_id 是 `xK3mNp`）：
 

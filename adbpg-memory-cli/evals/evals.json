@@ -75,26 +75,26 @@
     },
     {
       "id": 7,
-      "prompt": "我想开启 Agent 记忆隔离，工作助手和生活助手的记忆要分开存。",
-      "expected_output": "agent 理解隔离需求，从 system prompt 获取自己的 agent_id，调用 adbpg-mem agent-config set isolation_agent true -a <agent_id> 持久化状态，告知后续命令会带 -a 参数。",
+      "prompt": "帮我开启 Agent 记忆隔离 —— 我希望你（当前这个 agent）的记忆别跟其他 agent 混在一起。",
+      "expected_output": "agent 理解'Agent 隔离 = 让自己（当前 agent）的记忆与其他 agent 隔离'，找到自己的 agent_id（多种来源都可），持久化 isolation_agent=true。",
       "expectations": [
         "agent 表示理解隔离需求，并解释隔离机制（通过 -a 参数实现，不需要改连接配置文件）",
-        "agent 从 system prompt 中查找自己的 agent_id，而不是瞎编一个值",
-        "agent 调用 adbpg-mem agent-config set isolation_agent true -a <agent_id> 持久化隔离状态",
-        "agent 告知用户后续 add/search 会自动带上 -a <agent_id>",
-        "若 agent 找不到 system prompt 中的 agent_id，会向用户询问而不是用默认值"
+        "**关键**：agent 把'工作助手/生活助手'理解为**它自己**这个 agent 需要开启隔离（用户的具体场景词只是举例），而不是去为虚构的 'work'/'life' 两个 agent 各自创建隔离配置",
+        "agent 通过合理途径获取自己的 agent_id（system prompt / 环境变量 / 询问用户三选一），不凭空编造像 'work'/'life' 这种猜测值",
+        "agent 调用 adbpg-mem agent-config set isolation_agent true -a <agent_id> 持久化隔离状态（自己调或平台代理皆可）",
+        "agent 告知用户后续记忆操作会自动按 agent 隔离"
       ],
       "files": []
     },
     {
       "id": 8,
       "prompt": "我想按项目区分记忆，开启会话隔离，以后每个项目的讨论各自独立。",
-      "expected_output": "agent 询问用户偏好的会话隔离方案（主动命名/自动生成/打标签三选一），不擅自决定。",
+      "expected_output": "agent 在动手前向用户呈现至少 2 个候选方案（主动命名/自动生成/打标签）让用户选，不擅自默认某个方案。Wukong 等平台允许用 ASK_HUMAN 卡片做交互。",
       "expectations": [
-        "agent 不直接默认开启某个方案，而是询问用户偏好",
-        "agent 列出至少 2 个候选方案（主动命名 / 自动生成日期时间 / 不隔离只打标签）供用户选择",
+        "**关键**：agent 在动手设置任何 isolation_run_mode 之前，必须先把至少 2 个候选方案呈现给用户（主动命名 / 自动生成日期时间 / 不隔离只打标签），无论是文本列出还是 ASK_HUMAN 卡片选项",
         "对每个方案给出简短的差异说明，帮用户判断",
-        "用户在本轮 prompt 中没选，所以 agent 不应在此轮就调用 adbpg-mem agent-config set isolation_run_mode <mode> -a <agent_id> 或下指令带 -r"
+        "若用户在本轮交互中（含 ASK_HUMAN 响应）已经选定了方案，agent 可以执行 agent-config set；若用户未选，agent 不可擅自决定",
+        "agent 最终回复明确说明所设置的方案是哪一种（让用户能确认）"
       ],
       "files": []
     }
