@@ -19,6 +19,12 @@ const {
   mergeConfig,
   maskSensitive,
 } = require('./config');
+const {
+  opShow: agentConfigShow,
+  opGet: agentConfigGet,
+  opSet: agentConfigSet,
+  opUnset: agentConfigUnset,
+} = require('./agent-config');
 const { OutputFormatter } = require('./output');
 
 const VERSION = '0.1.0';
@@ -625,6 +631,173 @@ program
     } else {
       process.stdout.write(`adbpg-mem ${VERSION}\n`);
     }
+  });
+
+// ---------------------------------------------------------------------------
+// agent-config subcommand group
+// ---------------------------------------------------------------------------
+//
+// Per-agent configuration stored under ~/.adbpg-mem/agents/<agent_id>.json.
+// This command group has its own JSON envelope shape (top-level agent_id,
+// no scope/count) — distinct from the standard command envelope — so we
+// emit JSON inline rather than going through OutputFormatter.
+
+/**
+ * Whether the user requested a machine-readable output mode for this command.
+ */
+function _isAgentConfigMachine(opts) {
+  return Boolean(opts.agent || opts.json) || opts.output === 'agent' || opts.output === 'json' || opts.output === 'quiet';
+}
+
+/**
+ * Emit a success result for an agent-config action.
+ *
+ * @param {object} opts - global program options
+ * @param {string} action - "show" | "get" | "set" | "unset"
+ * @param {string} agentId
+ * @param {*} data
+ * @param {number} durationMs
+ */
+function _echoAgentConfigOk(opts, action, agentId, data, durationMs) {
+  const command = `agent-config-${action}`;
+  if (opts.agent || opts.output === 'agent') {
+    const envelope = {
+      status: 'ok',
+      command,
+      duration_ms: durationMs,
+      agent_id: agentId,
+      data,
+    };
+    process.stdout.write(JSON.stringify(envelope) + '\n');
+    return;
+  }
+  if (opts.json || opts.output === 'json') {
+    process.stdout.write(JSON.stringify(data) + '\n');
+    return;
+  }
+  if (opts.output === 'quiet') {
+    // Quiet mode: emit just the value when meaningful.
+    if (action === 'get' && data && typeof data === 'object') {
+      process.stdout.write((data.value === null || data.value === undefined ? '' : String(data.value)) + '\n');
+    }
+    return;
+  }
+  // Text mode (default).
+  if (action === 'show') {
+    process.stdout.write(JSON.stringify(data, null, 2) + '\n');
+  } else if (action === 'get') {
+    const v = data.value;
+    process.stdout.write((v === null || v === undefined ? '' : (typeof v === 'string' ? v : JSON.stringify(v))) + '\n');
+  } else if (action === 'set') {
+    process.stdout.write(`Set '${data.key}' = ${JSON.stringify(data.value)} for agent ${agentId}\n`);
+  } else if (action === 'unset') {
+    if (data.removed) {
+      process.stdout.write(`Unset '${data.key}' for agent ${agentId}\n`);
+    } else {
+      process.stdout.write(`Key '${data.key}' was not set for agent ${agentId}\n`);
+    }
+  }
+}
+
+/**
+ * Emit an error for an agent-config action. Always writes to stderr and
+ * exits with a non-zero code.
+ */
+function _echoAgentConfigError(opts, action, error, exitCode) {
+  const command = `agent-config-${action}`;
+  if (opts.agent || opts.output === 'agent') {
+    const envelope = {
+      status: 'error',
+      command,
+      error,
+      data: null,
+    };
+    process.stderr.write(JSON.stringify(envelope) + '\n');
+  } else if (opts.json || opts.output === 'json') {
+    process.stderr.write(JSON.stringify({ error }) + '\n');
+  } else {
+    process.stderr.write(`Error: ${error}\n`);
+  }
+  process.exit(exitCode != null ? exitCode : 2);
+}
+
+/**
+ * Resolve the required -a <agent_id>. Emits an error envelope and exits if missing.
+ * Returns the agentId on success.
+ */
+function _requireAgentId(opts, action) {
+  if (!opts.agentId) {
+    _echoAgentConfigError(opts, action, 'agent-config commands require -a <agent_id>', 2);
+  }
+  return opts.agentId;
+}
+
+const agentConfigCmd = program
+  .command('agent-config')
+  .description('View and manage per-agent configuration');
+
+agentConfigCmd
+  .command('show')
+  .description('Show effective config for the agent (with schema defaults applied)')
+  .action(() => {
+    const t0 = Date.now();
+    const opts = program.opts();
+    const agentId = _requireAgentId(opts, 'show');
+    const result = agentConfigShow(agentId);
+    const durationMs = Date.now() - t0;
+    if (!result.ok) {
+      _echoAgentConfigError(opts, 'show', result.error, 2);
+      return;
+    }
+    _echoAgentConfigOk(opts, 'show', agentId, result.data, durationMs);
+  });
+
+agentConfigCmd
+  .command('get <key>')
+  .description('Get a single configuration value for the agent')
+  .action((key) => {
+    const t0 = Date.now();
+    const opts = program.opts();
+    const agentId = _requireAgentId(opts, 'get');
+    const result = agentConfigGet(agentId, key);
+    const durationMs = Date.now() - t0;
+    if (!result.ok) {
+      _echoAgentConfigError(opts, 'get', result.error, 2);
+      return;
+    }
+    _echoAgentConfigOk(opts, 'get', agentId, result.data, durationMs);
+  });
+
+agentConfigCmd
+  .command('set <key> <value>')
+  .description('Set a configuration value for the agent')
+  .action((key, value) => {
+    const t0 = Date.now();
+    const opts = program.opts();
+    const agentId = _requireAgentId(opts, 'set');
+    const result = agentConfigSet(agentId, key, value);
+    const durationMs = Date.now() - t0;
+    if (!result.ok) {
+      _echoAgentConfigError(opts, 'set', result.error, 2);
+      return;
+    }
+    _echoAgentConfigOk(opts, 'set', agentId, result.data, durationMs);
+  });
+
+agentConfigCmd
+  .command('unset <key>')
+  .description('Remove a configuration value for the agent (idempotent)')
+  .action((key) => {
+    const t0 = Date.now();
+    const opts = program.opts();
+    const agentId = _requireAgentId(opts, 'unset');
+    const result = agentConfigUnset(agentId, key);
+    const durationMs = Date.now() - t0;
+    if (!result.ok) {
+      _echoAgentConfigError(opts, 'unset', result.error, 2);
+      return;
+    }
+    _echoAgentConfigOk(opts, 'unset', agentId, result.data, durationMs);
   });
 
 module.exports = { program };

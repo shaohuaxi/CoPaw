@@ -10,6 +10,15 @@ import time
 
 import click
 
+from .agent_config import (
+    AgentConfigError,
+    get_agent_config,
+    set_agent_config,
+    show_agent_config,
+    unset_agent_config,
+    validate_agent_id,
+    validate_key as validate_agent_config_key,
+)
 from .client import ADBPGMemoryCLIClient, parse_json_messages, text_to_messages
 from .config import (
     CONFIG_FILE,
@@ -456,6 +465,303 @@ def status(ctx):
     else:
         _echo_error(ctx, "status", message, duration_ms)
         ctx.exit(1)
+
+
+# ---------------------------------------------------------------------------
+# agent-config subcommand group
+# ---------------------------------------------------------------------------
+
+def _agent_config_envelope_ok(command: str, agent_id: str, data, duration_ms: int) -> str:
+    """Per-spec agent-config success envelope (no scope/count fields)."""
+    return json.dumps(
+        {
+            "status": "ok",
+            "command": command,
+            "duration_ms": duration_ms,
+            "agent_id": agent_id,
+            "data": data,
+        },
+        ensure_ascii=False,
+    )
+
+
+def _agent_config_envelope_err(command: str, error: str) -> str:
+    """Per-spec agent-config error envelope (no duration_ms/agent_id/scope/count)."""
+    return json.dumps(
+        {
+            "status": "error",
+            "command": command,
+            "error": error,
+            "data": None,
+        },
+        ensure_ascii=False,
+    )
+
+
+def _agent_config_emit_ok(ctx, command: str, agent_id: str, data, duration_ms: int, text_summary: str):
+    fmt = _get_formatter(ctx)
+    if fmt.mode == "agent":
+        click.echo(_agent_config_envelope_ok(command, agent_id, data, duration_ms))
+    elif fmt.mode == "json":
+        click.echo(json.dumps(data, ensure_ascii=False))
+    elif fmt.mode == "quiet":
+        # Minimal value-only output for quiet mode.
+        if isinstance(data, dict):
+            pass  # nothing to print
+        elif data is not None:
+            click.echo(str(data))
+    else:
+        click.echo(text_summary)
+
+
+def _agent_config_emit_err(ctx, command: str, error: str, exit_code: int = 2):
+    fmt = _get_formatter(ctx)
+    if fmt.mode == "agent":
+        click.echo(_agent_config_envelope_err(command, error), err=True)
+    elif fmt.mode == "json":
+        click.echo(json.dumps({"error": error}, ensure_ascii=False), err=True)
+    else:
+        click.echo(f"Error: {error}", err=True)
+    ctx.exit(exit_code)
+
+
+def _resolve_agent_id_or_error(
+    ctx, command: str, override: str | None = None
+) -> str | None:
+    """Return the validated agent_id, or emit an error envelope and exit.
+
+    Resolution order (first non-empty wins):
+      1. ``override`` — value from a sub-command-level ``-a/--agent-id`` option.
+         Sub-command-level wins over group-level so the spec's
+         ``agent-config set <K> <V> -a <id>`` form takes precedence over any
+         root-level ``-a`` value (which would otherwise be picked up via scope).
+      2. ``ctx.obj["scope"]["agent_id"]`` — value from the root-level
+         ``-a/--agent-id`` option (passed before the group name).
+
+    If both are empty, surfaces the canonical "agent-config commands require
+    -a <agent_id>" error (matching the Node implementation).
+    """
+    if override:
+        candidate = override
+    else:
+        scope = _get_scope(ctx)
+        candidate = scope.get("agent_id") or ""
+    try:
+        return validate_agent_id(candidate or None)
+    except AgentConfigError as e:
+        _agent_config_emit_err(ctx, command, str(e), exit_code=2)
+        return None  # unreachable; ctx.exit raises
+
+
+def _apply_output_mode_override(ctx, agent_flag: bool, json_flag: bool) -> None:
+    """Apply an agent-config-local --agent / --json output-mode override.
+
+    The root-level group registers ``--agent``/``--json`` as global flags. click,
+    unlike commander, will not accept those flags after the subcommand name, so
+    the spec form ``agent-config set <K> <V> -a <id> --agent`` errors out unless
+    the same flags are also registered on the agent-config group and on each of
+    its subcommands.
+
+    Precedence (highest wins): subcommand > group > root. ``--agent`` wins over
+    ``--json`` to match the root-level group's behaviour. A no-op when both
+    flags are false.
+    """
+    if not (agent_flag or json_flag):
+        return
+    new_mode = "agent" if agent_flag else "json"
+    ctx.obj["output"] = new_mode
+    ctx.obj["formatter"] = OutputFormatter(new_mode)
+
+
+@cli.group(name="agent-config")
+@click.option(
+    "-a", "--agent-id", "agent_id_group", default=None,
+    help="Agent ID scope (overrides root-level -a if both are given).",
+)
+@click.option(
+    "--agent", "agent_flag_group", is_flag=True,
+    help="Shortcut for -o agent (group-level; overrides root-level if given).",
+)
+@click.option(
+    "--json", "json_flag_group", is_flag=True,
+    help="Shortcut for -o json (group-level; overrides root-level if given).",
+)
+@click.pass_context
+def agent_config_group(ctx, agent_id_group, agent_flag_group, json_flag_group):
+    """View and manage per-agent configuration (~/.adbpg-mem/agents/<id>.json)."""
+    # Stash the group-level value (if any) so subcommands can fall back to it
+    # when neither their own -a nor the root -a was provided.
+    if agent_id_group:
+        ctx.obj["agent_config_group_agent_id"] = agent_id_group
+    _apply_output_mode_override(ctx, agent_flag_group, json_flag_group)
+
+
+def _resolve_agent_id_with_locals(
+    ctx, command: str, subcmd_agent_id: str | None
+) -> str | None:
+    """Resolve agent_id given a subcommand-level override.
+
+    Precedence: subcommand -a > group -a > root -a.
+    """
+    if subcmd_agent_id:
+        return _resolve_agent_id_or_error(ctx, command, override=subcmd_agent_id)
+    group_value = ctx.obj.get("agent_config_group_agent_id") if ctx.obj else None
+    if group_value:
+        return _resolve_agent_id_or_error(ctx, command, override=group_value)
+    return _resolve_agent_id_or_error(ctx, command)
+
+
+@agent_config_group.command(name="set")
+@click.argument("key")
+@click.argument("value")
+@click.option(
+    "-a", "--agent-id", "agent_id_local", default=None,
+    help="Agent ID scope (subcommand-level; overrides group/root).",
+)
+@click.option(
+    "--agent", "agent_flag_local", is_flag=True,
+    help="Shortcut for -o agent (subcommand-level; overrides group/root).",
+)
+@click.option(
+    "--json", "json_flag_local", is_flag=True,
+    help="Shortcut for -o json (subcommand-level; overrides group/root).",
+)
+@click.pass_context
+def agent_config_set(ctx, key, value, agent_id_local, agent_flag_local, json_flag_local):
+    """Set a per-agent configuration value."""
+    t0 = time.time()
+    _apply_output_mode_override(ctx, agent_flag_local, json_flag_local)
+    command = "agent-config-set"
+    agent_id = _resolve_agent_id_with_locals(ctx, command, agent_id_local)
+    if agent_id is None:
+        return
+    try:
+        validate_agent_config_key(key)
+        coerced = set_agent_config(agent_id, key, value)
+    except AgentConfigError as e:
+        _agent_config_emit_err(ctx, command, str(e), exit_code=2)
+        return
+    duration_ms = int((time.time() - t0) * 1000)
+    _agent_config_emit_ok(
+        ctx,
+        command,
+        agent_id,
+        {"key": key, "value": coerced},
+        duration_ms,
+        f"Set '{key}' = {coerced!r} for agent {agent_id}",
+    )
+
+
+@agent_config_group.command(name="get")
+@click.argument("key")
+@click.option(
+    "-a", "--agent-id", "agent_id_local", default=None,
+    help="Agent ID scope (subcommand-level; overrides group/root).",
+)
+@click.option(
+    "--agent", "agent_flag_local", is_flag=True,
+    help="Shortcut for -o agent (subcommand-level; overrides group/root).",
+)
+@click.option(
+    "--json", "json_flag_local", is_flag=True,
+    help="Shortcut for -o json (subcommand-level; overrides group/root).",
+)
+@click.pass_context
+def agent_config_get(ctx, key, agent_id_local, agent_flag_local, json_flag_local):
+    """Get a single per-agent configuration value."""
+    t0 = time.time()
+    _apply_output_mode_override(ctx, agent_flag_local, json_flag_local)
+    command = "agent-config-get"
+    agent_id = _resolve_agent_id_with_locals(ctx, command, agent_id_local)
+    if agent_id is None:
+        return
+    try:
+        value = get_agent_config(agent_id, key)
+    except AgentConfigError as e:
+        _agent_config_emit_err(ctx, command, str(e), exit_code=2)
+        return
+    duration_ms = int((time.time() - t0) * 1000)
+    _agent_config_emit_ok(
+        ctx,
+        command,
+        agent_id,
+        {"key": key, "value": value},
+        duration_ms,
+        f"{key} = {value!r}",
+    )
+
+
+@agent_config_group.command(name="show")
+@click.option(
+    "-a", "--agent-id", "agent_id_local", default=None,
+    help="Agent ID scope (subcommand-level; overrides group/root).",
+)
+@click.option(
+    "--agent", "agent_flag_local", is_flag=True,
+    help="Shortcut for -o agent (subcommand-level; overrides group/root).",
+)
+@click.option(
+    "--json", "json_flag_local", is_flag=True,
+    help="Shortcut for -o json (subcommand-level; overrides group/root).",
+)
+@click.pass_context
+def agent_config_show(ctx, agent_id_local, agent_flag_local, json_flag_local):
+    """Show the full per-agent configuration (defaults + overrides)."""
+    t0 = time.time()
+    _apply_output_mode_override(ctx, agent_flag_local, json_flag_local)
+    command = "agent-config-show"
+    agent_id = _resolve_agent_id_with_locals(ctx, command, agent_id_local)
+    if agent_id is None:
+        return
+    try:
+        data = show_agent_config(agent_id)
+    except AgentConfigError as e:
+        _agent_config_emit_err(ctx, command, str(e), exit_code=2)
+        return
+    duration_ms = int((time.time() - t0) * 1000)
+    text_lines = [f"Agent config for {agent_id}:"]
+    for k, v in data.items():
+        text_lines.append(f"  {k} = {v!r}")
+    _agent_config_emit_ok(ctx, command, agent_id, data, duration_ms, "\n".join(text_lines))
+
+
+@agent_config_group.command(name="unset")
+@click.argument("key")
+@click.option(
+    "-a", "--agent-id", "agent_id_local", default=None,
+    help="Agent ID scope (subcommand-level; overrides group/root).",
+)
+@click.option(
+    "--agent", "agent_flag_local", is_flag=True,
+    help="Shortcut for -o agent (subcommand-level; overrides group/root).",
+)
+@click.option(
+    "--json", "json_flag_local", is_flag=True,
+    help="Shortcut for -o json (subcommand-level; overrides group/root).",
+)
+@click.pass_context
+def agent_config_unset(ctx, key, agent_id_local, agent_flag_local, json_flag_local):
+    """Remove a per-agent configuration key (idempotent)."""
+    t0 = time.time()
+    _apply_output_mode_override(ctx, agent_flag_local, json_flag_local)
+    command = "agent-config-unset"
+    agent_id = _resolve_agent_id_with_locals(ctx, command, agent_id_local)
+    if agent_id is None:
+        return
+    try:
+        unset_agent_config(agent_id, key)
+    except AgentConfigError as e:
+        _agent_config_emit_err(ctx, command, str(e), exit_code=2)
+        return
+    duration_ms = int((time.time() - t0) * 1000)
+    _agent_config_emit_ok(
+        ctx,
+        command,
+        agent_id,
+        {"key": key},
+        duration_ms,
+        f"Unset '{key}' for agent {agent_id}",
+    )
 
 
 # ---------------------------------------------------------------------------

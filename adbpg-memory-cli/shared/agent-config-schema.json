@@ -1,0 +1,28 @@
+{
+  "title": "ADBPG Memory CLI Per-Agent Configuration",
+  "description": "Per-agent configuration file schema for adbpg-mem CLI tool (~/.adbpg-mem/agents/<agent_id>.json). Stores per-agent isolation state set by `adbpg-mem agent-config set`. Distinct from the system-level config at ~/.adbpg-mem/config.json.",
+  "type": "object",
+  "properties": {
+    "isolation_agent": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether this agent's memories are isolated by agent_id (CLI add/search will inject -a)"
+    },
+    "isolation_run_mode": {
+      "type": "string",
+      "enum": [
+        "off",
+        "manual",
+        "auto",
+        "tag"
+      ],
+      "default": "off",
+      "description": "Run/session isolation mode: off=no run isolation; manual=user names each session; auto=auto-generated run_id (YYYY-MM-DD-HHMMSS); tag=use --metadata tag instead of -r"
+    },
+    "current_run_id": {
+      "type": "string",
+      "description": "Currently active run_id when isolation_run_mode is manual or auto"
+    }
+  },
+  "additionalProperties": false
+}

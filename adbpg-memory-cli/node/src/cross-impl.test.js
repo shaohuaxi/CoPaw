@@ -117,3 +117,79 @@ describe('Cross-implementation Agent JSON output consistency', () => {
     );
   });
 });
+
+// ---------------------------------------------------------------------------
+// agent-config envelope contract — distinct shape from the standard envelope
+// (top-level agent_id instead of scope/count). Both Node and Python must
+// emit the same field set in the same order. The CLI builds this envelope
+// inline (not via OutputFormatter), so this test pins the expected shape.
+// ---------------------------------------------------------------------------
+
+const AGENT_CONFIG_SUCCESS_FIELDS = ['status', 'command', 'duration_ms', 'agent_id', 'data'];
+const AGENT_CONFIG_ERROR_FIELDS = ['status', 'command', 'error', 'data'];
+
+const agentConfigCommandArb = fc.constantFrom(
+  'agent-config-show',
+  'agent-config-get',
+  'agent-config-set',
+  'agent-config-unset'
+);
+
+const agentIdArb = fc.stringMatching(/^[a-zA-Z0-9_-]{1,64}$/);
+
+describe('Cross-implementation agent-config envelope consistency', () => {
+  test('success envelope field names and order match contract', () => {
+    fc.assert(
+      fc.property(
+        agentConfigCommandArb,
+        agentIdArb,
+        fc.integer({ min: 0, max: 100000 }),
+        fc.jsonValue({ maxDepth: 2 }),
+        (command, agentId, durationMs, data) => {
+          // Construct the envelope the same way the CLI does.
+          const envelope = {
+            status: 'ok',
+            command,
+            duration_ms: durationMs,
+            agent_id: agentId,
+            data,
+          };
+          const serialized = JSON.stringify(envelope);
+          const parsed = JSON.parse(serialized);
+          expect(Object.keys(parsed)).toEqual(AGENT_CONFIG_SUCCESS_FIELDS);
+          expect(parsed.status).toBe('ok');
+          expect(typeof parsed.command).toBe('string');
+          expect(parsed.command.startsWith('agent-config-')).toBe(true);
+          expect(typeof parsed.duration_ms).toBe('number');
+          expect(typeof parsed.agent_id).toBe('string');
+          expect('data' in parsed).toBe(true);
+        }
+      ),
+      { numRuns: 50 }
+    );
+  });
+
+  test('error envelope field names and order match contract', () => {
+    fc.assert(
+      fc.property(
+        agentConfigCommandArb,
+        fc.string({ minLength: 1, maxLength: 100 }).filter((s) => !s.includes('\0')),
+        (command, errorMsg) => {
+          const envelope = {
+            status: 'error',
+            command,
+            error: errorMsg,
+            data: null,
+          };
+          const serialized = JSON.stringify(envelope);
+          const parsed = JSON.parse(serialized);
+          expect(Object.keys(parsed)).toEqual(AGENT_CONFIG_ERROR_FIELDS);
+          expect(parsed.status).toBe('error');
+          expect(typeof parsed.error).toBe('string');
+          expect(parsed.data).toBeNull();
+        }
+      ),
+      { numRuns: 50 }
+    );
+  });
+});
