@@ -27,7 +27,7 @@
 │  System Prompt                                      │
 │  ├── AGENTS.md (行为指南)                            │
 │  ├── SOUL.md (身份原则)                              │
-│  ├── PROFILE.md (用户画像 + 记忆配置)                 │
+│  ├── PROFILE.md (用户画像)                            │
 │  └── skills/adbpg_memory/SKILL.md (记忆行为引导)     │
 │                                                     │
 │  Tools                                              │
@@ -300,17 +300,25 @@ adbpg-mem add "用 Rust 重写" -r "项目-重构" --agent
 
 ### 配置管理
 
-隔离配置记录在 PROFILE.md 的「记忆配置」section 中：
+隔离状态由 CLI 自管，落到 **per-agent 私有配置** `~/.adbpg-mem/agents/<agent_id>.json`，通过 `adbpg-mem agent-config` 子命令读写（与系统级 `~/.adbpg-mem/config.json` 区分）：
 
-```markdown
-## 记忆配置
-- **长期记忆：** 已启用（REST 模式）
-- **记忆用户ID：** airfan
-- **Agent隔离：** 关闭
-- **会话隔离：** 关闭
+```bash
+# 查看本 agent 的隔离状态（不存在时返回默认值）
+adbpg-mem agent-config show -a xK3mNp
+
+# 开启 / 关闭 agent 隔离
+adbpg-mem agent-config set isolation_agent true  -a xK3mNp
+adbpg-mem agent-config set isolation_agent false -a xK3mNp
+
+# 设置会话隔离模式：off / manual / auto / tag
+adbpg-mem agent-config set isolation_run_mode manual -a xK3mNp
+
+# 设置 / 清除当前活跃 run_id
+adbpg-mem agent-config set   current_run_id "项目-重构讨论" -a xK3mNp
+adbpg-mem agent-config unset current_run_id                 -a xK3mNp
 ```
 
-用户可随时通过对话修改隔离配置，Agent 会更新 PROFILE.md 并调整后续命令的参数。
+用户可随时通过对话修改隔离配置，Agent 调用 `adbpg-mem agent-config set` 即时生效。这套机制跨平台通用（CoPaw、Claude Code、Wukong、钉钉助手、Cursor 等），不依赖任何平台的 profile 文件。
 
 ## 与本地文件记忆的协作
 
@@ -370,10 +378,10 @@ CoPaw 的 skill 是 per-agent 的，每个 Agent 有独立的 workspace 和 skil
 ~/.copaw/workspaces/
 ├── agent_A/
 │   ├── skills/adbpg_memory/SKILL.md   ← Agent A 独立的 skill
-│   └── PROFILE.md                      ← Agent A 的记忆配置
+│   └── PROFILE.md                      ← Agent A 的用户画像（连接/身份元信息）
 ├── agent_B/
 │   ├── skills/adbpg_memory/SKILL.md   ← Agent B 独立的 skill
-│   └── PROFILE.md                      ← Agent B 的记忆配置（不同隔离策略）
+│   └── PROFILE.md                      ← Agent B 的用户画像
 └── agent_C/
     └── skills/                         ← Agent C 不需要长记忆，不部署
 ```
@@ -411,13 +419,13 @@ CLI 配置优先级：CLI 参数 > 环境变量 > 配置文件。
 
 ### 隔离策略差异
 
-每个 Agent 在各自 PROFILE.md 的「记忆配置」section 中独立维护隔离策略：
+每个 Agent 在各自的 **per-agent 私有配置** `~/.adbpg-mem/agents/<agent_id>.json` 中独立维护隔离策略，通过 `adbpg-mem agent-config set` 写入（详见上文「配置管理」）：
 
 - Agent A：开启 agent 隔离 + 会话隔离，连生产环境
 - Agent B：只用 user_id 不隔离，连测试环境
 - Agent C：不部署长记忆 skill
 
-这些配置互不影响，由各 Agent 根据自己的 SKILL.md 和 PROFILE.md 独立执行。
+这些配置互不影响，由各 Agent 根据自己的 SKILL.md 和 `~/.adbpg-mem/agents/<agent_id>.json` 独立执行。
 
 ## 扩展到其他 Agent 平台
 
@@ -461,7 +469,7 @@ cp adbpg-memory-cli/SKILL.md ~/.openclaw/skills/adbpg-memory/SKILL.md
 ### 多 Agent 场景下记忆串了
 
 - 确认每个 Agent 是否在命令中带了 `-a <agent_id>`
-- 检查 PROFILE.md 的「记忆配置」section 中 Agent 隔离是否开启
+- 检查 `adbpg-mem agent-config show -a <agent_id>` 中的 `isolation_agent` 是否为 `true`
 
 ### 如何查看所有已存储的记忆
 

@@ -118,6 +118,38 @@ NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem delete --all -u alice --force --agent
 NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem status --agent
 ```
 
+### agent-config 子命令（per-agent 隔离状态）
+
+`agent-config` 用于读写 **本 Agent 私有的隔离状态**，独立于系统级 `~/.adbpg-mem/config.json`，落盘到 `~/.adbpg-mem/agents/<agent_id>.json`（权限 0600，首次写入自动创建目录）。所有子命令的 `-a <agent_id>` 必填，`agent_id` 取自 system prompt 的 Agent Identity 段落。
+
+支持的字段：
+
+| 字段 | 类型 | 默认值 | 含义 |
+|------|------|--------|------|
+| `isolation_agent` | boolean | `false` | 是否按 agent 隔离记忆（true → CLI 在 add/search 时注入 `-a`） |
+| `isolation_run_mode` | enum | `off` | 会话隔离模式：`off` / `manual` / `auto` / `tag` |
+| `current_run_id` | string | 未设置 | 当前活跃的 run_id（仅在 manual/auto 模式下使用） |
+
+四个动作：
+
+```bash
+# set —— 设置某个字段
+adbpg-mem agent-config set isolation_agent true -a xK3mNp
+adbpg-mem agent-config set isolation_run_mode manual -a xK3mNp
+adbpg-mem agent-config set current_run_id "项目-重构讨论" -a xK3mNp
+
+# get —— 读取单个字段
+adbpg-mem agent-config get isolation_agent -a xK3mNp
+
+# show —— 输出该 agent 的全部状态（不存在时返回默认值，status=ok）
+adbpg-mem agent-config show -a xK3mNp
+
+# unset —— 删除某个字段（幂等：字段不存在也返回 status=ok）
+adbpg-mem agent-config unset current_run_id -a xK3mNp
+```
+
+`--agent` 输出格式与其他命令一致（status/data envelope）。
+
 ## Agent 输出格式
 
 使用 `--agent` 时，stdout 输出标准 JSON envelope，spinner 和警告输出到 stderr：
@@ -242,19 +274,26 @@ adbpg-mem config set port 5432
 adbpg-mem config set user_id <用户选择的名字>
 ```
 
-### 步骤 4：写入 PROFILE.md
+### 步骤 4：持久化 Agent 私有配置
 
-将配置状态写入 `PROFILE.md` 的「记忆配置」section（如不存在则新建该 section）：
+将本 Agent 的隔离状态写入 **per-agent 私有配置文件** `~/.adbpg-mem/agents/<agent_id>.json`，通过 `adbpg-mem agent-config set` 命令操作（不要直接编辑文件，也不要写入任何平台 profile 文件）：
 
-```markdown
-## 记忆配置
-- **长期记忆：** 已启用（REST 模式）
-- **记忆用户ID：** airfan
-- **Agent隔离：** 关闭
-- **会话隔离：** 关闭
+```bash
+# agent_id 必填，从 system prompt 的 Agent Identity 段落获取
+adbpg-mem agent-config set isolation_agent false -a <agent_id>
+adbpg-mem agent-config set isolation_run_mode off -a <agent_id>
 ```
 
-这样 Agent 重建工作区时能恢复上下文，用户也能在 PROFILE.md 中看到当前配置。
+**与系统级 config 的区分：**
+
+| 文件 | 路径 | 内容 | 操作命令 |
+|------|------|------|---------|
+| 系统级配置 | `~/.adbpg-mem/config.json` | 连接信息（api_mode、host、rest_base_url、user_id 等），全机共享 | `adbpg-mem config set/get` |
+| Agent 私有配置 | `~/.adbpg-mem/agents/<agent_id>.json` | 本 Agent 的隔离状态（isolation_agent、isolation_run_mode、current_run_id），per-agent 隔离，权限 0600 | `adbpg-mem agent-config set/get/show/unset` |
+
+**这是平台无关的设计。** 配置存储由 CLI 自己管理，跟任何特定平台的 profile 文件都解耦。同一份 SKILL.md 在 CoPaw、Claude Code、Wukong、钉钉助手、Cursor 等平台上都能用，状态都落到 `~/.adbpg-mem/agents/<agent_id>.json`。
+
+之后任意时刻 Agent 都可以通过 `adbpg-mem agent-config show -a <agent_id>` 读回当前隔离状态来决定是否在 add/search 命令中带 `-a` / `-r`。
 
 ### 步骤 5：确认完成
 
@@ -314,16 +353,24 @@ adbpg-mem add "Q3 OKR 已确认" -a xK3mNp --agent
 adbpg-mem search "OKR" -a xK3mNp --agent
 ```
 
-**开启/关闭 Agent 隔离不需要修改任何配置文件。** 隔离通过 CLI 的 `-a` 参数实现：
+**开启/关闭 Agent 隔离不需要修改连接配置（`~/.adbpg-mem/config.json`）。** 隔离通过 CLI 的 `-a` 参数实现：
 - 带 `-a` → 记忆按 agent 隔离
 - 不带 `-a` → 所有 Agent 共享记忆
 
-用户要求开启或关闭时，只需更新 PROFILE.md 的「记忆配置」section 记录当前状态，之后根据该状态决定是否在命令中带 `-a`：
+用户要求开启或关闭时，调用 `adbpg-mem agent-config set` 把状态持久化到 **per-agent 私有配置** `~/.adbpg-mem/agents/<agent_id>.json`。`-a` 必填，`agent_id` 来自 system prompt 的 Agent Identity 段落，不要猜测：
 
-```markdown
-## 记忆配置
-- **Agent隔离：** 已开启（agent_id: xK3mNp）
+```bash
+# 开启
+adbpg-mem agent-config set isolation_agent true -a xK3mNp
+
+# 关闭
+adbpg-mem agent-config set isolation_agent false -a xK3mNp
+
+# 查看当前状态
+adbpg-mem agent-config show -a xK3mNp
 ```
+
+之后每次 add/search 前 Agent 读取该状态决定是否带 `-a`。这套机制跨平台通用（CoPaw、Claude Code、Wukong、钉钉助手、Cursor 等），不依赖任何平台的 profile 文件。
 
 ### 会话隔离（按需开启）
 
@@ -371,16 +418,32 @@ adbpg-mem add "讨论结论" --metadata '{"session":"项目-重构讨论"}' --ag
 
 1. 用户说"开启会话隔离"
 2. 询问用户偏好哪种方案（主动命名 / 自动生成 / 打标签）
-3. 更新 PROFILE.md 的「记忆配置」section：
+3. 调用 `adbpg-mem agent-config set isolation_run_mode <mode> -a <agent_id>` 把模式持久化到 per-agent 配置（`<mode>` 取值：`manual` / `auto` / `tag`；关闭用 `off`）：
 
-```markdown
-## 记忆配置
-- **会话隔离：** 已开启（主动命名模式）
-- **当前会话ID：** 项目-重构讨论
+```bash
+# 主动命名
+adbpg-mem agent-config set isolation_run_mode manual -a xK3mNp
+
+# 自动生成
+adbpg-mem agent-config set isolation_run_mode auto -a xK3mNp
+
+# 不隔离只打标签
+adbpg-mem agent-config set isolation_run_mode tag -a xK3mNp
 ```
 
-4. 每次新对话开始时，根据配置的模式获取或生成 run_id
-5. 对话结束或用户切换话题时，清空「当前会话ID」
+4. 每次新对话开始时，先 `adbpg-mem agent-config show -a <agent_id>` 读取 `isolation_run_mode`，根据模式获取或生成 run_id；获取后写回 `current_run_id`：
+
+```bash
+adbpg-mem agent-config set current_run_id "项目-重构讨论" -a xK3mNp
+```
+
+5. 对话结束或用户切换话题时，清空 `current_run_id`：
+
+```bash
+adbpg-mem agent-config unset current_run_id -a xK3mNp
+```
+
+`-a` 必填，`agent_id` 来自 system prompt。这套机制跨平台通用，不依赖任何平台的 profile 文件。
 
 **跨会话搜索：** 即使开启了会话隔离，用户仍可以不带 `-r` 搜索所有记忆：
 
@@ -397,8 +460,13 @@ adbpg-mem search "技术选型" --agent
 用户随时可以说"修改记忆配置"或"开启 Agent 隔离"，此时：
 
 1. 根据用户需求调整 `-u` / `-a` / `-r` 的使用方式
-2. 如果修改了 user_id：`adbpg-mem config set user_id <新值>`
-3. 更新 PROFILE.md 的「记忆配置」section 反映最新状态
+2. 如果修改了 user_id（系统级、跨 Agent 共享）：`adbpg-mem config set user_id <新值>`
+3. 调整本 Agent 的隔离状态时，统一用 `adbpg-mem agent-config set` 系列命令写入 `~/.adbpg-mem/agents/<agent_id>.json`：
+   - `adbpg-mem agent-config set isolation_agent <true|false> -a <agent_id>`
+   - `adbpg-mem agent-config set isolation_run_mode <off|manual|auto|tag> -a <agent_id>`
+   - `adbpg-mem agent-config set current_run_id <值> -a <agent_id>` / `adbpg-mem agent-config unset current_run_id -a <agent_id>`
+
+**不要写入任何平台 profile 文件**，所有 Agent 私有的隔离状态一律落到 CLI 自管的 `~/.adbpg-mem/agents/<agent_id>.json`。这样跨平台（CoPaw、Claude Code、Wukong、钉钉助手、Cursor 等）行为完全一致。
 
 ### 隔离层级总结
 
