@@ -1,0 +1,24 @@
+{
+  "skill_name": "adbpg-memory",
+  "evals": [
+    {"query": "记住一下啊，我对花生过敏，每次别人推荐零食都让人头大，下次你给我推荐零食前先排除花生类。", "should_trigger": true},
+    {"query": "顺便告诉你下，我叫张子华，在阿里巴巴 ADBPG 团队工作，做数据库内核，平时用 C 比较多。", "should_trigger": true},
+    {"query": "诶，我最喜欢的颜色是什么来着？我之前跟你聊过的，但我自己忘了……", "should_trigger": true},
+    {"query": "上个月我跟你提过一个开源项目想 fork 来玩，那个项目名是啥来着？我搜邮件没找到。", "should_trigger": true},
+    {"query": "你还记得我女儿的名字和生日吗？她快过生日了我想准备个惊喜。", "should_trigger": true},
+    {"query": "我想让你能跨会话记住我说的话，怎么搞？听说有个 adbpg-mem 的工具可以？", "should_trigger": true},
+    {"query": "帮我打开 agent 记忆隔离吧，工作的事情和生活的事情我希望各自分开存，免得互相干扰。", "should_trigger": true},
+    {"query": "之前我们讨论过 Q3 OKR 那次，最终是决定用哪个方案来着？", "should_trigger": true},
+    {"query": "我换了新手机号，13800001234，旧的别再记着了，以后跟我相关的联系方式按新的来。", "should_trigger": true},
+    {"query": "帮我把这张表的所有字段名记下来，写到项目 README 的『数据模型』章节里，要带类型注释。", "should_trigger": false},
+    {"query": "在 ods.user_register 这张表里插入一条新记录，user_id=10086，name='测试用户'，环境是 dev。", "should_trigger": false},
+    {"query": "今天 standup 的会议纪要：1. 季度目标对齐 2. 人员调整 3. release 时间。请整理成 markdown 发给我。", "should_trigger": false},
+    {"query": "搜索一下 Python 官方文档里 asyncio.gather 的用法，给我个能直接跑的例子。", "should_trigger": false},
+    {"query": "解释一下向量数据库里『语义搜索』是怎么实现的，跟传统全文检索有啥本质区别？", "should_trigger": false},
+    {"query": "把上面这段会议讨论的关键决策提炼成 5 个 bullet points，发给老板。", "should_trigger": false},
+    {"query": "PostgreSQL 14 的 connection pool 怎么配置 pgbouncer？我们 RDS 实例现在有 200 个客户端连接打过来。", "should_trigger": false},
+    {"query": "帮我看下阿里云 ADBPG 控制台的 API key 怎么生成，我要在 CI 里调用接口。", "should_trigger": false},
+    {"query": "Agent 这个概念在大模型领域是什么意思？跟传统 chatbot 有啥本质区别？", "should_trigger": false},
+    {"query": "帮我把这段长会议录音的文字稿提炼成结构化的会议纪要，按议题分组。", "should_trigger": false}
+  ]
+}

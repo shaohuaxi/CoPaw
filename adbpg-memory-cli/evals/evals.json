@@ -1,0 +1,105 @@
+{
+  "skill_name": "adbpg-memory",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "记住，我最喜欢的水果是芒果，这点我一直没变。",
+      "expected_output": "agent 调用 adbpg-mem add 把『最喜欢的水果是芒果』存为长期记忆，使用 test_skill_eval scope，并自然地确认已记住。",
+      "expectations": [
+        "agent 调用了 adbpg-mem add 命令存储记忆",
+        "命令携带 -u test_skill_eval 参数（与配置中真实 user_id 隔离）",
+        "存储的事实是简短陈述（如『最喜欢的水果是芒果』），不是把用户原话整段塞进去",
+        "agent 通过 --agent JSON 输出确认 status 为 ok",
+        "agent 的回复不暴露 adbpg-mem 命令细节、JSON 字段名、score/id 等内部信息"
+      ],
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "我叫子华，在杭州工作，是个后端工程师，主要写 Go。最近在学 Rust。",
+      "expected_output": "agent 主动识别出 4 个有价值的个人事实（姓名、城市、职业、技术栈），分别或合并存为长期记忆，无需用户显式说『记住』。",
+      "expectations": [
+        "agent 主动调用 adbpg-mem add 至少 1 次，无需用户说『记住』",
+        "存储的内容是结构化事实（如『子华在杭州工作』、『后端工程师，主要用 Go』），不是把整段原话塞进去",
+        "覆盖姓名、城市、职业、技术栈四项中的至少 3 项",
+        "命令使用 -u test_skill_eval scope",
+        "回复自然简短，不要逐条列出存了什么；一句『我记下了』即可"
+      ],
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "今天杭州天气怎么样？外面冷不冷？",
+      "expected_output": "agent 不调用 adbpg-mem（天气是临时信息无长期记忆价值），正常回答或承认无法获取实时天气。",
+      "expectations": [
+        "agent 不调用 adbpg-mem add（天气信息没有长期价值）",
+        "agent 不调用 adbpg-mem search（天气问题不需要个人记忆上下文）",
+        "agent 正常回答天气问题或诚实告知无法获取实时天气"
+      ],
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "我最喜欢的水果是什么来着？我之前跟你说过。",
+      "expected_output": "agent 先调用 adbpg-mem search 检索个人偏好，基于结果回答；若无记忆则诚实承认。",
+      "expectations": [
+        "agent 在生成最终回答之前先调用了 adbpg-mem search",
+        "搜索使用 -u test_skill_eval scope",
+        "搜索关键词是自然语言描述（如『最喜欢的水果』『水果偏好』），而不是把用户原话整段当作 query",
+        "若 search 返回结果，回答内容基于检索结果（如『芒果』）；若无结果，诚实告知『我没有这方面的记忆』",
+        "不编造未存储的偏好，不在回复里泄露 search 返回的原始 JSON 或 score 字段"
+      ],
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "给我推荐个周末做的编程项目，要符合我的兴趣和水平。",
+      "expected_output": "agent 先检索用户的技术背景/偏好，有记忆就结合给出个性化推荐；没有则坦诚询问或给通用推荐。",
+      "expectations": [
+        "agent 在给出推荐前先调用 adbpg-mem search 检索用户背景（技术栈/职业/兴趣等）",
+        "搜索使用 -u test_skill_eval scope",
+        "若检索到背景信息，推荐内容明显结合了那些信息（不是泛泛的项目清单）",
+        "若没有任何相关记忆，agent 主动询问用户基本情况或明确说『暂无你的背景信息，先给通用推荐』，不能编造『你之前说过 XX』"
+      ],
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "我上次跟你提过一本科幻小说，那本书的作者是谁？",
+      "expected_output": "agent 检索后若无相关记忆，诚实告知不知道，绝不编造书名作者。",
+      "expectations": [
+        "agent 调用 adbpg-mem search 尝试检索『科幻小说』相关记忆",
+        "搜索使用 -u test_skill_eval scope",
+        "如果没有检索到相关记忆，agent 明确告知『我没有关于这个的记忆』或等价表达",
+        "agent 不编造书名或作者（关键：绝不假装记得不存在的对话）",
+        "回复中可以邀请用户提供更多线索，但不能凭空捏造历史"
+      ],
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "我想开启 Agent 记忆隔离，工作助手和生活助手的记忆要分开存。",
+      "expected_output": "agent 理解隔离需求，从 system prompt 获取自己的 agent_id，调用 adbpg-mem agent-config set isolation_agent true -a <agent_id> 持久化状态，告知后续命令会带 -a 参数。",
+      "expectations": [
+        "agent 表示理解隔离需求，并解释隔离机制（通过 -a 参数实现，不需要改连接配置文件）",
+        "agent 从 system prompt 中查找自己的 agent_id，而不是瞎编一个值",
+        "agent 调用 adbpg-mem agent-config set isolation_agent true -a <agent_id> 持久化隔离状态",
+        "agent 告知用户后续 add/search 会自动带上 -a <agent_id>",
+        "若 agent 找不到 system prompt 中的 agent_id，会向用户询问而不是用默认值"
+      ],
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "我想按项目区分记忆，开启会话隔离，以后每个项目的讨论各自独立。",
+      "expected_output": "agent 询问用户偏好的会话隔离方案（主动命名/自动生成/打标签三选一），不擅自决定。",
+      "expectations": [
+        "agent 不直接默认开启某个方案，而是询问用户偏好",
+        "agent 列出至少 2 个候选方案（主动命名 / 自动生成日期时间 / 不隔离只打标签）供用户选择",
+        "对每个方案给出简短的差异说明，帮用户判断",
+        "用户在本轮 prompt 中没选，所以 agent 不应在此轮就调用 adbpg-mem agent-config set isolation_run_mode <mode> -a <agent_id> 或下指令带 -r"
+      ],
+      "files": []
+    }
+  ]
+}
