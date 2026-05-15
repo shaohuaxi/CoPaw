@@ -1,0 +1,77 @@
+{
+  "expectations": [
+    {
+      "text": "agent 主动调用 adbpg-mem add 至少 1 次，无需用户说『记住』",
+      "passed": true,
+      "evidence": "Transcript shows TERMINAL tool call with command: NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"用户叫子华，在杭州工作，是后端工程师，主要写 Go，最近在学 Rust\" --agent"
+    },
+    {
+      "text": "存储的内容是结构化事实（如『子华在杭州工作』、『后端工程师，主要用 Go』），不是把整段原话塞进去",
+      "passed": true,
+      "evidence": "Stored content is '用户叫子华，在杭州工作，是后端工程师，主要写 Go，最近在学 Rust' which is a rephrased factual statement, not the exact original quote '我叫子华，在杭州工作，是个后端工程师，主要写 Go。最近在学 Rust。'"
+    },
+    {
+      "text": "覆盖姓名、城市、职业、技术栈四项中的至少 3 项",
+      "passed": true,
+      "evidence": "All 4 items covered: 姓名(子华), 城市(杭州), 职业(后端工程师), 技术栈(Go, Rust)"
+    },
+    {
+      "text": "命令使用 -u test_skill_eval scope",
+      "passed": false,
+      "evidence": "Actual command used --agent flag without -u test_skill_eval. Output JSON shows user_id='test_verify' not 'test_skill_eval'"
+    },
+    {
+      "text": "回复自然简短，不要逐条列出存了什么；一句『我记下了』即可",
+      "passed": true,
+      "evidence": "Response is natural and concise: '好的，子华。我已经记住了你的基本信息...' without listing stored items bullet by bullet"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  },
+  "claims": [
+    {
+      "claim": "Agent activated adbpg-memory skill before storing",
+      "type": "process",
+      "verified": true,
+      "evidence": "SKILL tool call visible in transcript with skill_name='adbpg-memory' before TERMINAL call"
+    },
+    {
+      "claim": "Memory storage returned status PENDING indicating background processing",
+      "type": "factual",
+      "verified": true,
+      "evidence": "Output JSON contains: {\"status\":\"PENDING\",\"message\":\"Memory processing has been queued for background execution\"}"
+    },
+    {
+      "claim": "No memory search was performed before storage",
+      "type": "process",
+      "verified": true,
+      "evidence": "Transcript shows only SKILL activation and TERMINAL add call, no adbpg-mem search command executed"
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "Expectation 4 about '-u test_skill_eval scope'",
+        "reason": "This expectation may be too implementation-specific. The skill's SKILL.md instructs using --agent flag, and the actual execution followed that instruction. If test_skill_eval is required, the skill documentation or test harness should enforce it rather than expecting the agent to override skill defaults."
+      }
+    ],
+    "overall": "Agent correctly identified personal information and proactively stored it using adbpg-mem. Main gap is the scope parameter mismatch (test_verify vs test_skill_eval). The stored content is well-structured and covers all required fields. Response style is appropriate."
+  },
+  "timing": {
+    "total_duration_seconds": 17.4484,
+    "total_tokens": 97372,
+    "token_usage": {
+      "input_tokens": 96960,
+      "output_tokens": 412,
+      "total_tokens": 97372,
+      "request_count": 7,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 43.5
+  },
+  "grader_task_id": "08485b16-a0b7-4c3c-a41a-6e61fbf1bb1f"
+}

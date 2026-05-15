@@ -1,0 +1,10 @@
+{
+  "eval_id": 3,
+  "eval_name": "eval-3",
+  "prompt": "今天杭州天气怎么样？外面冷不冷？",
+  "expectations": [
+    "agent 不调用 adbpg-mem add（天气信息没有长期价值）",
+    "agent 不调用 adbpg-mem search（天气问题不需要个人记忆上下文）",
+    "agent 正常回答天气问题或诚实告知无法获取实时天气"
+  ]
+}

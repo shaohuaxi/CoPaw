@@ -1,0 +1,85 @@
+{
+  "expectations": [
+    {
+      "text": "agent 主动调用 adbpg-mem add 至少 1 次，无需用户说『记住』",
+      "passed": true,
+      "evidence": "Transcript 显示执行了命令：NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"我叫子华，在杭州工作，是个后端工程师，主要写 Go。最近在学 Rust。\" --agent，exit_code 为 0，status 为 ok"
+    },
+    {
+      "text": "存储的内容是结构化事实（如『子华在杭州工作』、『后端工程师，主要用 Go』），不是把整段原话塞进去",
+      "passed": false,
+      "evidence": "实际存储的内容是用户原话的完整复制：\"我叫子华，在杭州工作，是个后端工程师，主要写 Go。最近在学 Rust。\"，未按 SKILL.md 要求提炼成结构化事实"
+    },
+    {
+      "text": "覆盖姓名、城市、职业、技术栈四项中的至少 3 项",
+      "passed": true,
+      "evidence": "存储的原文包含：姓名（子华）、城市（杭州）、职业（后端工程师）、技术栈（Go, Rust），四项全部覆盖"
+    },
+    {
+      "text": "命令使用 -u test_skill_eval scope",
+      "passed": false,
+      "evidence": "实际命令使用的是 --agent 参数，而非期望的 -u test_skill_eval。完整命令：NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"...\" --agent"
+    },
+    {
+      "text": "回复自然简短，不要逐条列出存了什么；一句『我记下了』即可",
+      "passed": false,
+      "evidence": "实际回复较长且逐条复述了存储的信息：\"你在杭州工作，是一名主要使用 Go 语言的后端工程师，目前正在学习 Rust\"，不符合简短要求"
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "failed": 3,
+    "total": 5,
+    "pass_rate": 0.4
+  },
+  "claims": [
+    {
+      "claim": "Agent 调用了 adbpg-mem search 先检索已有记忆",
+      "type": "process",
+      "verified": true,
+      "evidence": "Transcript 显示在 add 之前执行了 search 命令：NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"子华 后端工程师 Go Rust\" --agent，返回 5 条相关记忆"
+    },
+    {
+      "claim": "Agent 激活了 adbpg-memory skill",
+      "type": "process",
+      "verified": true,
+      "evidence": "Transcript 中有 SKILL activity snapshot，skill_name 为 adbpg-memory，status 为 completed"
+    },
+    {
+      "claim": "存储操作返回 PENDING 状态",
+      "type": "factual",
+      "verified": true,
+      "evidence": "adbpg-mem add 的输出显示：{\"message\":\"Memory processing has been queued for background execution\",\"status\":\"PENDING\"}"
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "期望2（结构化事实）与期望3（覆盖四项）存在潜在矛盾",
+        "reason": "如果严格要求结构化提炼（期望2），则存储内容不应是原文；但如果按原文存储（当前实现），虽然违反期望2，却能自然满足期望3的覆盖要求。建议明确：是要求提炼后的结构化片段仍需覆盖至少3项，还是只要原文包含即可"
+      },
+      {
+        "assertion": "期望4（-u test_skill_eval scope）可能过于具体",
+        "reason": "SKILL.md 中描述的命令格式是 --agent，而期望要求 -u test_skill_eval。如果测试环境确实需要使用特定 scope，应在 SKILL.md 或测试说明中明确说明为何不使用默认的 --agent。否则这个期望可能与 skill 的实际设计不符"
+      },
+      {
+        "assertion": "期望5（回复简短）缺乏可量化的标准",
+        "reason": "\"一句『我记下了』即可\"是主观判断。建议明确字数上限（如不超过20字）或明确禁止的行为（如不得复述具体信息点），以便更客观地判定"
+      }
+    ],
+    "overall": "Agent 正确触发了记忆存储流程（调用 add），但在三个关键细节上未达标：(1) 未提炼结构化事实而是存储原文；(2) 未使用期望的 scope 参数；(3) 回复过长且复述了存储内容。核心功能可用，但未按测试期望的规范执行。"
+  },
+  "timing": {
+    "total_duration_seconds": 27.7842,
+    "total_tokens": 134057,
+    "token_usage": {
+      "input_tokens": 133441,
+      "output_tokens": 616,
+      "total_tokens": 134057,
+      "request_count": 9,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 48.1
+  },
+  "grader_task_id": "831d5923-b71b-4f9d-80c9-70499e01b71c"
+}

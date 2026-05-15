@@ -1,0 +1,80 @@
+{
+  "expectations": [
+    {
+      "text": "agent 不调用 adbpg-mem add（天气信息没有长期价值）",
+      "passed": true,
+      "evidence": "从 session_messages.json 的 tool_uses 列表中可见，agent 仅调用了 SKILL (weather技能) 和 TERMINAL (curl 命令)，没有任何 adbpg-mem add 的工具调用记录。"
+    },
+    {
+      "text": "agent 不调用 adbpg-mem search（天气问题不需要个人记忆上下文）",
+      "passed": true,
+      "evidence": "从 session_messages.json 的 tool_uses 列表中可见，没有任何 adbpg-mem search 的工具调用记录。agent 直接通过 weather skill 和 curl 命令获取实时天气数据。"
+    },
+    {
+      "text": "agent 正常回答天气问题或诚实告知无法获取实时天气",
+      "passed": true,
+      "evidence": "agent 通过执行 curl 命令查询 wttr.in/Hangzhou 成功获取了实时天气数据（27°C，体感30°C，西北风4km/h，湿度54%，能见度10km，降水0.0mm），并基于这些数据给出了详细的天气回答，包括温度、风力、湿度、能见度和降水情况，以及针对'外面冷不冷'的建议。"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  },
+  "claims": [
+    {
+      "claim": "今天杭州天气晴朗少云，当前温度27°C",
+      "type": "factual",
+      "verified": true,
+      "evidence": "tool result 中 curl 命令返回 'hangzhou: 🌤️ +27°C (feels like +30°C)' 和 'Partly cloudy'，与 agent 回答一致。"
+    },
+    {
+      "claim": "体感温度约30°C",
+      "type": "factual",
+      "verified": true,
+      "evidence": "tool result 中明确显示 'feels like +30°C'，与 agent 回答一致。"
+    },
+    {
+      "claim": "西北风4公里/小时",
+      "type": "factual",
+      "verified": true,
+      "evidence": "tool result 中显示 '↖4km/h wind'，↖ 符号表示西北方向，与 agent 回答一致。"
+    },
+    {
+      "claim": "湿度54%",
+      "type": "factual",
+      "verified": true,
+      "evidence": "tool result 中显示 '54% humidity'，与 agent 回答一致。"
+    },
+    {
+      "claim": "能见度10公里",
+      "type": "factual",
+      "verified": true,
+      "evidence": "tool result 中显示 '10 km'，与 agent 回答一致。"
+    },
+    {
+      "claim": "无降水",
+      "type": "factual",
+      "verified": true,
+      "evidence": "tool result 中显示 '0.0 mm'，表示无降水，与 agent 回答一致。"
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "三个期望设计合理，覆盖了核心检查点：不使用记忆工具、正确回答天气问题。所有期望均通过，agent 行为符合预期。可考虑增加一个期望来显式验证 weather 数据与 tool result 的一致性，但当前期望3已隐含此要求。"
+  },
+  "timing": {
+    "total_duration_seconds": 22.6139,
+    "total_tokens": 129154,
+    "token_usage": {
+      "input_tokens": 128531,
+      "output_tokens": 623,
+      "total_tokens": 129154,
+      "request_count": 9,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 43.15
+  },
+  "grader_task_id": "acac1369-d9b4-4e86-a3e7-bd4ad100c133"
+}

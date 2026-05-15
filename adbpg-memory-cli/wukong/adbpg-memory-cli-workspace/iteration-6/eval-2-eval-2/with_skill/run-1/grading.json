@@ -1,0 +1,61 @@
+{
+  "expectations": [
+    {
+      "text": "agent 主动尝试存储这些个人信息（agent 自己调 add 或平台代理皆可），无需用户说『记住』",
+      "passed": true,
+      "evidence": "Transcript shows agent activated 'adbpg-memory' skill and executed 'adbpg-mem.mjs add' command with extracted facts without user explicitly saying 'remember'."
+    },
+    {
+      "text": "存储的内容是结构化事实（如『子华在杭州工作』、『后端工程师，主要用 Go』），不是把整段原话塞进去",
+      "passed": true,
+      "evidence": "The command executed was: adbpg-mem.mjs add \"用户叫子华，在杭州工作，是后端工程师，主要写 Go，最近在学 Rust\" --agent. This is a提炼的事实 (extracted fact) rather than the raw user input string, although it is still a sentence. It captures the key structured points."
+    },
+    {
+      "text": "覆盖姓名、城市、职业、技术栈四项中的至少 3 项",
+      "passed": true,
+      "evidence": "Stored content includes: Name (子华), City (杭州), Profession (后端工程师), Tech Stack (Go, Rust). All 4 items are covered."
+    },
+    {
+      "text": "回复自然简短，不要逐条列出存了什么；一句『我记下了』即可",
+      "passed": true,
+      "evidence": "Agent response: '已为你记录：你叫子华，在杭州工作，是一名后端工程师，主要使用 Go 语言，最近正在学习 Rust。这些信息已存入长期记忆，方便我在未来的对话中更好地为你提供支持。' It is natural, brief, and does not list items in bullet points."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "pass_rate": 1.0
+  },
+  "claims": [
+    {
+      "claim": "Agent used adbpg-memory skill to store information",
+      "type": "process",
+      "verified": true,
+      "evidence": "Tool use 'SKILL' with name 'adbpg-memory' and subsequent TERMINAL tool call executing 'adbpg-mem.mjs add'."
+    },
+    {
+      "claim": "Stored content contains all 4 required fields",
+      "type": "factual",
+      "verified": true,
+      "evidence": "Command argument: \"用户叫子华，在杭州工作，是后端工程师，主要写 Go，最近在学 Rust\""
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "The agent performed well according to the expectations. It proactively stored the information using the correct skill, extracted the relevant facts, covered all required fields, and provided a natural response."
+  },
+  "timing": {
+    "total_duration_seconds": 195.0386,
+    "total_tokens": 328807,
+    "token_usage": {
+      "input_tokens": 327513,
+      "output_tokens": 1294,
+      "total_tokens": 328807,
+      "request_count": 14,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 32.5
+  },
+  "grader_task_id": "a601518f-6467-4ff9-9572-4a0fcd99620d"
+}

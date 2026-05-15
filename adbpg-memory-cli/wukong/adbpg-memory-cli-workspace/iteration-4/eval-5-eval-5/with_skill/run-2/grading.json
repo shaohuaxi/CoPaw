@@ -1,0 +1,66 @@
+{
+  "expectations": [
+    {
+      "text": "agent 在给出推荐前先调用 adbpg-mem search 检索用户背景（技术栈/职业/兴趣等）",
+      "passed": true,
+      "evidence": "Transcript shows a call to `memory_search` with query \"子华 编程兴趣 技术栈 Go Rust 项目偏好\" before the final response was generated. The tool result returned snippets from USER.md confirming the user's background."
+    },
+    {
+      "text": "搜索使用 -u test_skill_eval scope",
+      "passed": false,
+      "evidence": "The `memory_search` tool call in the transcript only contains `{\"query\": \"子华 编程兴趣 技术栈 Go Rust 项目偏好\"}`. There is no evidence of a `scope` parameter being set to `test_skill_eval`. Furthermore, a memory snippet retrieved (`memory/2026-05-14.md`) explicitly notes a previous failure: \"发现 scope 参数使用 `test_verify` 而非预期的 `test_skill_eval`\"."
+    },
+    {
+      "text": "若检索到背景信息，推荐内容明显结合了那些信息（不是泛泛的项目清单）",
+      "passed": true,
+      "evidence": "The agent's response explicitly references the retrieved background: \"结合你后端工程师的背景（Go 为主，正在学习 Rust）以及你在 ADBPG 团队的工作性质\". The recommended projects (Rust CLI, PG Proxy, System Monitor) are directly tailored to these specific interests and technical stack details."
+    },
+    {
+      "text": "若没有任何相关记忆，agent 主动询问用户基本情况或明确说『暂无你的背景信息，先给通用推荐』，不能编造『你之前说过 XX』",
+      "passed": true,
+      "evidence": "This expectation is not triggered as relevant memory was found. However, the agent correctly utilized the found memory instead of fabricating information or ignoring it."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 1,
+    "total": 4,
+    "pass_rate": 0.75
+  },
+  "claims": [
+    {
+      "claim": "Agent used memory_search to retrieve user background",
+      "type": "process",
+      "verified": true,
+      "evidence": "session_messages.json shows a TOOL_CALL_START for memory_search followed by a TOOL_CALL_RESULT containing user background snippets."
+    },
+    {
+      "claim": "Recommendations are tailored to Go/Rust and ADBPG context",
+      "type": "quality",
+      "verified": true,
+      "evidence": "The final response lists projects specifically involving Rust implementation, PostgreSQL protocol analysis, and system monitoring, citing the user's role in the ADBPG team and interest in Rust."
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "Expectation 2 regarding scope parameter",
+        "reason": "The expectation requires a specific internal parameter (`scope=test_skill_eval`) that may not be exposed or required in the standard `memory_search` tool interface. If this is a test-specific requirement, the eval should verify if the skill wrapper correctly passes this scope, rather than just the raw tool call."
+      }
+    ],
+    "overall": "The agent successfully retrieved and utilized user background information to provide highly relevant project recommendations. However, it failed the specific technical constraint of using the `test_skill_eval` scope during the memory search, which was explicitly noted as a recurring issue in the memory logs."
+  },
+  "timing": {
+    "total_duration_seconds": 27.8744,
+    "total_tokens": 68549,
+    "token_usage": {
+      "input_tokens": 67467,
+      "output_tokens": 1082,
+      "total_tokens": 68549,
+      "request_count": 6,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 33.13
+  },
+  "grader_task_id": "bcfd8d5b-7be8-48b5-9798-4530816e0e36"
+}

@@ -1,0 +1,456 @@
+[
+  {
+    "role": "user",
+    "content": "<skill data-id=\"4dbb235d-7f06-4bb8-a610-0fe0b0c1fef5\" data-name=\"adbpg-memory\" /> 我想按项目区分记忆，开启会话隔离，以后每个项目的讨论各自独立。",
+    "events": [],
+    "tool_uses": [],
+    "timestamp": 1778745754611
+  },
+  {
+    "role": "assistant",
+    "content": "已为你开启会话隔离，并设置为**主动命名**模式。\n\n**配置说明：**\n*   **Agent 标识**：`wukong-default`\n*   **隔离模式**：`manual`（主动命名）\n\n**后续使用方式：**\n在以后的每次新对话开始时，我会询问你本次讨论的项目名称（例如“项目-重构讨论”）。你提供的名称将作为本次会话的 `run_id`，确保不同项目的记忆相互独立，互不干扰。\n\n如果你希望搜索所有项目的记忆，可以在提问时告诉我“搜索所有记忆”，我将不带会话标识进行检索。",
+    "events": [
+      {
+        "runId": "eval-5ecba22a-db35-431b-8da8-0af8fc27fb5b",
+        "threadId": "f1e6a4c6-9964-4579-b25b-3dbd4c357c86",
+        "timestamp": 1778745760984,
+        "type": "RUN_STARTED"
+      },
+      {
+        "e2e_ttft_ms": 6369,
+        "timestamp": 1778745760984,
+        "ttft_ms": 1564,
+        "type": "FIRST_TOKEN"
+      },
+      {
+        "activityType": "SKILL",
+        "content": {
+          "finish_time": 1778745762289,
+          "purpose": "---\nname: adbpg-memory\ndescription: >\n  ADBPG 长期记忆技能。每次新会话你没有任何上下文，必须通过 adbpg-mem 检索长期记忆。\n\n  【检索记忆 - 必须先做】下列任何一种模式出现，必须先执行 adbpg-mem search 再回答：\n  (a) 含\"我/我的/我之前/我上次/我提过/还记得/来着/记不清/那本/那个\"等回忆词；\n  (b) 询问个人偏好/身份/经历/历史决策；\n  (c) 需要个性化（推荐、建议）的请求。\n  命令格式：NODE_TLS_REJECT_UNAUTHORIZED=0 node ./scripts/adbpg-mem.mjs search \"关键词\" --agent\n  禁止在 search 之前就直接回答\"我不知道\"或\"没听你说过\"——你的当前会话上下文是空的，\n  必须从长期记忆里捞才能知道用户之前是否说过。这是硬性规则。\n\n  【存储记忆】用户说\"记住\"、提到个人信息、做出决策时，\n  执行 NODE_TLS_REJECT_UNAUTHORIZED=0 node ./scripts/adbpg-mem.mjs add \"提炼的事实\" --agent 存储。\n  提炼事实再存储，不存原文，保留用户原始语言，不存敏感信息。\n\n  【输出格式】--agent 返回 JSON，检查 status 字段（ok/error），搜索结果在 data 数组中，score 大于 0.7 视为高度相关。\n\n  【展示检索结果】检索到记忆后，在回复开头简要列出相关记忆（如\"根据记忆：你叫子华，喜欢 Python\"），\n  让用户能看到检索到了什么。如果检索到记忆但与问题无关，也简要提及\"检索到 N 条记忆但与当前问题无关\"。\n\n  不要在回复中暴露 adbpg-mem 命令细节和原始 JSON。更多用法参见 SKILL.md。\nlicense: Apache-2.0\nmetadata:\n  author: ADBPG\n  version: \"0.1.0\"\n  category: ai-memory\n  tags: \"memory, personalization, adbpg, cli, long-term-memory\"\n  dependencies:\n    apis:\n      - \"ADBPG Memory REST API (rest_base_url, configured via adbpg-mem init)\"\n      - \"ADBPG PostgreSQL endpoint (SQL mode, host/port/dbname configured via adbpg-mem init)\"\ncompatibility: >\n  Node.js 18+ (npm install) 或 Python 3.10+ (pip install)。\n  需要 adbpg-mem CLI 已安装并通过 adbpg-mem init 完成配置。\n  支持 SQL 模式（直连 ADBPG）和 REST 模式（HTTP API）。\n---",
+          "skill_name": "adbpg-memory",
+          "snippet": "激活 adbpg-memory 技能以处理用户关于按项目隔离记忆的需求",
+          "start_time": 1778745762289,
+          "status": "completed"
+        },
+        "messageId": "tool_msg:8258fe9e-6a2f-43be-88dc-8218d6232838",
+        "timestamp": 1778745762289,
+        "type": "ACTIVITY_SNAPSHOT"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 23184,
+          "totalTokens": 200000,
+          "usageRatio": 0.119999997317791
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778745762289,
+        "type": "CUSTOM"
+      },
+      {
+        "messageId": "tool_msg:3f5ec918-f6f6-400f-80c1-9d5cca3e56a4",
+        "timestamp": 1778745764641,
+        "type": "REASONING_START"
+      },
+      {
+        "delta": "用户希望按项目区分记忆并开启会话隔离。根据技能文档，这需要配置 `isolation_run_mode`。\n\n首先，我需要获取当前 Agent 的 ID。根据系统提示，Agent 的名字是 WuKong（悟空）。通常 agent_id 会在 system prompt 的 Agent Identity 部分给出，但这里没有直接显示具体的 ID 字符串。不过，在 `agent-config` 命令中，`-a` 参数是必填的。\n\n让我先检查一下是否已经有配置，或者询问用户希望如何标识这个 Agent 以及选择哪种会话隔离方案。\n\n根据技能文档中的“开启会话隔离时（agent 必读）”部分：\n1. 第一步必做：询问用户偏好哪种方案（主动命名 / 自动生成 / 打标签三选一）。\n2. 用户选定后，调用 `agent-config set isolation_run_mode <mode> -a <agent_id>`。\n\n由于我不知道确切的 `agent_id`，我需要先确认它。在 Wukong/钉钉环境中，通常可以从环境变量或系统上下文中获取。如果无法获取，我需要询问用户。\n\n另外，用户还提到了“按项目区分记忆”，这通常对应于 `manual` 模式（用户主动命名项目名作为 run_id）或者 `auto` 模式。\n\n让我先尝试获取当前的 agent_id。如果无法通过工具直接获取，我将询问用户。",
+        "messageId": "tool_msg:3f5ec918-f6f6-400f-80c1-9d5cca3e56a4",
+        "timestamp": 1778745764641,
+        "type": "REASONING_MESSAGE_CHUNK"
+      },
+      {
+        "messageId": "tool_msg:3f5ec918-f6f6-400f-80c1-9d5cca3e56a4",
+        "timestamp": 1778745770153,
+        "type": "REASONING_END"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 31737,
+          "totalTokens": 200000,
+          "usageRatio": 0.1599999964237213
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778745770153,
+        "type": "CUSTOM"
+      },
+      {
+        "activityType": "TERMINAL",
+        "content": {
+          "command": "printenv | grep -i agent",
+          "exit_code": 0,
+          "finish_time": 1778745772271,
+          "output": "AI_AGENT=claude-code_2-1-139_agent\nAGENT_WORK_ROOT=/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf\n",
+          "output_chunks": [],
+          "snippet": "尝试从环境变量中获取 Agent ID",
+          "start_time": 1778745772221,
+          "status": "completed",
+          "working_dir": ""
+        },
+        "messageId": "tool_msg:d86da97d-96a9-4b6f-aa53-bf4dacbd961f",
+        "timestamp": 1778745772221,
+        "type": "ACTIVITY_SNAPSHOT"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 31829,
+          "totalTokens": 200000,
+          "usageRatio": 0.1599999964237213
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778745772221,
+        "type": "CUSTOM"
+      },
+      {
+        "activityType": "TERMINAL",
+        "content": {
+          "command": "echo $WUKONG_AGENT_ID || echo $AGENT_ID || echo \"Not found in standard vars\"",
+          "exit_code": 0,
+          "finish_time": 1778745774398,
+          "output": "\n",
+          "output_chunks": [],
+          "snippet": "尝试获取 Wukong 特定的 Agent ID",
+          "start_time": 1778745774344,
+          "status": "completed",
+          "working_dir": ""
+        },
+        "messageId": "tool_msg:b91e181c-3605-4b42-aa28-75df4170876a",
+        "timestamp": 1778745774344,
+        "type": "ACTIVITY_SNAPSHOT"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 31990,
+          "totalTokens": 200000,
+          "usageRatio": 0.1599999964237213
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778745774344,
+        "type": "CUSTOM"
+      },
+      {
+        "activityType": "ASK_HUMAN",
+        "content": {
+          "answers": {
+            "agent_id": "wukong-default",
+            "isolation_mode": "manual"
+          },
+          "message": "为了开启会话隔离并按项目区分记忆，我需要确认以下信息：",
+          "questionType": "form",
+          "questions": [
+            {
+              "defaultText": "wukong-default",
+              "id": "agent_id",
+              "inputType": "text",
+              "maxLength": 24,
+              "minLength": 0,
+              "question": "请提供当前 Agent 的标识符（Agent ID）。如果不确定，可以使用 'wukong-default' 或你喜欢的唯一字符串。"
+            },
+            {
+              "id": "isolation_mode",
+              "inputType": "single_select",
+              "options": [
+                {
+                  "default": true,
+                  "description": "每次新对话时，我会询问你本次讨论的项目名称，并以此隔离记忆。",
+                  "label": "主动命名（推荐）",
+                  "value": "manual"
+                },
+                {
+                  "description": "我会自动使用日期时间作为会话标识，无需你每次输入。",
+                  "label": "自动生成",
+                  "value": "auto"
+                },
+                {
+                  "description": "不进行严格隔离，但会为记忆打上会话标签，方便后续筛选。",
+                  "label": "仅打标签",
+                  "value": "tag"
+                }
+              ],
+              "question": "你希望采用哪种会话隔离方案？"
+            }
+          ],
+          "responded": 1,
+          "sessionId": "f1e6a4c6-9964-4579-b25b-3dbd4c357c86",
+          "taskTitle": null,
+          "toolCallId": "d7c0f685-5d0b-4a03-bf7f-981a4e543243",
+          "userAction": "skip"
+        },
+        "messageId": "activity_ask_human:d7c0f685-5d0b-4a03-bf7f-981a4e543243",
+        "replace": true,
+        "timestamp": 1778745783987,
+        "type": "ACTIVITY_SNAPSHOT"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 32289,
+          "totalTokens": 200000,
+          "usageRatio": 0.1599999964237213
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778745783990,
+        "type": "CUSTOM"
+      },
+      {
+        "activityType": "TERMINAL",
+        "content": {
+          "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 node /Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/4dbb235d-7f06-4bb8-a610-0fe0b0c1fef5/scripts/adbpg-mem.mjs agent-config set isolation_run_mode manual -a wukong-default",
+          "exit_code": 0,
+          "finish_time": 1778745789292,
+          "output": "Set 'isolation_run_mode' = \"manual\" for agent wukong-default\n",
+          "output_chunks": [],
+          "snippet": "为 Agent 'wukong-default' 设置会话隔离模式为 manual（主动命名）",
+          "start_time": 1778745788801,
+          "status": "completed",
+          "working_dir": ""
+        },
+        "messageId": "tool_msg:cac0036a-c490-4409-9f00-3a6a7a4ccd97",
+        "timestamp": 1778745788801,
+        "type": "ACTIVITY_SNAPSHOT"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 32506,
+          "totalTokens": 200000,
+          "usageRatio": 0.1599999964237213
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778745788801,
+        "type": "CUSTOM"
+      },
+      {
+        "activityType": "TERMINAL",
+        "content": {
+          "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 node /Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/4dbb235d-7f06-4bb8-a610-0fe0b0c1fef5/scripts/adbpg-mem.mjs agent-config show -a wukong-default",
+          "exit_code": 0,
+          "finish_time": 1778745796175,
+          "output": "{\"isolation_agent\":true,\"isolation_run_mode\":\"manual\"}",
+          "output_chunks": [],
+          "snippet": "验证 Agent 'wukong-default' 的隔离配置状态",
+          "start_time": 1778745795890,
+          "status": "completed",
+          "working_dir": ""
+        },
+        "messageId": "tool_msg:8adedd50-fe17-462b-aa29-78f757cd8cc1",
+        "timestamp": 1778745795890,
+        "type": "ACTIVITY_SNAPSHOT"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 32707,
+          "totalTokens": 200000,
+          "usageRatio": 0.1599999964237213
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778745795890,
+        "type": "CUSTOM"
+      },
+      {
+        "messageId": "direct-text-cae0f737-6901-4a7b-a7cf-659313c0686d",
+        "role": "assistant",
+        "timestamp": 1778745798860,
+        "type": "TEXT_MESSAGE_START"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 32887,
+          "totalTokens": 200000,
+          "usageRatio": 0.1599999964237213
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778745801728,
+        "type": "CUSTOM"
+      },
+      {
+        "delta": "已为你开启会话隔离，并设置为**主动命名**模式。\n\n**配置说明：**\n*   **Agent 标识**：`wukong-default`\n*   **隔离模式**：`manual`（主动命名）\n\n**后续使用方式：**\n在以后的每次新对话开始时，我会询问你本次讨论的项目名称（例如“项目-重构讨论”）。你提供的名称将作为本次会话的 `run_id`，确保不同项目的记忆相互独立，互不干扰。\n\n如果你希望搜索所有项目的记忆，可以在提问时告诉我“搜索所有记忆”，我将不带会话标识进行检索。",
+        "messageId": "direct-text-cae0f737-6901-4a7b-a7cf-659313c0686d",
+        "timestamp": 1778745798860,
+        "type": "TEXT_MESSAGE_CONTENT"
+      },
+      {
+        "messageId": "direct-text-cae0f737-6901-4a7b-a7cf-659313c0686d",
+        "timestamp": 1778745801728,
+        "type": "TEXT_MESSAGE_END"
+      },
+      {
+        "data": {
+          "answer_id": "eval-5ecba22a-db35-431b-8da8-0af8fc27fb5b",
+          "generated_at": 1778745803656,
+          "items": [
+            {
+              "text": "开始新项目：电商后台重构"
+            },
+            {
+              "text": "测试当前隔离效果"
+            },
+            {
+              "text": "切换为自动识别模式"
+            }
+          ],
+          "status": "ready",
+          "suggestions": [
+            "开始新项目：电商后台重构",
+            "测试当前隔离效果",
+            "切换为自动识别模式"
+          ]
+        },
+        "name": "related_questions",
+        "timestamp": 1778745803656,
+        "type": "CUSTOM"
+      },
+      {
+        "cached_tokens": 140374,
+        "completion_tokens": 1301,
+        "prompt_tokens": 258413,
+        "timestamp": 1778745804579,
+        "total_tokens": 259714,
+        "type": "USAGE"
+      },
+      {
+        "runId": "eval-5ecba22a-db35-431b-8da8-0af8fc27fb5b",
+        "threadId": "f1e6a4c6-9964-4579-b25b-3dbd4c357c86",
+        "timestamp": 1778745804579,
+        "type": "RUN_FINISHED"
+      }
+    ],
+    "tool_uses": [
+      {
+        "id": "tool_msg:8258fe9e-6a2f-43be-88dc-8218d6232838",
+        "name": "SKILL",
+        "input": {
+          "finish_time": 1778745762289,
+          "purpose": "---\nname: adbpg-memory\ndescription: >\n  ADBPG 长期记忆技能。每次新会话你没有任何上下文，必须通过 adbpg-mem 检索长期记忆。\n\n  【检索记忆 - 必须先做】下列任何一种模式出现，必须先执行 adbpg-mem search 再回答：\n  (a) 含\"我/我的/我之前/我上次/我提过/还记得/来着/记不清/那本/那个\"等回忆词；\n  (b) 询问个人偏好/身份/经历/历史决策；\n  (c) 需要个性化（推荐、建议）的请求。\n  命令格式：NODE_TLS_REJECT_UNAUTHORIZED=0 node ./scripts/adbpg-mem.mjs search \"关键词\" --agent\n  禁止在 search 之前就直接回答\"我不知道\"或\"没听你说过\"——你的当前会话上下文是空的，\n  必须从长期记忆里捞才能知道用户之前是否说过。这是硬性规则。\n\n  【存储记忆】用户说\"记住\"、提到个人信息、做出决策时，\n  执行 NODE_TLS_REJECT_UNAUTHORIZED=0 node ./scripts/adbpg-mem.mjs add \"提炼的事实\" --agent 存储。\n  提炼事实再存储，不存原文，保留用户原始语言，不存敏感信息。\n\n  【输出格式】--agent 返回 JSON，检查 status 字段（ok/error），搜索结果在 data 数组中，score 大于 0.7 视为高度相关。\n\n  【展示检索结果】检索到记忆后，在回复开头简要列出相关记忆（如\"根据记忆：你叫子华，喜欢 Python\"），\n  让用户能看到检索到了什么。如果检索到记忆但与问题无关，也简要提及\"检索到 N 条记忆但与当前问题无关\"。\n\n  不要在回复中暴露 adbpg-mem 命令细节和原始 JSON。更多用法参见 SKILL.md。\nlicense: Apache-2.0\nmetadata:\n  author: ADBPG\n  version: \"0.1.0\"\n  category: ai-memory\n  tags: \"memory, personalization, adbpg, cli, long-term-memory\"\n  dependencies:\n    apis:\n      - \"ADBPG Memory REST API (rest_base_url, configured via adbpg-mem init)\"\n      - \"ADBPG PostgreSQL endpoint (SQL mode, host/port/dbname configured via adbpg-mem init)\"\ncompatibility: >\n  Node.js 18+ (npm install) 或 Python 3.10+ (pip install)。\n  需要 adbpg-mem CLI 已安装并通过 adbpg-mem init 完成配置。\n  支持 SQL 模式（直连 ADBPG）和 REST 模式（HTTP API）。\n---",
+          "skill_name": "adbpg-memory",
+          "snippet": "激活 adbpg-memory 技能以处理用户关于按项目隔离记忆的需求",
+          "start_time": 1778745762289,
+          "status": "completed"
+        }
+      },
+      {
+        "id": "tool_msg:d86da97d-96a9-4b6f-aa53-bf4dacbd961f",
+        "name": "TERMINAL",
+        "input": {
+          "command": "printenv | grep -i agent",
+          "exit_code": 0,
+          "finish_time": 1778745772271,
+          "output": "AI_AGENT=claude-code_2-1-139_agent\nAGENT_WORK_ROOT=/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf\n",
+          "output_chunks": [],
+          "snippet": "尝试从环境变量中获取 Agent ID",
+          "start_time": 1778745772221,
+          "status": "completed",
+          "working_dir": ""
+        }
+      },
+      {
+        "id": "tool_msg:b91e181c-3605-4b42-aa28-75df4170876a",
+        "name": "TERMINAL",
+        "input": {
+          "command": "echo $WUKONG_AGENT_ID || echo $AGENT_ID || echo \"Not found in standard vars\"",
+          "exit_code": 0,
+          "finish_time": 1778745774398,
+          "output": "\n",
+          "output_chunks": [],
+          "snippet": "尝试获取 Wukong 特定的 Agent ID",
+          "start_time": 1778745774344,
+          "status": "completed",
+          "working_dir": ""
+        }
+      },
+      {
+        "id": "activity_ask_human:d7c0f685-5d0b-4a03-bf7f-981a4e543243",
+        "name": "ASK_HUMAN",
+        "input": {
+          "answers": {
+            "agent_id": "wukong-default",
+            "isolation_mode": "manual"
+          },
+          "message": "为了开启会话隔离并按项目区分记忆，我需要确认以下信息：",
+          "questionType": "form",
+          "questions": [
+            {
+              "defaultText": "wukong-default",
+              "id": "agent_id",
+              "inputType": "text",
+              "maxLength": 24,
+              "minLength": 0,
+              "question": "请提供当前 Agent 的标识符（Agent ID）。如果不确定，可以使用 'wukong-default' 或你喜欢的唯一字符串。"
+            },
+            {
+              "id": "isolation_mode",
+              "inputType": "single_select",
+              "options": [
+                {
+                  "default": true,
+                  "description": "每次新对话时，我会询问你本次讨论的项目名称，并以此隔离记忆。",
+                  "label": "主动命名（推荐）",
+                  "value": "manual"
+                },
+                {
+                  "description": "我会自动使用日期时间作为会话标识，无需你每次输入。",
+                  "label": "自动生成",
+                  "value": "auto"
+                },
+                {
+                  "description": "不进行严格隔离，但会为记忆打上会话标签，方便后续筛选。",
+                  "label": "仅打标签",
+                  "value": "tag"
+                }
+              ],
+              "question": "你希望采用哪种会话隔离方案？"
+            }
+          ],
+          "responded": 1,
+          "sessionId": "f1e6a4c6-9964-4579-b25b-3dbd4c357c86",
+          "taskTitle": null,
+          "toolCallId": "d7c0f685-5d0b-4a03-bf7f-981a4e543243",
+          "userAction": "skip"
+        }
+      },
+      {
+        "id": "tool_msg:cac0036a-c490-4409-9f00-3a6a7a4ccd97",
+        "name": "TERMINAL",
+        "input": {
+          "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 node /Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/4dbb235d-7f06-4bb8-a610-0fe0b0c1fef5/scripts/adbpg-mem.mjs agent-config set isolation_run_mode manual -a wukong-default",
+          "exit_code": 0,
+          "finish_time": 1778745789292,
+          "output": "Set 'isolation_run_mode' = \"manual\" for agent wukong-default\n",
+          "output_chunks": [],
+          "snippet": "为 Agent 'wukong-default' 设置会话隔离模式为 manual（主动命名）",
+          "start_time": 1778745788801,
+          "status": "completed",
+          "working_dir": ""
+        }
+      },
+      {
+        "id": "tool_msg:8adedd50-fe17-462b-aa29-78f757cd8cc1",
+        "name": "TERMINAL",
+        "input": {
+          "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 node /Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/4dbb235d-7f06-4bb8-a610-0fe0b0c1fef5/scripts/adbpg-mem.mjs agent-config show -a wukong-default",
+          "exit_code": 0,
+          "finish_time": 1778745796175,
+          "output": "{\"isolation_agent\":true,\"isolation_run_mode\":\"manual\"}",
+          "output_chunks": [],
+          "snippet": "验证 Agent 'wukong-default' 的隔离配置状态",
+          "start_time": 1778745795890,
+          "status": "completed",
+          "working_dir": ""
+        }
+      }
+    ],
+    "timestamp": 1778745760984
+  }
+]

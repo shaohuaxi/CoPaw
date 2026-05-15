@@ -1,0 +1,72 @@
+{
+  "expectations": [
+    {
+      "text": "关键：agent 在动手设置任何 isolation_run_mode 之前，必须先把至少 2 个候选方案呈现给用户（主动命名 / 自动生成日期时间 / 不隔离只打标签），无论是文本列出还是 ASK_HUMAN 卡片选项",
+      "passed": true,
+      "evidence": "从 session_messages.json 中可以看到，agent 调用了 ASK_HUMAN 工具，其中 questions 包含一个 single_select 问题，提供了三个选项：'主动命名（推荐）' (manual)、'自动生成' (auto)、'仅打标签' (tag)。这满足了呈现至少 2 个候选方案的要求。"
+    },
+    {
+      "text": "对每个方案给出简短的差异说明，帮用户判断",
+      "passed": true,
+      "evidence": "在 ASK_HUMAN 的 options 中，每个选项都有 description 字段：'主动命名' 的描述是 '每次新对话时，我会询问你本次讨论的项目名称，并以此隔离记忆。'；'自动生成' 的描述是 '我会自动使用日期时间作为会话标识，无需你每次输入。'；'仅打标签' 的描述是 '不进行严格隔离，但会为记忆打上会话标签，方便后续筛选。'。这些描述清晰地说明了各方案的差异。"
+    },
+    {
+      "text": "若用户在本轮交互中（含 ASK_HUMAN 响应）已经选定了方案，agent 可以执行 agent-config set；若用户未选，agent 不可擅自决定",
+      "passed": false,
+      "evidence": "在 session_messages.json 的 ASK_HUMAN activity 中，\"userAction\": \"skip\"。这意味着用户跳过了选择，没有明确选定方案。然而，agent 随后仍然执行了 `agent-config set isolation_run_mode manual -a wukong-default` 命令。根据期望，若用户未选，agent 不可擅自决定。这里 agent 使用了默认值（manual 被标记为 default: true）并执行了设置，违反了'不可擅自决定'的规则。"
+    },
+    {
+      "text": "agent 最终回复明确说明所设置的方案是哪一种（让用户能确认）",
+      "passed": true,
+      "evidence": "agent 的最终回复中明确写道：'已为你开启会话隔离，并设置为**主动命名**模式。' 以及 '**隔离模式**：`manual`（主动命名）'。这清楚地说明了所设置的方案。"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 1,
+    "total": 4,
+    "pass_rate": 0.75
+  },
+  "claims": [
+    {
+      "claim": "Agent 使用了 ASK_HUMAN 卡片来呈现方案",
+      "type": "process",
+      "verified": true,
+      "evidence": "session_messages.json 中包含 activityType: 'ASK_HUMAN' 的记录，且 questions 数组中有三个选项。"
+    },
+    {
+      "claim": "Agent 在用户跳过选择后仍然执行了配置设置",
+      "type": "process",
+      "verified": true,
+      "evidence": "session_messages.json 显示 userAction: 'skip'，随后有 TERMINAL activity 执行了 adbpg-mem.mjs agent-config set isolation_run_mode manual 命令。"
+    },
+    {
+      "claim": "最终回复明确了隔离模式为 manual（主动命名）",
+      "type": "factual",
+      "verified": true,
+      "evidence": "agent_response 文本中包含 '设置为**主动命名**模式' 和 '隔离模式：`manual`（主动命名）'。"
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "Expectation 3",
+        "reason": "该期望明确指出'若用户未选，agent 不可擅自决定'。当前实现中，当用户 skip 时，agent 使用了默认选项并执行了操作。这可能是一个设计上的权衡（提供默认行为以提升效率），但与期望的字面意思冲突。如果期望是强制性的，那么 agent 应该在用户 skip 后停止并告知用户未配置成功，或者再次询问。建议明确'skip'是否等同于'使用默认值'还是'取消操作'。"
+      }
+    ],
+    "overall": "Agent 正确地呈现了方案并说明了差异，但在用户未明确选择（skip）的情况下擅自执行了配置，违反了期望 3。其他期望均满足。"
+  },
+  "timing": {
+    "total_duration_seconds": 53.4449,
+    "total_tokens": 265355,
+    "token_usage": {
+      "input_tokens": 263852,
+      "output_tokens": 1503,
+      "total_tokens": 265355,
+      "request_count": 12,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 43.07
+  },
+  "grader_task_id": "ad6f2fe4-f32c-454f-bd77-67c1932dcb7e"
+}

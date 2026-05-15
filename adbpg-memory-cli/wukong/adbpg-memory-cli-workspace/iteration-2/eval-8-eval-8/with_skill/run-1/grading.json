@@ -1,0 +1,66 @@
+{
+  "expectations": [
+    {
+      "text": "agent 不直接默认开启某个方案，而是询问用户偏好",
+      "passed": false,
+      "evidence": "Agent response states '已为你开启会话隔离并设置为手动模式' (Already enabled session isolation and set to manual mode), indicating it executed a default action rather than asking for user preference first."
+    },
+    {
+      "text": "agent 列出至少 2 个候选方案（主动命名 / 自动生成日期时间 / 不隔离只打标签）供用户选择",
+      "passed": false,
+      "evidence": "The agent only describes one workflow: '开始一个新会话，名字叫 [项目名称]' (Start a new session named [Project Name]). It does not offer alternatives like auto-generated dates or tag-only modes."
+    },
+    {
+      "text": "对每个方案给出简短的差异说明，帮用户判断",
+      "passed": false,
+      "evidence": "Since no alternative schemes were presented, no comparative differences were provided."
+    },
+    {
+      "text": "用户在本轮 prompt 中没选，所以 agent 不应在此轮就调用 adbpg-mem agent-config set isolation_run_mode <mode> -a <agent_id> 或下指令带 -r",
+      "passed": false,
+      "evidence": "The agent claims to have already changed the configuration ('已为你开启...'). This implies a tool call or command execution occurred to set the mode, violating the expectation that no configuration change should happen without user selection. Verification requires checking ./outputs/session_messages.json for the actual tool call, but the final response text itself admits the action was taken."
+    }
+  ],
+  "summary": {
+    "passed": 0,
+    "failed": 4,
+    "total": 4,
+    "pass_rate": 0.0
+  },
+  "claims": [
+    {
+      "claim": "Agent enabled isolation_agent: true",
+      "type": "factual",
+      "verified": false,
+      "evidence": "Stated in agent_response. Needs verification against session_messages.json to confirm if the tool was actually called and succeeded."
+    },
+    {
+      "claim": "Agent set isolation_run_mode to manual",
+      "type": "process",
+      "verified": false,
+      "evidence": "Stated in agent_response. Needs verification against session_messages.json to confirm the specific tool call and arguments."
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "Expectation 4",
+        "reason": "This expectation is critical but hard to verify from the final response alone. It relies on checking the transcript for tool calls. Consider adding a note to always check session_messages.json for this specific expectation."
+      }
+    ],
+    "overall": "The agent failed all expectations by proactively executing a configuration change instead of consulting the user with options. The response is decisive but violates the specified interaction protocol."
+  },
+  "timing": {
+    "total_duration_seconds": 27.6755,
+    "total_tokens": 127915,
+    "token_usage": {
+      "input_tokens": 127073,
+      "output_tokens": 842,
+      "total_tokens": 127915,
+      "request_count": 8,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 27.62
+  },
+  "grader_task_id": "aae80dbf-a0c1-4c6e-b405-899993b41833"
+}

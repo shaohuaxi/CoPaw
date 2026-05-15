@@ -1,0 +1,547 @@
+{
+  "skill_name": "adbpg-memory",
+  "target": "wukong",
+  "mode": "trigger",
+  "trigger_threshold": 0.5,
+  "runs_per_query": 3,
+  "results": [
+    {
+      "query": "记住一下啊，我对花生过敏，每次别人推荐零食都让人头大，下次你给我推荐零食前先排除花生类。",
+      "should_trigger": true,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": false,
+      "run_details": [
+        {
+          "triggered": false,
+          "run_number": 1,
+          "status": "completed",
+          "duration_seconds": 17.29
+        },
+        {
+          "triggered": false,
+          "run_number": 2,
+          "status": "completed",
+          "duration_seconds": 17.29
+        },
+        {
+          "triggered": false,
+          "run_number": 3,
+          "status": "completed",
+          "duration_seconds": 12.17
+        }
+      ]
+    },
+    {
+      "query": "顺便告诉你下，我叫张子华，在阿里巴巴 ADBPG 团队工作，做数据库内核，平时用 C 比较多。",
+      "should_trigger": true,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": false,
+      "run_details": [
+        {
+          "triggered": false,
+          "run_number": 1,
+          "status": "completed",
+          "duration_seconds": 8.15
+        },
+        {
+          "triggered": false,
+          "run_number": 2,
+          "status": "completed",
+          "duration_seconds": 8.09
+        },
+        {
+          "triggered": false,
+          "run_number": 3,
+          "status": "completed",
+          "duration_seconds": 8.06
+        }
+      ]
+    },
+    {
+      "query": "诶，我最喜欢的颜色是什么来着？我之前跟你聊过的，但我自己忘了……",
+      "should_trigger": true,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": false,
+      "run_details": [
+        {
+          "triggered": false,
+          "run_number": 1,
+          "status": "completed",
+          "duration_seconds": 22.46
+        },
+        {
+          "triggered": false,
+          "run_number": 2,
+          "status": "completed",
+          "duration_seconds": 17.25
+        },
+        {
+          "triggered": false,
+          "run_number": 3,
+          "status": "completed",
+          "duration_seconds": 33.01
+        }
+      ]
+    },
+    {
+      "query": "上个月我跟你提过一个开源项目想 fork 来玩，那个项目名是啥来着？我搜邮件没找到。",
+      "should_trigger": true,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": false,
+      "run_details": [
+        {
+          "triggered": false,
+          "run_number": 1,
+          "status": "completed",
+          "duration_seconds": 37.89
+        },
+        {
+          "triggered": false,
+          "run_number": 2,
+          "status": "completed",
+          "duration_seconds": 99.99
+        },
+        {
+          "triggered": false,
+          "run_number": 3,
+          "status": "completed",
+          "duration_seconds": 27.77
+        }
+      ]
+    },
+    {
+      "query": "你还记得我女儿的名字和生日吗？她快过生日了我想准备个惊喜。",
+      "should_trigger": true,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": false,
+      "run_details": [
+        {
+          "triggered": false,
+          "run_number": 1,
+          "status": "completed",
+          "duration_seconds": 22.48
+        },
+        {
+          "triggered": false,
+          "run_number": 2,
+          "status": "completed",
+          "duration_seconds": 17.32
+        },
+        {
+          "triggered": false,
+          "run_number": 3,
+          "status": "completed",
+          "duration_seconds": 38.04
+        }
+      ]
+    },
+    {
+      "query": "我想让你能跨会话记住我说的话，怎么搞？听说有个 adbpg-mem 的工具可以？",
+      "should_trigger": true,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": false,
+      "run_details": [
+        {
+          "triggered": false,
+          "run_number": 1,
+          "status": "completed",
+          "duration_seconds": 22.55
+        },
+        {
+          "triggered": false,
+          "run_number": 2,
+          "status": "completed",
+          "duration_seconds": 27.73
+        },
+        {
+          "triggered": false,
+          "run_number": 3,
+          "status": "completed",
+          "duration_seconds": 17.34
+        }
+      ]
+    },
+    {
+      "query": "帮我打开 agent 记忆隔离吧，工作的事情和生活的事情我希望各自分开存，免得互相干扰。",
+      "should_trigger": true,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": false,
+      "run_details": [
+        {
+          "triggered": false,
+          "run_number": 1,
+          "status": "completed",
+          "duration_seconds": 120.87
+        },
+        {
+          "triggered": false,
+          "run_number": 2,
+          "status": "completed",
+          "duration_seconds": 37.85
+        },
+        {
+          "triggered": false,
+          "run_number": 3,
+          "status": "completed",
+          "duration_seconds": 128.85
+        }
+      ]
+    },
+    {
+      "query": "之前我们讨论过 Q3 OKR 那次，最终是决定用哪个方案来着？",
+      "should_trigger": true,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": false,
+      "run_details": [
+        {
+          "triggered": false,
+          "run_number": 1,
+          "status": "completed",
+          "duration_seconds": 22.47
+        },
+        {
+          "triggered": false,
+          "run_number": 2,
+          "status": "completed",
+          "duration_seconds": 22.44
+        },
+        {
+          "triggered": false,
+          "run_number": 3,
+          "status": "completed",
+          "duration_seconds": 22.66
+        }
+      ]
+    },
+    {
+      "query": "我换了新手机号，13800001234，旧的别再记着了，以后跟我相关的联系方式按新的来。",
+      "should_trigger": true,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": false,
+      "run_details": [
+        {
+          "triggered": false,
+          "run_number": 1,
+          "status": "completed",
+          "duration_seconds": 79.61
+        },
+        {
+          "triggered": false,
+          "run_number": 2,
+          "status": "completed",
+          "duration_seconds": 22.66
+        },
+        {
+          "triggered": false,
+          "run_number": 3,
+          "status": "completed",
+          "duration_seconds": 8.24
+        }
+      ]
+    },
+    {
+      "query": "帮我把这张表的所有字段名记下来，写到项目 README 的『数据模型』章节里，要带类型注释。",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": true,
+      "run_details": [
+        {
+          "triggered": false,
+          "run_number": 1,
+          "status": "completed",
+          "duration_seconds": 38.25
+        },
+        {
+          "triggered": false,
+          "run_number": 2,
+          "status": "completed",
+          "duration_seconds": 17.48
+        },
+        {
+          "triggered": false,
+          "run_number": 3,
+          "status": "completed",
+          "duration_seconds": 12.31
+        }
+      ]
+    },
+    {
+      "query": "在 ods.user_register 这张表里插入一条新记录，user_id=10086，name='测试用户'，环境是 dev。",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": true,
+      "run_details": [
+        {
+          "triggered": false,
+          "run_number": 1,
+          "status": "completed",
+          "duration_seconds": 27.81
+        },
+        {
+          "triggered": false,
+          "run_number": 2,
+          "status": "completed",
+          "duration_seconds": 22.79
+        },
+        {
+          "triggered": false,
+          "run_number": 3,
+          "status": "completed",
+          "duration_seconds": 22.88
+        }
+      ]
+    },
+    {
+      "query": "今天 standup 的会议纪要：1. 季度目标对齐 2. 人员调整 3. release 时间。请整理成 markdown 发给我。",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": true,
+      "run_details": [
+        {
+          "triggered": false,
+          "run_number": 1,
+          "status": "completed",
+          "duration_seconds": 12.37
+        },
+        {
+          "triggered": false,
+          "run_number": 2,
+          "status": "completed",
+          "duration_seconds": 12.39
+        },
+        {
+          "triggered": false,
+          "run_number": 3,
+          "status": "completed",
+          "duration_seconds": 12.36
+        }
+      ]
+    },
+    {
+      "query": "搜索一下 Python 官方文档里 asyncio.gather 的用法，给我个能直接跑的例子。",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": true,
+      "run_details": [
+        {
+          "triggered": false,
+          "run_number": 1,
+          "status": "completed",
+          "duration_seconds": 38.19
+        },
+        {
+          "triggered": false,
+          "run_number": 2,
+          "status": "completed",
+          "duration_seconds": 64.24
+        },
+        {
+          "triggered": false,
+          "run_number": 3,
+          "status": "completed",
+          "duration_seconds": 38.23
+        }
+      ]
+    },
+    {
+      "query": "解释一下向量数据库里『语义搜索』是怎么实现的，跟传统全文检索有啥本质区别？",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": true,
+      "run_details": [
+        {
+          "triggered": false,
+          "run_number": 1,
+          "status": "completed",
+          "duration_seconds": 27.91
+        },
+        {
+          "triggered": false,
+          "run_number": 2,
+          "status": "completed",
+          "duration_seconds": 27.64
+        },
+        {
+          "triggered": false,
+          "run_number": 3,
+          "status": "completed",
+          "duration_seconds": 27.72
+        }
+      ]
+    },
+    {
+      "query": "把上面这段会议讨论的关键决策提炼成 5 个 bullet points，发给老板。",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": true,
+      "run_details": [
+        {
+          "triggered": false,
+          "run_number": 1,
+          "status": "completed",
+          "duration_seconds": 8.28
+        },
+        {
+          "triggered": false,
+          "run_number": 2,
+          "status": "completed",
+          "duration_seconds": 12.36
+        },
+        {
+          "triggered": false,
+          "run_number": 3,
+          "status": "ok",
+          "duration_seconds": 5.64
+        }
+      ]
+    },
+    {
+      "query": "PostgreSQL 14 的 connection pool 怎么配置 pgbouncer？我们 RDS 实例现在有 200 个客户端连接打过来。",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": true,
+      "run_details": [
+        {
+          "triggered": false,
+          "run_number": 1,
+          "status": "completed",
+          "duration_seconds": 64.25
+        },
+        {
+          "triggered": false,
+          "run_number": 2,
+          "status": "completed",
+          "duration_seconds": 90.34
+        },
+        {
+          "triggered": false,
+          "run_number": 3,
+          "status": "completed",
+          "duration_seconds": 22.65
+        }
+      ]
+    },
+    {
+      "query": "帮我看下阿里云 ADBPG 控制台的 API key 怎么生成，我要在 CI 里调用接口。",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": true,
+      "run_details": [
+        {
+          "triggered": false,
+          "run_number": 1,
+          "status": "completed",
+          "duration_seconds": 54.53
+        },
+        {
+          "triggered": false,
+          "run_number": 2,
+          "status": "completed",
+          "duration_seconds": 64.37
+        },
+        {
+          "triggered": false,
+          "run_number": 3,
+          "status": "completed",
+          "duration_seconds": 38.45
+        }
+      ]
+    },
+    {
+      "query": "Agent 这个概念在大模型领域是什么意思？跟传统 chatbot 有啥本质区别？",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": true,
+      "run_details": [
+        {
+          "triggered": false,
+          "run_number": 1,
+          "status": "completed",
+          "duration_seconds": 22.9
+        },
+        {
+          "triggered": false,
+          "run_number": 2,
+          "status": "completed",
+          "duration_seconds": 17.47
+        },
+        {
+          "triggered": false,
+          "run_number": 3,
+          "status": "completed",
+          "duration_seconds": 22.58
+        }
+      ]
+    },
+    {
+      "query": "帮我把这段长会议录音的文字稿提炼成结构化的会议纪要，按议题分组。",
+      "should_trigger": false,
+      "trigger_rate": 0.0,
+      "triggers": 0,
+      "runs": 3,
+      "pass": true,
+      "run_details": [
+        {
+          "triggered": false,
+          "run_number": 1,
+          "status": "completed",
+          "duration_seconds": 12.2
+        },
+        {
+          "triggered": false,
+          "run_number": 2,
+          "status": "completed",
+          "duration_seconds": 12.12
+        },
+        {
+          "triggered": false,
+          "run_number": 3,
+          "status": "completed",
+          "duration_seconds": 12.23
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "total": 19,
+    "passed": 10,
+    "failed": 9,
+    "accuracy": 0.5263
+  }
+}

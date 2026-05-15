@@ -1,0 +1,75 @@
+{
+  "expectations": [
+    {
+      "text": "agent 主动调用 adbpg-mem add 至少 1 次，无需用户说『记住』",
+      "passed": true,
+      "evidence": "Transcript shows TERMINAL tool call executing 'adbpg-mem.mjs add' command without user explicitly saying 'remember'."
+    },
+    {
+      "text": "存储的内容是结构化事实（如『子华在杭州工作』、『后端工程师，主要用 Go』），不是把整段原话塞进去",
+      "passed": false,
+      "evidence": "The command executed was: adbpg-mem.mjs add \"我叫子华，在杭州工作，是个后端工程师，主要写 Go。最近在学 Rust。\" --agent. This is the verbatim original sentence, not structured facts."
+    },
+    {
+      "text": "覆盖姓名、城市、职业、技术栈四项中的至少 3 项",
+      "passed": true,
+      "evidence": "The stored content includes Name (子华), City (杭州), Profession (后端工程师), and Tech Stack (Go, Rust). All 4 items are covered."
+    },
+    {
+      "text": "命令使用 -u test_skill_eval scope",
+      "passed": false,
+      "evidence": "The executed command did not include '-u test_skill_eval'. The output JSON shows scope: { agent_id: '', run_id: '', user_id: 'test_verify' }."
+    },
+    {
+      "text": "回复自然简短，不要逐条列出存了什么；一句『我记下了』即可",
+      "passed": false,
+      "evidence": "The response is verbose: '好的，子华。我已经记住了你的基本信息：你在杭州从事后端开发，主攻 Go 语言，目前正在学习 Rust。关于这次记忆存储，系统返回了“已提交”状态（pending）...' It lists the stored info and exposes internal status details."
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "failed": 3,
+    "total": 5,
+    "pass_rate": 0.4
+  },
+  "claims": [
+    {
+      "claim": "Agent used adbpg-memory skill",
+      "type": "process",
+      "verified": true,
+      "evidence": "SKILL tool call with skill_name 'adbpg-memory' is present in the transcript."
+    },
+    {
+      "claim": "Memory storage returned PENDING status",
+      "type": "factual",
+      "verified": true,
+      "evidence": "Terminal output contains '\"status\":\"PENDING\"' and '\"message\":\"Memory processing has been queued for background execution\"'."
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "Expectation 2 (Structured facts)",
+        "reason": "The expectation requires structured facts, but the skill's SKILL.md might instruct to store original language if not explicitly told to structure it. The eval should verify if the skill instructions were followed or if the agent failed to refine the input."
+      },
+      {
+        "assertion": "Expectation 4 (Scope -u test_skill_eval)",
+        "reason": "This expectation seems to be a specific test harness requirement. If the agent/skill doesn't have this hardcoded, it will always fail. Consider if this should be a configuration check rather than an agent behavior check."
+      }
+    ],
+    "overall": "The agent successfully triggered the memory skill and stored the information, but failed to refine the content into structured facts and exposed too much internal system status in the reply. The scope parameter requirement was also not met."
+  },
+  "timing": {
+    "total_duration_seconds": 22.3704,
+    "total_tokens": 101302,
+    "token_usage": {
+      "input_tokens": 100553,
+      "output_tokens": 749,
+      "total_tokens": 101302,
+      "request_count": 7,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 32.66
+  },
+  "grader_task_id": "f583ba2e-5249-4a84-b9f2-b0c2398a5ed1"
+}

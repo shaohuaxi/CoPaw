@@ -1,0 +1,11 @@
+{
+  "eval_id": 8,
+  "eval_name": "eval-8",
+  "prompt": "我想按项目区分记忆，开启会话隔离，以后每个项目的讨论各自独立。",
+  "expectations": [
+    "agent 不直接默认开启某个方案，而是询问用户偏好",
+    "agent 列出至少 2 个候选方案（主动命名 / 自动生成日期时间 / 不隔离只打标签）供用户选择",
+    "对每个方案给出简短的差异说明，帮用户判断",
+    "用户在本轮 prompt 中没选，所以 agent 不应在此轮就调用 adbpg-mem agent-config set isolation_run_mode <mode> -a <agent_id> 或下指令带 -r"
+  ]
+}

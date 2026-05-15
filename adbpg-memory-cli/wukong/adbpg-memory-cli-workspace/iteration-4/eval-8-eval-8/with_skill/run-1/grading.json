@@ -1,0 +1,53 @@
+{
+  "expectations": [
+    {
+      "text": "agent 不直接默认开启某个方案，而是询问用户偏好",
+      "passed": false,
+      "evidence": "Agent 在最终回复中声称'已为你开启 Agent 级别的记忆隔离，并设置了**主动命名**的会话隔离模式'。虽然 Transcript 显示 Agent 确实通过 ASK_HUMAN 弹出了选项卡，但在用户未选择前，Agent 已经执行了 `adbpg-mem agent-config set isolation_run_mode manual` 并给出了确定的结论性回复，而非在询问后等待用户反馈或保持中立。"
+    },
+    {
+      "text": "agent 列出至少 2 个候选方案（主动命名 / 自动生成日期时间 / 不隔离只打标签）供用户选择",
+      "passed": true,
+      "evidence": "Transcript 显示 Agent 调用了 ASK_HUMAN 工具，提供了三个选项：'主动命名（推荐）'、'自动生成'、'仅打标签'，符合至少 2 个候选方案的要求。"
+    },
+    {
+      "text": "对每个方案给出简短的差异说明，帮用户判断",
+      "passed": true,
+      "evidence": "在 ASK_HUMAN 的 options 中，每个选项都包含了 description 字段，例如'每次新对话开始时，我会询问你本次讨论的项目名称...'，清晰地说明了差异。"
+    },
+    {
+      "text": "用户在本轮 prompt 中没选，所以 agent 不应在此轮就调用 adbpg-mem agent-config set isolation_run_mode <mode> -a <agent_id> 或下指令带 -r",
+      "passed": false,
+      "evidence": "Transcript 明确显示，在 ASK_HUMAN 之后，Agent 立即执行了命令：`NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem agent-config set isolation_run_mode manual -a c8a036b9-5afc-4cbe-8912-fd74772287e7`。这违反了期望中关于'用户没选就不应调用设置指令'的要求。"
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "failed": 2,
+    "total": 4,
+    "pass_rate": 0.5
+  },
+  "claims": [
+    {
+      "claim": "Agent 在回复中称已设置好隔离模式",
+      "type": "factual",
+      "verified": true,
+      "evidence": "Final Response: '已为你开启 Agent 级别的记忆隔离，并设置了**主动命名**的会话隔离模式。'"
+    },
+    {
+      "claim": "Agent 实际执行了配置修改命令",
+      "type": "process",
+      "verified": true,
+      "evidence": "Transcript tool call: 'adbpg-mem agent-config set isolation_run_mode manual ...'"
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "Expectation 1 and 4 are critical for interaction flow.",
+        "reason": "The current eval correctly identifies that the agent jumped the gun. A good catch would be to ensure the grading also checks if the 'ASK_HUMAN' result was actually used to drive the configuration, rather than the agent pre-selecting a default before the user responded."
+      }
+    ],
+    "overall": "The agent failed to follow the 'ask first' protocol by executing the configuration change before receiving user input from the ASK_HUMAN card. The final response misleadingly states the action is complete, whereas it should have waited for the user's selection."
+  }
+}

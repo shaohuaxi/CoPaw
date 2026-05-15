@@ -1,0 +1,127 @@
+{
+  "eval_id": 4,
+  "eval_name": "eval-4",
+  "prompt": "我最喜欢的水果是什么来着？我之前跟你说过。",
+  "skill_name": "adbpg-memory",
+  "target": "wukong",
+  "query_result": {
+    "query_id": "",
+    "query_text": "我最喜欢的水果是什么来着？我之前跟你说过。",
+    "status": "completed",
+    "response": "你最喜欢的水果是**芒果**。",
+    "raw_output": {
+      "execution_workspace": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-4",
+      "wukong_task_id": "f4bb8fc1-584c-47e2-ac7c-c5f1d12ede88",
+      "wukong_session_id": "f4bb8fc1-584c-47e2-ac7c-c5f1d12ede88"
+    },
+    "token_usage": {
+      "input_tokens": 25311,
+      "output_tokens": 148,
+      "total_tokens": 25459,
+      "request_count": 4,
+      "source": "llm_proxy"
+    },
+    "duration_seconds": 7.95918607711792,
+    "error": "",
+    "eval": {},
+    "session_messages": [
+      {
+        "role": "user",
+        "content": "<skill data-id=\"c8a036b9-5afc-4cbe-8912-fd74772287e7\" data-name=\"adbpg-memory\" /> 我最喜欢的水果是什么来着？我之前跟你说过。",
+        "events": [],
+        "tool_uses": [],
+        "timestamp": 1778737687032
+      },
+      {
+        "role": "assistant",
+        "content": "你最喜欢的水果是**芒果**。",
+        "events": [
+          {
+            "runId": "eval-8d4573c0-980c-4366-af03-ae5185027c42",
+            "threadId": "f4bb8fc1-584c-47e2-ac7c-c5f1d12ede88",
+            "timestamp": 1778737691461,
+            "type": "RUN_STARTED"
+          },
+          {
+            "e2e_ttft_ms": 4428,
+            "timestamp": 1778737691461,
+            "ttft_ms": 1321,
+            "type": "FIRST_TOKEN"
+          },
+          {
+            "messageId": "direct-text-cd1a266b-f9f2-41ff-8f96-6b9bfa3253a9",
+            "role": "assistant",
+            "timestamp": 1778737691530,
+            "type": "TEXT_MESSAGE_START"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 20091,
+              "totalTokens": 200000,
+              "usageRatio": 0.10000000149011612
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778737691586,
+            "type": "CUSTOM"
+          },
+          {
+            "delta": "你最喜欢的水果是**芒果**。",
+            "messageId": "direct-text-cd1a266b-f9f2-41ff-8f96-6b9bfa3253a9",
+            "timestamp": 1778737691530,
+            "type": "TEXT_MESSAGE_CONTENT"
+          },
+          {
+            "messageId": "direct-text-cd1a266b-f9f2-41ff-8f96-6b9bfa3253a9",
+            "timestamp": 1778737691587,
+            "type": "TEXT_MESSAGE_END"
+          },
+          {
+            "data": {
+              "answer_id": "eval-8d4573c0-980c-4366-af03-ae5185027c42",
+              "generated_at": 1778737693362,
+              "items": [
+                {
+                  "text": "记录我喜欢吃草莓"
+                },
+                {
+                  "text": "删除关于芒果的记忆"
+                },
+                {
+                  "text": "我还说过哪些喜好"
+                }
+              ],
+              "status": "ready",
+              "suggestions": [
+                "记录我喜欢吃草莓",
+                "删除关于芒果的记忆",
+                "我还说过哪些喜好"
+              ]
+            },
+            "name": "related_questions",
+            "timestamp": 1778737693362,
+            "type": "CUSTOM"
+          },
+          {
+            "cached_tokens": 0,
+            "completion_tokens": 7,
+            "prompt_tokens": 20084,
+            "timestamp": 1778737693362,
+            "total_tokens": 20091,
+            "type": "USAGE"
+          },
+          {
+            "runId": "eval-8d4573c0-980c-4366-af03-ae5185027c42",
+            "threadId": "f4bb8fc1-584c-47e2-ac7c-c5f1d12ede88",
+            "timestamp": 1778737693362,
+            "type": "RUN_FINISHED"
+          }
+        ],
+        "tool_uses": [],
+        "timestamp": 1778737691461
+      }
+    ]
+  },
+  "duration_seconds": 7.9610817432403564
+}

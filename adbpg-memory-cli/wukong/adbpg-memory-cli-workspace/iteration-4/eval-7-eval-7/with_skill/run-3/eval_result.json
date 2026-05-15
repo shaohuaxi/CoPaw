@@ -1,0 +1,206 @@
+{
+  "eval_id": 7,
+  "eval_name": "eval-7",
+  "prompt": "我想开启 Agent 记忆隔离，工作助手和生活助手的记忆要分开存。",
+  "skill_name": "adbpg-memory",
+  "target": "wukong",
+  "query_result": {
+    "query_id": "",
+    "query_text": "我想开启 Agent 记忆隔离，工作助手和生活助手的记忆要分开存。",
+    "status": "completed",
+    "response": "根据记忆，你已启用 Agent 记忆隔离：工作助手 (`work-assistant`) 与生活助手 (`life-assistant`) 的记忆完全隔离，`isolation_agent` 均为 `true`，会话隔离模式为 `manual`。\n\n当前配置已满足你的需求——两个助手的记忆分开存储，互不干扰。如果你需要调整隔离模式或查看当前状态，我可以帮你进一步操作。",
+    "raw_output": {
+      "execution_workspace": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-4",
+      "wukong_task_id": "6a48092e-4b7c-45cb-8050-e9035ce50912",
+      "wukong_session_id": "6a48092e-4b7c-45cb-8050-e9035ce50912"
+    },
+    "token_usage": {
+      "input_tokens": 66737,
+      "output_tokens": 512,
+      "total_tokens": 67249,
+      "request_count": 6,
+      "source": "llm_proxy"
+    },
+    "duration_seconds": 16.870256900787354,
+    "error": "",
+    "eval": {},
+    "session_messages": [
+      {
+        "role": "user",
+        "content": "<skill data-id=\"c8a036b9-5afc-4cbe-8912-fd74772287e7\" data-name=\"adbpg-memory\" /> 我想开启 Agent 记忆隔离，工作助手和生活助手的记忆要分开存。",
+        "events": [],
+        "tool_uses": [],
+        "timestamp": 1778738567039
+      },
+      {
+        "role": "assistant",
+        "content": "根据记忆，你已启用 Agent 记忆隔离：工作助手 (`work-assistant`) 与生活助手 (`life-assistant`) 的记忆完全隔离，`isolation_agent` 均为 `true`，会话隔离模式为 `manual`。\n\n当前配置已满足你的需求——两个助手的记忆分开存储，互不干扰。如果你需要调整隔离模式或查看当前状态，我可以帮你进一步操作。",
+        "events": [
+          {
+            "runId": "eval-cd339a9b-fb7f-4e3d-9745-6edab50e4f95",
+            "threadId": "6a48092e-4b7c-45cb-8050-e9035ce50912",
+            "timestamp": 1778738573505,
+            "type": "RUN_STARTED"
+          },
+          {
+            "e2e_ttft_ms": 6464,
+            "timestamp": 1778738573505,
+            "ttft_ms": 2666,
+            "type": "FIRST_TOKEN"
+          },
+          {
+            "activityType": "SKILL",
+            "content": {
+              "finish_time": 1778738574846,
+              "purpose": "---\nname: adbpg-memory\ndescription: >\n  ADBPG 长期记忆技能。每次新会话你没有任何上下文，必须通过 adbpg-mem 检索长期记忆。\n\n  【检索记忆 - 必须先做】下列任何一种模式出现，必须先执行 adbpg-mem search 再回答：\n  (a) 含\"我/我的/我之前/我上次/我提过/还记得/来着/记不清/那本/那个\"等回忆词；\n  (b) 询问个人偏好/身份/经历/历史决策；\n  (c) 需要个性化（推荐、建议）的请求。\n  命令格式：NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"关键词\" --agent\n  禁止在 search 之前就直接回答\"我不知道\"或\"没听你说过\"——你的当前会话上下文是空的，\n  必须从长期记忆里捞才能知道用户之前是否说过。这是硬性规则。\n\n  【存储记忆】用户说\"记住\"、提到个人信息、做出决策时，\n  执行 NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"提炼的事实\" --agent 存储。\n  提炼事实再存储，不存原文，保留用户原始语言，不存敏感信息。\n\n  【输出格式】--agent 返回 JSON，检查 status 字段（ok/error），搜索结果在 data 数组中，score 大于 0.7 视为高度相关。\n\n  【展示检索结果】检索到记忆后，在回复开头简要列出相关记忆（如\"根据记忆：你叫子华，喜欢 Python\"），\n  让用户能看到检索到了什么。如果检索到记忆但与问题无关，也简要提及\"检索到 N 条记忆但与当前问题无关\"。\n\n  不要在回复中暴露 adbpg-mem 命令细节和原始 JSON。更多用法参见 SKILL.md。\nlicense: Apache-2.0\nmetadata:\n  author: ADBPG\n  version: \"0.1.0\"\n  category: ai-memory\n  tags: \"memory, personalization, adbpg, cli, long-term-memory\"\n  dependencies:\n    apis:\n      - \"ADBPG Memory REST API (rest_base_url, configured via adbpg-mem init)\"\n      - \"ADBPG PostgreSQL endpoint (SQL mode, host/port/dbname configured via adbpg-mem init)\"\ncompatibility: >\n  Node.js 18+ (npm install) 或 Python 3.10+ (pip install)。\n  需要 adbpg-mem CLI 已安装并通过 adbpg-mem init 完成配置。\n  支持 SQL 模式（直连 ADBPG）和 REST 模式（HTTP API）。\n---",
+              "skill_name": "adbpg-memory",
+              "snippet": "激活 adbpg-memory 技能以处理记忆隔离请求",
+              "start_time": 1778738574846,
+              "status": "completed"
+            },
+            "messageId": "tool_msg:90cd3d83-1dff-4ac7-9f33-7c1da9200411",
+            "timestamp": 1778738574846,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 23083,
+              "totalTokens": 200000,
+              "usageRatio": 0.119999997317791
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778738574846,
+            "type": "CUSTOM"
+          },
+          {
+            "messageId": "direct-text-f04ec5a4-c261-40cf-a854-760659f35ec0",
+            "role": "assistant",
+            "timestamp": 1778738576299,
+            "type": "TEXT_MESSAGE_START"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 30008,
+              "totalTokens": 200000,
+              "usageRatio": 0.15000000596046448
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778738577763,
+            "type": "CUSTOM"
+          },
+          {
+            "delta": "根据记忆，你已启用 Agent 记忆隔离：工作助手 (`work-assistant`) 与生活助手 (`life-assistant`) 的记忆完全隔离，`isolation_agent` 均为 `true`，会话隔离模式为 `manual`。\n\n当前配置已满足你的需求——两个助手的记忆分开存储，互不干扰。如果你需要调整隔离模式或查看当前状态，我可以帮你进一步操作。",
+            "messageId": "direct-text-f04ec5a4-c261-40cf-a854-760659f35ec0",
+            "timestamp": 1778738576299,
+            "type": "TEXT_MESSAGE_CONTENT"
+          },
+          {
+            "messageId": "direct-text-f04ec5a4-c261-40cf-a854-760659f35ec0",
+            "timestamp": 1778738577763,
+            "type": "TEXT_MESSAGE_END"
+          },
+          {
+            "data": {
+              "answer_id": "eval-cd339a9b-fb7f-4e3d-9745-6edab50e4f95",
+              "generated_at": 1778738579130,
+              "items": [
+                {
+                  "text": "查看当前记忆隔离配置详情"
+                },
+                {
+                  "text": "切换为自动会话隔离模式"
+                },
+                {
+                  "text": "清理工作助手的历史记忆"
+                }
+              ],
+              "status": "ready",
+              "suggestions": [
+                "查看当前记忆隔离配置详情",
+                "切换为自动会话隔离模式",
+                "清理工作助手的历史记忆"
+              ]
+            },
+            "name": "related_questions",
+            "timestamp": 1778738579130,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "ARTIFACT",
+            "content": {
+              "artifactsMetadata": [
+                {
+                  "artifactName": "Agent 记忆隔离配置说明.md",
+                  "createdAt": 1778737055614,
+                  "deliveryUrl": null,
+                  "description": "包含 Agent 记忆隔离配置的详细说明和操作指南",
+                  "localPath": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/Agent 记忆隔离配置说明.md",
+                  "originalSource": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/c8a036b9-5afc-4cbe-8912-fd74772287e7/SKILL.md",
+                  "source": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/Agent 记忆隔离配置说明.md",
+                  "sourceType": "local_path"
+                }
+              ],
+              "generatedAt": 1778738581990
+            },
+            "messageId": "tool_msg:18a5179a-b91c-4260-b27f-85f88032fe50",
+            "timestamp": 1778738581990,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "cached_tokens": 21148,
+            "completion_tokens": 320,
+            "prompt_tokens": 61318,
+            "timestamp": 1778738581990,
+            "total_tokens": 61638,
+            "type": "USAGE"
+          },
+          {
+            "runId": "eval-cd339a9b-fb7f-4e3d-9745-6edab50e4f95",
+            "threadId": "6a48092e-4b7c-45cb-8050-e9035ce50912",
+            "timestamp": 1778738581990,
+            "type": "RUN_FINISHED"
+          }
+        ],
+        "tool_uses": [
+          {
+            "id": "tool_msg:90cd3d83-1dff-4ac7-9f33-7c1da9200411",
+            "name": "SKILL",
+            "input": {
+              "finish_time": 1778738574846,
+              "purpose": "---\nname: adbpg-memory\ndescription: >\n  ADBPG 长期记忆技能。每次新会话你没有任何上下文，必须通过 adbpg-mem 检索长期记忆。\n\n  【检索记忆 - 必须先做】下列任何一种模式出现，必须先执行 adbpg-mem search 再回答：\n  (a) 含\"我/我的/我之前/我上次/我提过/还记得/来着/记不清/那本/那个\"等回忆词；\n  (b) 询问个人偏好/身份/经历/历史决策；\n  (c) 需要个性化（推荐、建议）的请求。\n  命令格式：NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"关键词\" --agent\n  禁止在 search 之前就直接回答\"我不知道\"或\"没听你说过\"——你的当前会话上下文是空的，\n  必须从长期记忆里捞才能知道用户之前是否说过。这是硬性规则。\n\n  【存储记忆】用户说\"记住\"、提到个人信息、做出决策时，\n  执行 NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"提炼的事实\" --agent 存储。\n  提炼事实再存储，不存原文，保留用户原始语言，不存敏感信息。\n\n  【输出格式】--agent 返回 JSON，检查 status 字段（ok/error），搜索结果在 data 数组中，score 大于 0.7 视为高度相关。\n\n  【展示检索结果】检索到记忆后，在回复开头简要列出相关记忆（如\"根据记忆：你叫子华，喜欢 Python\"），\n  让用户能看到检索到了什么。如果检索到记忆但与问题无关，也简要提及\"检索到 N 条记忆但与当前问题无关\"。\n\n  不要在回复中暴露 adbpg-mem 命令细节和原始 JSON。更多用法参见 SKILL.md。\nlicense: Apache-2.0\nmetadata:\n  author: ADBPG\n  version: \"0.1.0\"\n  category: ai-memory\n  tags: \"memory, personalization, adbpg, cli, long-term-memory\"\n  dependencies:\n    apis:\n      - \"ADBPG Memory REST API (rest_base_url, configured via adbpg-mem init)\"\n      - \"ADBPG PostgreSQL endpoint (SQL mode, host/port/dbname configured via adbpg-mem init)\"\ncompatibility: >\n  Node.js 18+ (npm install) 或 Python 3.10+ (pip install)。\n  需要 adbpg-mem CLI 已安装并通过 adbpg-mem init 完成配置。\n  支持 SQL 模式（直连 ADBPG）和 REST 模式（HTTP API）。\n---",
+              "skill_name": "adbpg-memory",
+              "snippet": "激活 adbpg-memory 技能以处理记忆隔离请求",
+              "start_time": 1778738574846,
+              "status": "completed"
+            }
+          },
+          {
+            "id": "tool_msg:18a5179a-b91c-4260-b27f-85f88032fe50",
+            "name": "ARTIFACT",
+            "input": {
+              "artifactsMetadata": [
+                {
+                  "artifactName": "Agent 记忆隔离配置说明.md",
+                  "createdAt": 1778737055614,
+                  "deliveryUrl": null,
+                  "description": "包含 Agent 记忆隔离配置的详细说明和操作指南",
+                  "localPath": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/Agent 记忆隔离配置说明.md",
+                  "originalSource": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/c8a036b9-5afc-4cbe-8912-fd74772287e7/SKILL.md",
+                  "source": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/Agent 记忆隔离配置说明.md",
+                  "sourceType": "local_path"
+                }
+              ],
+              "generatedAt": 1778738581990
+            }
+          }
+        ],
+        "timestamp": 1778738573505
+      }
+    ]
+  },
+  "duration_seconds": 16.87126398086548
+}

@@ -1,0 +1,312 @@
+{
+  "eval_id": 3,
+  "eval_name": "eval-3",
+  "prompt": "今天杭州天气怎么样？外面冷不冷？",
+  "skill_name": "adbpg-memory",
+  "target": "wukong",
+  "query_result": {
+    "query_id": "",
+    "query_text": "今天杭州天气怎么样？外面冷不冷？",
+    "status": "completed",
+    "response": "根据长期记忆，你目前在杭州工作。\n\n今天（5月14日）杭州的天气为**小雨转多云**，气温在 **20°C 到 26°C** 之间 [2]。\n\n关于“外面冷不冷”：\n目前的气温（20-26°C）属于比较舒适的范围，体感上**不会冷**。但由于有小雨，空气湿度可能较大，早晚可能会有一丝凉意，建议出门时携带雨具，并可根据个人体感准备一件薄外套以防万一。",
+    "raw_output": {
+      "execution_workspace": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-4",
+      "wukong_task_id": "42e2fd27-4bde-4782-a3da-35565aa6a5c9",
+      "wukong_session_id": "42e2fd27-4bde-4782-a3da-35565aa6a5c9"
+    },
+    "token_usage": {
+      "input_tokens": 134051,
+      "output_tokens": 1501,
+      "total_tokens": 135552,
+      "request_count": 9,
+      "source": "llm_proxy"
+    },
+    "duration_seconds": 48.158891916275024,
+    "error": "",
+    "eval": {},
+    "session_messages": [
+      {
+        "role": "user",
+        "content": "<skill data-id=\"c8a036b9-5afc-4cbe-8912-fd74772287e7\" data-name=\"adbpg-memory\" /> 今天杭州天气怎么样？外面冷不冷？",
+        "events": [],
+        "tool_uses": [],
+        "timestamp": 1778737449437
+      },
+      {
+        "role": "assistant",
+        "content": "根据长期记忆，你目前在杭州工作。\n\n今天（5月14日）杭州的天气为**小雨转多云**，气温在 **20°C 到 26°C** 之间 [2]。\n\n关于“外面冷不冷”：\n目前的气温（20-26°C）属于比较舒适的范围，体感上**不会冷**。但由于有小雨，空气湿度可能较大，早晚可能会有一丝凉意，建议出门时携带雨具，并可根据个人体感准备一件薄外套以防万一。",
+        "events": [
+          {
+            "runId": "eval-87cfc100-acd3-43b7-866a-f4cdc6270705",
+            "threadId": "42e2fd27-4bde-4782-a3da-35565aa6a5c9",
+            "timestamp": 1778737454484,
+            "type": "RUN_STARTED"
+          },
+          {
+            "e2e_ttft_ms": 5045,
+            "timestamp": 1778737454484,
+            "ttft_ms": 2274,
+            "type": "FIRST_TOKEN"
+          },
+          {
+            "activityType": "SKILL",
+            "content": {
+              "skill_name": "adbpg-memory",
+              "snippet": "激活 adbpg-memory 技能以检索长期记忆或执行相关操作",
+              "start_time": 1778737455669,
+              "status": "activating"
+            },
+            "messageId": "tool_msg:dba8eeb6-2915-46e1-b480-7ceafb691af0",
+            "timestamp": 1778737455669,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 24062,
+              "totalTokens": 200000,
+              "usageRatio": 0.119999997317791
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778737455669,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"杭州 天气 偏好\" --agent",
+              "exit_code": 0,
+              "finish_time": 1778737459922,
+              "output": "{\"command\":\"search\",\"count\":5,\"data\":[{\"created_at\":\"2026-05-14T03:27:49.037220+00:00\",\"hash\":\"b04e8594d7d487d7b1dade7748477afd\",\"id\":\"832135f7-619c-437d-83e3-70592194f4ec\",\"memory\":\"用户在杭州工作\",\"metadata\":{\"categories\":[\"professional_details\",\"travel\"]},\"score\":0.555021637079525,\"updated_at\":\"2026-05-14T05:40:56.644006+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:26:41.149155+00:00\",\"hash\":\"3926bde6c68dcc1f53ae055907ac0453\",\"id\":\"4173181d-9785-4d62-90f3-960e26ee79b0\",\"memory\":\"最喜欢的水果是芒果\",\"metadata\":{\"categories\":[\"food\"]},\"score\":0.296669483184814,\"updated_at\":\"2026-05-14T03:26:41.149155+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:27:49.678609+00:00\",\"hash\":\"25b2d7323a3c17b485401284f7969ce7\",\"id\":\"8591c1fc-526c-4616-a8be-08b1a69a4c96\",\"memory\":\"是后端工程师\",\"metadata\":{\"categories\":[\"professional_details\"]},\"score\":0.26004473924903504,\"updated_at\":\"2026-05-14T03:27:49.678609+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:27:48.438488+00:00\",\"hash\":\"e65e54ad94c2d48fb7e18c26bee25b83\",\"id\":\"815a7941-0fdb-41a9-a500-4038d99e8db4\",\"memory\":\"名字是子华\",\"metadata\":{\"categories\":[\"personal_details\"]},\"score\":0.19765499546200105,\"updated_at\":\"2026-05-14T03:27:48.438488+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:27:50.293226+00:00\",\"hash\":\"92f6bc207762985a67afb4761cbc21cf\",\"id\":\"9ea9c18f-bdfa-4ec6-a578-1242e9ed1daf\",\"memory\":\"主要使用 Go 编程语言\",\"metadata\":{\"categories\":[\"technology\"]},\"score\":0.16567905749803502,\"updated_at\":\"2026-05-14T05:43:23.549842+00:00\",\"user_id\":\"test_verify\"}],\"duration_ms\":497,\"scope\":{\"agent_id\":\"\",\"run_id\":\"\",\"user_id\":\"test_verify\"},\"status\":\"ok\"}",
+              "output_chunks": [],
+              "snippet": "检索长期记忆中关于杭州天气的偏好或历史记录",
+              "start_time": 1778737459102,
+              "status": "completed",
+              "working_dir": ""
+            },
+            "messageId": "tool_msg:6281c589-ffb8-4618-aca8-c713883d029d",
+            "timestamp": 1778737459102,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 29557,
+              "totalTokens": 200000,
+              "usageRatio": 0.15000000596046448
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778737459103,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "SEARCH",
+            "content": {
+              "finish_time": 1778737464084,
+              "queries": [
+                "杭州今天天气 气温"
+              ],
+              "results": [
+                {
+                  "logo_url": "https://www.hzqx.com/favicon.ico",
+                  "snippet": "较昨日同期 相对湿度： % 风力： -- 气压： hPa 近1小时降水: -- mm 能见度： m *实时数据、未经人工复核 2025年10月31日 13时35分 过去24小时 未来24小时 未来7天 主城区 未来7天天气客观预报 （该预报数据为数值预报自动输出，未经人工订正，仅供参考） 白天 08时 | 20时 夜晚 昨天20时 | 当天08时 * 白天 为当天08时到20时，通常气温为最高温度； 夜晚 为昨天20时到当天08时，通常气温为最低温度。 天气实况 0-3小时降水 雷达拼图 卫星云图 台风路径 详情 杭州市当前气温 分布图 气温(℃) 气象影视 +",
+                  "title": "杭州 气象",
+                  "url": "https://www.hzqx.com/"
+                },
+                {
+                  "logo_url": "https://www.weather.com.cn/favicon.ico",
+                  "snippet": "14日（今天） 小雨 26 / 20℃ <3级 15日（明天） 多云转晴 28 / 20℃ <3级 16日（后天） 晴转多云 30 / 21℃ <3级 17日（周日） 多云 30 / 20℃ <3级 18日（周一） 多云 30 / 22℃ <3级 19日（周二） 多云 32 / 23℃ <3级 20日（周三） 中雨 32 / 22℃ <3级 分时段预报 生活指数 蓝天预报 11时 14时 17时 20时 23时 02时 05时 08时 25℃ 25℃ 24℃ 23℃ 22℃ 21℃ 20℃ 22℃ 东南风 东南风 东南风 东南风 东南风 东南风 东南风 东南风 <3级 <3级 <3级 <3级",
+                  "title": "杭州 - 天气 网",
+                  "url": "https://www.weather.com.cn/weather/101210101.shtml?TenantId=2341971941469350916&accToken=12917ae7-c10c-4b31-8eb2-c7719092b9c9&moduleid=cb7b43ef-2def-4227-a3cd-5620d902909d&ticket=null"
+                },
+                {
+                  "logo_url": "https://baidu.weather.com.cn/favicon.ico",
+                  "snippet": "48小时预报 穿衣助手 张家口05月11日此日天气较舒适 跟着天气穿对衣 轻松拿捏，每日氛围感 查看详情 15天预报 40天预报 温度趋势 降水趋势 生活指数 穿衣 跑步 钓鱼 洗车 晾晒 污染扩散指数 感冒指数 出行晴雨 沿途天气",
+                  "title": "杭州-中国 天气 网",
+                  "url": "http://baidu.weather.com.cn/mweather/101210101.shtml"
+                },
+                {
+                  "logo_url": "https://baidu.weather.com.cn/favicon.ico",
+                  "snippet": "今天 05/11 多云 32/20℃ 周二 05/12 多云 32/22℃ 周三 05/13 34/22℃ 周四 05/14 31/22℃ 周五 05/15 30/21℃ 周六 05/16 30/20℃ 周日 05/17 31/21℃ 29/21℃",
+                  "title": "杭州-中国 天气 网",
+                  "url": "https://baidu.weather.com.cn/mweather15d/101210101.shtml?_t=1552052601"
+                },
+                {
+                  "logo_url": "https://www.weather.com.cn/favicon.ico",
+                  "snippet": "11日（今天） 多云 32 / 20℃ <3级 12日（明天） 多云 32 / 22℃ <3级 13日（后天） 多云 34 / 22℃ <3级 14日（周四） 多云 31 / 22℃ <3级 15日（周五） 晴 30 / 21℃ <3级 16日（周六） 晴转多云 30 / 20℃ <3级 17日（周日） 多云 31 / 21℃ <3级 分时段预报 生活指数 蓝天预报 11时 14时 17时 20时 23时 02时 05时 08时 29℃ 30℃ 31℃ 25℃ 23℃ 22℃ 20℃ 25℃ 西南风 南风 南风 南风 南风 西南风 南风 西南风 <3级 <3级 <3级 <3级 <3级 <3级",
+                  "title": "【 杭州天气 】 杭州天气 预报,蓝天,蓝天预报,雾霾,雾霾消散, 天气 预报一周, 天气 预报15天查询",
+                  "url": "https://www.weather.com.cn/html/weather/101210101.shtml"
+                }
+              ],
+              "search_type": "web",
+              "snippet": "查询杭州今天的实时天气和气温情况",
+              "start_time": 1778737463009,
+              "status": "completed"
+            },
+            "messageId": "tool_msg:810d8860-7281-4ef0-92d9-012d663c8036",
+            "timestamp": 1778737463009,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 30670,
+              "totalTokens": 200000,
+              "usageRatio": 0.15000000596046448
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778737463009,
+            "type": "CUSTOM"
+          },
+          {
+            "messageId": "direct-text-18550fc3-58b0-4ddf-ac24-6bd04f05df91",
+            "role": "assistant",
+            "timestamp": 1778737469757,
+            "type": "TEXT_MESSAGE_START"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 32179,
+              "totalTokens": 200000,
+              "usageRatio": 0.1599999964237213
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778737472659,
+            "type": "CUSTOM"
+          },
+          {
+            "delta": "根据长期记忆，你目前在杭州工作。\n\n今天（5月14日）杭州的天气为**小雨转多云**，气温在 **20°C 到 26°C** 之间 [2]。\n\n关于“外面冷不冷”：\n目前的气温（20-26°C）属于比较舒适的范围，体感上**不会冷**。但由于有小雨，空气湿度可能较大，早晚可能会有一丝凉意，建议出门时携带雨具，并可根据个人体感准备一件薄外套以防万一。",
+            "messageId": "direct-text-18550fc3-58b0-4ddf-ac24-6bd04f05df91",
+            "timestamp": 1778737469757,
+            "type": "TEXT_MESSAGE_CONTENT"
+          },
+          {
+            "messageId": "direct-text-18550fc3-58b0-4ddf-ac24-6bd04f05df91",
+            "timestamp": 1778737472659,
+            "type": "TEXT_MESSAGE_END"
+          },
+          {
+            "data": {
+              "answer_id": "eval-87cfc100-acd3-43b7-866a-f4cdc6270705",
+              "generated_at": 1778737474082,
+              "items": [
+                {
+                  "text": "查询明天杭州天气预报"
+                },
+                {
+                  "text": "推荐适合雨天的通勤穿搭"
+                },
+                {
+                  "text": "查看本周剩余时间天气趋势"
+                }
+              ],
+              "status": "ready",
+              "suggestions": [
+                "查询明天杭州天气预报",
+                "推荐适合雨天的通勤穿搭",
+                "查看本周剩余时间天气趋势"
+              ]
+            },
+            "name": "related_questions",
+            "timestamp": 1778737474082,
+            "type": "CUSTOM"
+          },
+          {
+            "cached_tokens": 41815,
+            "completion_tokens": 1340,
+            "prompt_tokens": 125701,
+            "timestamp": 1778737492402,
+            "total_tokens": 127041,
+            "type": "USAGE"
+          },
+          {
+            "runId": "eval-87cfc100-acd3-43b7-866a-f4cdc6270705",
+            "threadId": "42e2fd27-4bde-4782-a3da-35565aa6a5c9",
+            "timestamp": 1778737492402,
+            "type": "RUN_FINISHED"
+          }
+        ],
+        "tool_uses": [
+          {
+            "id": "tool_msg:dba8eeb6-2915-46e1-b480-7ceafb691af0",
+            "name": "SKILL",
+            "input": {
+              "skill_name": "adbpg-memory",
+              "snippet": "激活 adbpg-memory 技能以检索长期记忆或执行相关操作",
+              "start_time": 1778737455669,
+              "status": "activating"
+            }
+          },
+          {
+            "id": "tool_msg:6281c589-ffb8-4618-aca8-c713883d029d",
+            "name": "TERMINAL",
+            "input": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"杭州 天气 偏好\" --agent",
+              "exit_code": 0,
+              "finish_time": 1778737459922,
+              "output": "{\"command\":\"search\",\"count\":5,\"data\":[{\"created_at\":\"2026-05-14T03:27:49.037220+00:00\",\"hash\":\"b04e8594d7d487d7b1dade7748477afd\",\"id\":\"832135f7-619c-437d-83e3-70592194f4ec\",\"memory\":\"用户在杭州工作\",\"metadata\":{\"categories\":[\"professional_details\",\"travel\"]},\"score\":0.555021637079525,\"updated_at\":\"2026-05-14T05:40:56.644006+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:26:41.149155+00:00\",\"hash\":\"3926bde6c68dcc1f53ae055907ac0453\",\"id\":\"4173181d-9785-4d62-90f3-960e26ee79b0\",\"memory\":\"最喜欢的水果是芒果\",\"metadata\":{\"categories\":[\"food\"]},\"score\":0.296669483184814,\"updated_at\":\"2026-05-14T03:26:41.149155+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:27:49.678609+00:00\",\"hash\":\"25b2d7323a3c17b485401284f7969ce7\",\"id\":\"8591c1fc-526c-4616-a8be-08b1a69a4c96\",\"memory\":\"是后端工程师\",\"metadata\":{\"categories\":[\"professional_details\"]},\"score\":0.26004473924903504,\"updated_at\":\"2026-05-14T03:27:49.678609+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:27:48.438488+00:00\",\"hash\":\"e65e54ad94c2d48fb7e18c26bee25b83\",\"id\":\"815a7941-0fdb-41a9-a500-4038d99e8db4\",\"memory\":\"名字是子华\",\"metadata\":{\"categories\":[\"personal_details\"]},\"score\":0.19765499546200105,\"updated_at\":\"2026-05-14T03:27:48.438488+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:27:50.293226+00:00\",\"hash\":\"92f6bc207762985a67afb4761cbc21cf\",\"id\":\"9ea9c18f-bdfa-4ec6-a578-1242e9ed1daf\",\"memory\":\"主要使用 Go 编程语言\",\"metadata\":{\"categories\":[\"technology\"]},\"score\":0.16567905749803502,\"updated_at\":\"2026-05-14T05:43:23.549842+00:00\",\"user_id\":\"test_verify\"}],\"duration_ms\":497,\"scope\":{\"agent_id\":\"\",\"run_id\":\"\",\"user_id\":\"test_verify\"},\"status\":\"ok\"}",
+              "output_chunks": [],
+              "snippet": "检索长期记忆中关于杭州天气的偏好或历史记录",
+              "start_time": 1778737459102,
+              "status": "completed",
+              "working_dir": ""
+            }
+          },
+          {
+            "id": "tool_msg:810d8860-7281-4ef0-92d9-012d663c8036",
+            "name": "SEARCH",
+            "input": {
+              "finish_time": 1778737464084,
+              "queries": [
+                "杭州今天天气 气温"
+              ],
+              "results": [
+                {
+                  "logo_url": "https://www.hzqx.com/favicon.ico",
+                  "snippet": "较昨日同期 相对湿度： % 风力： -- 气压： hPa 近1小时降水: -- mm 能见度： m *实时数据、未经人工复核 2025年10月31日 13时35分 过去24小时 未来24小时 未来7天 主城区 未来7天天气客观预报 （该预报数据为数值预报自动输出，未经人工订正，仅供参考） 白天 08时 | 20时 夜晚 昨天20时 | 当天08时 * 白天 为当天08时到20时，通常气温为最高温度； 夜晚 为昨天20时到当天08时，通常气温为最低温度。 天气实况 0-3小时降水 雷达拼图 卫星云图 台风路径 详情 杭州市当前气温 分布图 气温(℃) 气象影视 +",
+                  "title": "杭州 气象",
+                  "url": "https://www.hzqx.com/"
+                },
+                {
+                  "logo_url": "https://www.weather.com.cn/favicon.ico",
+                  "snippet": "14日（今天） 小雨 26 / 20℃ <3级 15日（明天） 多云转晴 28 / 20℃ <3级 16日（后天） 晴转多云 30 / 21℃ <3级 17日（周日） 多云 30 / 20℃ <3级 18日（周一） 多云 30 / 22℃ <3级 19日（周二） 多云 32 / 23℃ <3级 20日（周三） 中雨 32 / 22℃ <3级 分时段预报 生活指数 蓝天预报 11时 14时 17时 20时 23时 02时 05时 08时 25℃ 25℃ 24℃ 23℃ 22℃ 21℃ 20℃ 22℃ 东南风 东南风 东南风 东南风 东南风 东南风 东南风 东南风 <3级 <3级 <3级 <3级",
+                  "title": "杭州 - 天气 网",
+                  "url": "https://www.weather.com.cn/weather/101210101.shtml?TenantId=2341971941469350916&accToken=12917ae7-c10c-4b31-8eb2-c7719092b9c9&moduleid=cb7b43ef-2def-4227-a3cd-5620d902909d&ticket=null"
+                },
+                {
+                  "logo_url": "https://baidu.weather.com.cn/favicon.ico",
+                  "snippet": "48小时预报 穿衣助手 张家口05月11日此日天气较舒适 跟着天气穿对衣 轻松拿捏，每日氛围感 查看详情 15天预报 40天预报 温度趋势 降水趋势 生活指数 穿衣 跑步 钓鱼 洗车 晾晒 污染扩散指数 感冒指数 出行晴雨 沿途天气",
+                  "title": "杭州-中国 天气 网",
+                  "url": "http://baidu.weather.com.cn/mweather/101210101.shtml"
+                },
+                {
+                  "logo_url": "https://baidu.weather.com.cn/favicon.ico",
+                  "snippet": "今天 05/11 多云 32/20℃ 周二 05/12 多云 32/22℃ 周三 05/13 34/22℃ 周四 05/14 31/22℃ 周五 05/15 30/21℃ 周六 05/16 30/20℃ 周日 05/17 31/21℃ 29/21℃",
+                  "title": "杭州-中国 天气 网",
+                  "url": "https://baidu.weather.com.cn/mweather15d/101210101.shtml?_t=1552052601"
+                },
+                {
+                  "logo_url": "https://www.weather.com.cn/favicon.ico",
+                  "snippet": "11日（今天） 多云 32 / 20℃ <3级 12日（明天） 多云 32 / 22℃ <3级 13日（后天） 多云 34 / 22℃ <3级 14日（周四） 多云 31 / 22℃ <3级 15日（周五） 晴 30 / 21℃ <3级 16日（周六） 晴转多云 30 / 20℃ <3级 17日（周日） 多云 31 / 21℃ <3级 分时段预报 生活指数 蓝天预报 11时 14时 17时 20时 23时 02时 05时 08时 29℃ 30℃ 31℃ 25℃ 23℃ 22℃ 20℃ 25℃ 西南风 南风 南风 南风 南风 西南风 南风 西南风 <3级 <3级 <3级 <3级 <3级 <3级",
+                  "title": "【 杭州天气 】 杭州天气 预报,蓝天,蓝天预报,雾霾,雾霾消散, 天气 预报一周, 天气 预报15天查询",
+                  "url": "https://www.weather.com.cn/html/weather/101210101.shtml"
+                }
+              ],
+              "search_type": "web",
+              "snippet": "查询杭州今天的实时天气和气温情况",
+              "start_time": 1778737463009,
+              "status": "completed"
+            }
+          }
+        ],
+        "timestamp": 1778737454484
+      }
+    ]
+  },
+  "duration_seconds": 48.16028094291687
+}

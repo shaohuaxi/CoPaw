@@ -1,0 +1,210 @@
+{
+  "eval_id": 1,
+  "eval_name": "eval-1",
+  "prompt": "记住，我最喜欢的水果是芒果，这点我一直没变。",
+  "skill_name": "adbpg-memory",
+  "target": "wukong",
+  "query_result": {
+    "query_id": "",
+    "query_text": "记住，我最喜欢的水果是芒果，这点我一直没变。",
+    "status": "completed",
+    "response": "好的，我已经记住了：你最喜欢的水果是芒果。",
+    "raw_output": {
+      "execution_workspace": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-4",
+      "wukong_task_id": "004aeca6-501e-482d-aa1a-988a0744871a",
+      "wukong_session_id": "004aeca6-501e-482d-aa1a-988a0744871a"
+    },
+    "token_usage": {
+      "input_tokens": 96547,
+      "output_tokens": 494,
+      "total_tokens": 97041,
+      "request_count": 7,
+      "source": "llm_proxy"
+    },
+    "duration_seconds": 17.183227062225342,
+    "error": "",
+    "eval": {},
+    "session_messages": [
+      {
+        "role": "user",
+        "content": "<skill data-id=\"c8a036b9-5afc-4cbe-8912-fd74772287e7\" data-name=\"adbpg-memory\" /> 记住，我最喜欢的水果是芒果，这点我一直没变。",
+        "events": [],
+        "tool_uses": [],
+        "timestamp": 1778737110788
+      },
+      {
+        "role": "assistant",
+        "content": "好的，我已经记住了：你最喜欢的水果是芒果。",
+        "events": [
+          {
+            "runId": "eval-f4bfce9d-39ec-4009-b6d1-bbdae2ef377a",
+            "threadId": "004aeca6-501e-482d-aa1a-988a0744871a",
+            "timestamp": 1778737116340,
+            "type": "RUN_STARTED"
+          },
+          {
+            "e2e_ttft_ms": 5551,
+            "timestamp": 1778737116340,
+            "ttft_ms": 2150,
+            "type": "FIRST_TOKEN"
+          },
+          {
+            "activityType": "SKILL",
+            "content": {
+              "finish_time": 1778737117568,
+              "purpose": "---\nname: adbpg-memory\ndescription: >\n  ADBPG 长期记忆技能。每次新会话你没有任何上下文，必须通过 adbpg-mem 检索长期记忆。\n\n  【检索记忆 - 必须先做】下列任何一种模式出现，必须先执行 adbpg-mem search 再回答：\n  (a) 含\"我/我的/我之前/我上次/我提过/还记得/来着/记不清/那本/那个\"等回忆词；\n  (b) 询问个人偏好/身份/经历/历史决策；\n  (c) 需要个性化（推荐、建议）的请求。\n  命令格式：NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"关键词\" --agent\n  禁止在 search 之前就直接回答\"我不知道\"或\"没听你说过\"——你的当前会话上下文是空的，\n  必须从长期记忆里捞才能知道用户之前是否说过。这是硬性规则。\n\n  【存储记忆】用户说\"记住\"、提到个人信息、做出决策时，\n  执行 NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"提炼的事实\" --agent 存储。\n  提炼事实再存储，不存原文，保留用户原始语言，不存敏感信息。\n\n  【输出格式】--agent 返回 JSON，检查 status 字段（ok/error），搜索结果在 data 数组中，score 大于 0.7 视为高度相关。\n\n  【展示检索结果】检索到记忆后，在回复开头简要列出相关记忆（如\"根据记忆：你叫子华，喜欢 Python\"），\n  让用户能看到检索到了什么。如果检索到记忆但与问题无关，也简要提及\"检索到 N 条记忆但与当前问题无关\"。\n\n  不要在回复中暴露 adbpg-mem 命令细节和原始 JSON。更多用法参见 SKILL.md。\nlicense: Apache-2.0\nmetadata:\n  author: ADBPG\n  version: \"0.1.0\"\n  category: ai-memory\n  tags: \"memory, personalization, adbpg, cli, long-term-memory\"\n  dependencies:\n    apis:\n      - \"ADBPG Memory REST API (rest_base_url, configured via adbpg-mem init)\"\n      - \"ADBPG PostgreSQL endpoint (SQL mode, host/port/dbname configured via adbpg-mem init)\"\ncompatibility: >\n  Node.js 18+ (npm install) 或 Python 3.10+ (pip install)。\n  需要 adbpg-mem CLI 已安装并通过 adbpg-mem init 完成配置。\n  支持 SQL 模式（直连 ADBPG）和 REST 模式（HTTP API）。\n---",
+              "skill_name": "adbpg-memory",
+              "snippet": "激活 adbpg-memory 技能以存储用户偏好",
+              "start_time": 1778737117568,
+              "status": "completed"
+            },
+            "messageId": "tool_msg:e7222879-aee4-4077-91b5-fbea67efbd26",
+            "timestamp": 1778737117568,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 22966,
+              "totalTokens": 200000,
+              "usageRatio": 0.10999999940395357
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778737117568,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"最喜欢的水果是芒果\" --agent",
+              "exit_code": 0,
+              "finish_time": 1778737121472,
+              "output": "{\"command\":\"add\",\"count\":null,\"data\":{\"results\":[{\"event\":null,\"event_id\":\"a267fceb-fce9-47c7-bbcc-989db5ec8e05\",\"id\":null,\"memory\":null,\"message\":\"Memory processing has been queued for background execution\",\"status\":\"PENDING\"}]},\"duration_ms\":414,\"scope\":{\"agent_id\":\"\",\"run_id\":\"\",\"user_id\":\"test_verify\"},\"status\":\"ok\"}",
+              "output_chunks": [],
+              "snippet": "存储用户偏好：最喜欢的水果是芒果",
+              "start_time": 1778737119916,
+              "status": "completed",
+              "working_dir": ""
+            },
+            "messageId": "tool_msg:af759067-7466-4aac-a59a-faee7d0a0833",
+            "timestamp": 1778737119916,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 29872,
+              "totalTokens": 200000,
+              "usageRatio": 0.15000000596046448
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778737119916,
+            "type": "CUSTOM"
+          },
+          {
+            "messageId": "direct-text-9f823f89-6401-4ded-8277-f9bb5980af79",
+            "role": "assistant",
+            "timestamp": 1778737122284,
+            "type": "TEXT_MESSAGE_START"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 30086,
+              "totalTokens": 200000,
+              "usageRatio": 0.15000000596046448
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778737122471,
+            "type": "CUSTOM"
+          },
+          {
+            "delta": "好的，我已经记住了：你最喜欢的水果是芒果。",
+            "messageId": "direct-text-9f823f89-6401-4ded-8277-f9bb5980af79",
+            "timestamp": 1778737122284,
+            "type": "TEXT_MESSAGE_CONTENT"
+          },
+          {
+            "messageId": "direct-text-9f823f89-6401-4ded-8277-f9bb5980af79",
+            "timestamp": 1778737122471,
+            "type": "TEXT_MESSAGE_END"
+          },
+          {
+            "data": {
+              "answer_id": "eval-f4bfce9d-39ec-4009-b6d1-bbdae2ef377a",
+              "generated_at": 1778737123851,
+              "items": [
+                {
+                  "text": "记住我不吃香菜"
+                },
+                {
+                  "text": "查询我喜欢的食物"
+                },
+                {
+                  "text": "忘记我喜欢芒果"
+                }
+              ],
+              "status": "ready",
+              "suggestions": [
+                "记住我不吃香菜",
+                "查询我喜欢的食物",
+                "忘记我喜欢芒果"
+              ]
+            },
+            "name": "related_questions",
+            "timestamp": 1778737123851,
+            "type": "CUSTOM"
+          },
+          {
+            "cached_tokens": 41019,
+            "completion_tokens": 337,
+            "prompt_tokens": 91345,
+            "timestamp": 1778737126912,
+            "total_tokens": 91682,
+            "type": "USAGE"
+          },
+          {
+            "runId": "eval-f4bfce9d-39ec-4009-b6d1-bbdae2ef377a",
+            "threadId": "004aeca6-501e-482d-aa1a-988a0744871a",
+            "timestamp": 1778737126912,
+            "type": "RUN_FINISHED"
+          }
+        ],
+        "tool_uses": [
+          {
+            "id": "tool_msg:e7222879-aee4-4077-91b5-fbea67efbd26",
+            "name": "SKILL",
+            "input": {
+              "finish_time": 1778737117568,
+              "purpose": "---\nname: adbpg-memory\ndescription: >\n  ADBPG 长期记忆技能。每次新会话你没有任何上下文，必须通过 adbpg-mem 检索长期记忆。\n\n  【检索记忆 - 必须先做】下列任何一种模式出现，必须先执行 adbpg-mem search 再回答：\n  (a) 含\"我/我的/我之前/我上次/我提过/还记得/来着/记不清/那本/那个\"等回忆词；\n  (b) 询问个人偏好/身份/经历/历史决策；\n  (c) 需要个性化（推荐、建议）的请求。\n  命令格式：NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"关键词\" --agent\n  禁止在 search 之前就直接回答\"我不知道\"或\"没听你说过\"——你的当前会话上下文是空的，\n  必须从长期记忆里捞才能知道用户之前是否说过。这是硬性规则。\n\n  【存储记忆】用户说\"记住\"、提到个人信息、做出决策时，\n  执行 NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"提炼的事实\" --agent 存储。\n  提炼事实再存储，不存原文，保留用户原始语言，不存敏感信息。\n\n  【输出格式】--agent 返回 JSON，检查 status 字段（ok/error），搜索结果在 data 数组中，score 大于 0.7 视为高度相关。\n\n  【展示检索结果】检索到记忆后，在回复开头简要列出相关记忆（如\"根据记忆：你叫子华，喜欢 Python\"），\n  让用户能看到检索到了什么。如果检索到记忆但与问题无关，也简要提及\"检索到 N 条记忆但与当前问题无关\"。\n\n  不要在回复中暴露 adbpg-mem 命令细节和原始 JSON。更多用法参见 SKILL.md。\nlicense: Apache-2.0\nmetadata:\n  author: ADBPG\n  version: \"0.1.0\"\n  category: ai-memory\n  tags: \"memory, personalization, adbpg, cli, long-term-memory\"\n  dependencies:\n    apis:\n      - \"ADBPG Memory REST API (rest_base_url, configured via adbpg-mem init)\"\n      - \"ADBPG PostgreSQL endpoint (SQL mode, host/port/dbname configured via adbpg-mem init)\"\ncompatibility: >\n  Node.js 18+ (npm install) 或 Python 3.10+ (pip install)。\n  需要 adbpg-mem CLI 已安装并通过 adbpg-mem init 完成配置。\n  支持 SQL 模式（直连 ADBPG）和 REST 模式（HTTP API）。\n---",
+              "skill_name": "adbpg-memory",
+              "snippet": "激活 adbpg-memory 技能以存储用户偏好",
+              "start_time": 1778737117568,
+              "status": "completed"
+            }
+          },
+          {
+            "id": "tool_msg:af759067-7466-4aac-a59a-faee7d0a0833",
+            "name": "TERMINAL",
+            "input": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"最喜欢的水果是芒果\" --agent",
+              "exit_code": 0,
+              "finish_time": 1778737121472,
+              "output": "{\"command\":\"add\",\"count\":null,\"data\":{\"results\":[{\"event\":null,\"event_id\":\"a267fceb-fce9-47c7-bbcc-989db5ec8e05\",\"id\":null,\"memory\":null,\"message\":\"Memory processing has been queued for background execution\",\"status\":\"PENDING\"}]},\"duration_ms\":414,\"scope\":{\"agent_id\":\"\",\"run_id\":\"\",\"user_id\":\"test_verify\"},\"status\":\"ok\"}",
+              "output_chunks": [],
+              "snippet": "存储用户偏好：最喜欢的水果是芒果",
+              "start_time": 1778737119916,
+              "status": "completed",
+              "working_dir": ""
+            }
+          }
+        ],
+        "timestamp": 1778737116340
+      }
+    ]
+  },
+  "duration_seconds": 17.184396028518677
+}

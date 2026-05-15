@@ -1,0 +1,210 @@
+{
+  "eval_id": 5,
+  "eval_name": "eval-5",
+  "prompt": "给我推荐个周末做的编程项目，要符合我的兴趣和水平。",
+  "skill_name": "adbpg-memory",
+  "target": "wukong",
+  "query_result": {
+    "query_id": "",
+    "query_text": "给我推荐个周末做的编程项目，要符合我的兴趣和水平。",
+    "status": "completed",
+    "response": "根据记忆，你是一位在杭州工作的后端工程师，主要使用 **Go** 语言，并且正在学习 **Rust**。\n\n基于你的技术栈和周末项目的特点（通常要求短小精悍、有成就感且能巩固技能），我为你推荐以下三个不同方向的编程项目：\n\n### 1. Go 方向：高性能并发日志分析器\n*   **项目描述**：编写一个命令行工具，能够读取大型 Nginx 或应用日志文件，利用 Go 的 `goroutine` 和 `channel` 进行并发解析，统计出 Top 10 访问 IP、错误率分布以及响应时间百分位（P95/P99）。\n*   **技术点**：Go 并发模型、正则表达式解析、标准库 `bufio` 高效 IO、命令行参数处理（如使用 `cobra` 或 `flag`）。\n*   **推荐理由**：作为后端工程师，处理日志是高频场景。这个项目能让你深入实践 Go 最擅长的并发处理能力，且产出实用。\n\n### 2. Rust 方向：CLI 任务管理器 (Todo CLI)\n*   **项目描述**：用 Rust 实现一个类似 `todo.txt` 的命令行任务管理工具。支持添加任务、标记完成、删除、按标签过滤以及将数据持久化到本地 JSON 或 SQLite 文件中。\n*   **技术点**：Rust 所有权与借用检查、结构体与方法、错误处理 (`Result/Option`)、序列化 (`serde`)、文件 IO。\n*   **推荐理由**：CLI 工具是学习 Rust 的最佳切入点之一。它能帮你熟悉 Rust 严格的类型系统和内存安全机制，同时你能得到一个自己每天都能用到的工具。\n\n### 3. 全栈/系统方向：简易分布式键值存储\n*   **项目描述**：实现一个支持 TCP 通信的简易 Key-Value 存储服务器。客户端可以通过网络发送 `SET` 和 `GET` 命令。进阶版可以支持简单的 TTL（过期时间）或多节点数据同步。\n*   **技术点**：网络编程 (TCP Socket)、自定义应用层协议解析、数据结构设计（HashMap + Mutex/RwLock）、可选：Raft 协议基础概念。\n*   **推荐理由**：你在 ADBPG 团队工作，对数据库底层原理肯定感兴趣。从零实现一个迷你数据库能极大地加深你对存储引擎和网络交互的理解。\n\n**建议：**\n如果你想快速获得成就感并巩固主业，选 **项目 1**；如果你想挑战新语言并为简历加分，选 **项目 2**；如果你想深入底层原理，选 **项目 3**。\n\n你对哪个方向更感兴趣？或者你希望我针对某个项目提供更详细的实现步骤？",
+    "raw_output": {
+      "execution_workspace": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-7",
+      "wukong_task_id": "7e5c045f-978c-4a3b-a101-5d4f527d73cb",
+      "wukong_session_id": "7e5c045f-978c-4a3b-a101-5d4f527d73cb"
+    },
+    "token_usage": {
+      "input_tokens": 103618,
+      "output_tokens": 1664,
+      "total_tokens": 105282,
+      "request_count": 7,
+      "source": "llm_proxy"
+    },
+    "duration_seconds": 48.36744499206543,
+    "error": "",
+    "eval": {},
+    "session_messages": [
+      {
+        "role": "user",
+        "content": "<skill data-id=\"9d277c1e-b9cd-4979-ba5d-d255c2cbd04e\" data-name=\"adbpg-memory\" /> 给我推荐个周末做的编程项目，要符合我的兴趣和水平。",
+        "events": [],
+        "tool_uses": [],
+        "timestamp": 1778744364563
+      },
+      {
+        "role": "assistant",
+        "content": "根据记忆，你是一位在杭州工作的后端工程师，主要使用 **Go** 语言，并且正在学习 **Rust**。\n\n基于你的技术栈和周末项目的特点（通常要求短小精悍、有成就感且能巩固技能），我为你推荐以下三个不同方向的编程项目：\n\n### 1. Go 方向：高性能并发日志分析器\n*   **项目描述**：编写一个命令行工具，能够读取大型 Nginx 或应用日志文件，利用 Go 的 `goroutine` 和 `channel` 进行并发解析，统计出 Top 10 访问 IP、错误率分布以及响应时间百分位（P95/P99）。\n*   **技术点**：Go 并发模型、正则表达式解析、标准库 `bufio` 高效 IO、命令行参数处理（如使用 `cobra` 或 `flag`）。\n*   **推荐理由**：作为后端工程师，处理日志是高频场景。这个项目能让你深入实践 Go 最擅长的并发处理能力，且产出实用。\n\n### 2. Rust 方向：CLI 任务管理器 (Todo CLI)\n*   **项目描述**：用 Rust 实现一个类似 `todo.txt` 的命令行任务管理工具。支持添加任务、标记完成、删除、按标签过滤以及将数据持久化到本地 JSON 或 SQLite 文件中。\n*   **技术点**：Rust 所有权与借用检查、结构体与方法、错误处理 (`Result/Option`)、序列化 (`serde`)、文件 IO。\n*   **推荐理由**：CLI 工具是学习 Rust 的最佳切入点之一。它能帮你熟悉 Rust 严格的类型系统和内存安全机制，同时你能得到一个自己每天都能用到的工具。\n\n### 3. 全栈/系统方向：简易分布式键值存储\n*   **项目描述**：实现一个支持 TCP 通信的简易 Key-Value 存储服务器。客户端可以通过网络发送 `SET` 和 `GET` 命令。进阶版可以支持简单的 TTL（过期时间）或多节点数据同步。\n*   **技术点**：网络编程 (TCP Socket)、自定义应用层协议解析、数据结构设计（HashMap + Mutex/RwLock）、可选：Raft 协议基础概念。\n*   **推荐理由**：你在 ADBPG 团队工作，对数据库底层原理肯定感兴趣。从零实现一个迷你数据库能极大地加深你对存储引擎和网络交互的理解。\n\n**建议：**\n如果你想快速获得成就感并巩固主业，选 **项目 1**；如果你想挑战新语言并为简历加分，选 **项目 2**；如果你想深入底层原理，选 **项目 3**。\n\n你对哪个方向更感兴趣？或者你希望我针对某个项目提供更详细的实现步骤？",
+        "events": [
+          {
+            "runId": "eval-fefbc2dd-9dba-4a69-9eb5-30b154e61f88",
+            "threadId": "7e5c045f-978c-4a3b-a101-5d4f527d73cb",
+            "timestamp": 1778744369395,
+            "type": "RUN_STARTED"
+          },
+          {
+            "e2e_ttft_ms": 4830,
+            "timestamp": 1778744369395,
+            "ttft_ms": 1517,
+            "type": "FIRST_TOKEN"
+          },
+          {
+            "activityType": "SKILL",
+            "content": {
+              "finish_time": 1778744370471,
+              "purpose": "---\nname: adbpg-memory\ndescription: >\n  ADBPG 长期记忆技能。每次新会话你没有任何上下文，必须通过 adbpg-mem 检索长期记忆。\n\n  【检索记忆 - 必须先做】下列任何一种模式出现，必须先执行 adbpg-mem search 再回答：\n  (a) 含\"我/我的/我之前/我上次/我提过/还记得/来着/记不清/那本/那个\"等回忆词；\n  (b) 询问个人偏好/身份/经历/历史决策；\n  (c) 需要个性化（推荐、建议）的请求。\n  命令格式：NODE_TLS_REJECT_UNAUTHORIZED=0 node ./scripts/adbpg-mem.mjs search \"关键词\" --agent\n  禁止在 search 之前就直接回答\"我不知道\"或\"没听你说过\"——你的当前会话上下文是空的，\n  必须从长期记忆里捞才能知道用户之前是否说过。这是硬性规则。\n\n  【存储记忆】用户说\"记住\"、提到个人信息、做出决策时，\n  执行 NODE_TLS_REJECT_UNAUTHORIZED=0 node ./scripts/adbpg-mem.mjs add \"提炼的事实\" --agent 存储。\n  提炼事实再存储，不存原文，保留用户原始语言，不存敏感信息。\n\n  【输出格式】--agent 返回 JSON，检查 status 字段（ok/error），搜索结果在 data 数组中，score 大于 0.7 视为高度相关。\n\n  【展示检索结果】检索到记忆后，在回复开头简要列出相关记忆（如\"根据记忆：你叫子华，喜欢 Python\"），\n  让用户能看到检索到了什么。如果检索到记忆但与问题无关，也简要提及\"检索到 N 条记忆但与当前问题无关\"。\n\n  不要在回复中暴露 adbpg-mem 命令细节和原始 JSON。更多用法参见 SKILL.md。\nlicense: Apache-2.0\nmetadata:\n  author: ADBPG\n  version: \"0.1.0\"\n  category: ai-memory\n  tags: \"memory, personalization, adbpg, cli, long-term-memory\"\n  dependencies:\n    apis:\n      - \"ADBPG Memory REST API (rest_base_url, configured via adbpg-mem init)\"\n      - \"ADBPG PostgreSQL endpoint (SQL mode, host/port/dbname configured via adbpg-mem init)\"\ncompatibility: >\n  Node.js 18+ (npm install) 或 Python 3.10+ (pip install)。\n  需要 adbpg-mem CLI 已安装并通过 adbpg-mem init 完成配置。\n  支持 SQL 模式（直连 ADBPG）和 REST 模式（HTTP API）。\n---",
+              "skill_name": "adbpg-memory",
+              "snippet": "adbpg-memory技能",
+              "start_time": 1778744370471,
+              "status": "completed"
+            },
+            "messageId": "tool_msg:1b95959e-bb61-450f-bfac-ff5333486ba5",
+            "timestamp": 1778744370471,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 23095,
+              "totalTokens": 200000,
+              "usageRatio": 0.119999997317791
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778744370471,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 node /Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/9d277c1e-b9cd-4979-ba5d-d255c2cbd04e/scripts/adbpg-mem.mjs search \"编程项目 兴趣 技术栈\" --agent",
+              "exit_code": 0,
+              "finish_time": 1778744377569,
+              "output": "{\"command\":\"search\",\"count\":5,\"data\":[{\"created_at\":\"2026-05-14T03:27:49.678609+00:00\",\"hash\":\"25b2d7323a3c17b485401284f7969ce7\",\"id\":\"8591c1fc-526c-4616-a8be-08b1a69a4c96\",\"memory\":\"是后端工程师\",\"metadata\":{\"categories\":[\"professional_details\"]},\"score\":0.450771474930224,\"updated_at\":\"2026-05-14T03:27:49.678609+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:27:50.293226+00:00\",\"hash\":\"92f6bc207762985a67afb4761cbc21cf\",\"id\":\"9ea9c18f-bdfa-4ec6-a578-1242e9ed1daf\",\"memory\":\"主要使用 Go 编程语言\",\"metadata\":{\"categories\":[\"technology\"]},\"score\":0.443536221981052,\"updated_at\":\"2026-05-14T06:40:58.610101+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:27:50.816582+00:00\",\"hash\":\"91cc69a8a5ccc5260337902f398498b2\",\"id\":\"9f105758-b4a3-4a2b-b4d9-72016f9415c4\",\"memory\":\"最近在学习 Rust\",\"metadata\":{\"categories\":[\"technology\"]},\"score\":0.372719488902062,\"updated_at\":\"2026-05-14T03:27:50.816582+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:27:49.037220+00:00\",\"hash\":\"b04e8594d7d487d7b1dade7748477afd\",\"id\":\"832135f7-619c-437d-83e3-70592194f4ec\",\"memory\":\"用户在杭州工作\",\"metadata\":{\"categories\":[\"professional_details\",\"travel\"]},\"score\":0.297008615910498,\"updated_at\":\"2026-05-14T05:40:56.644006+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:26:41.149155+00:00\",\"hash\":\"3926bde6c68dcc1f53ae055907ac0453\",\"id\":\"4173181d-9785-4d62-90f3-960e26ee79b0\",\"memory\":\"最喜欢的水果是芒果\",\"metadata\":{\"categories\":[\"food\"]},\"score\":0.26064084533696497,\"updated_at\":\"2026-05-14T03:26:41.149155+00:00\",\"user_id\":\"test_verify\"}],\"duration_ms\":574,\"scope\":{\"agent_id\":\"\",\"run_id\":\"\",\"user_id\":\"test_verify\"},\"status\":\"ok\"}",
+              "output_chunks": [],
+              "snippet": "检索用户关于编程兴趣和过往项目的长期记忆",
+              "start_time": 1778744376090,
+              "status": "completed",
+              "working_dir": ""
+            },
+            "messageId": "tool_msg:eaf2cd26-7fed-41e5-9c19-a1bfe80bf0e2",
+            "timestamp": 1778744376090,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 31394,
+              "totalTokens": 200000,
+              "usageRatio": 0.1599999964237213
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778744376091,
+            "type": "CUSTOM"
+          },
+          {
+            "messageId": "direct-text-a13a17bd-e662-44ac-b8e2-793cafd4f2e5",
+            "role": "assistant",
+            "timestamp": 1778744386684,
+            "type": "TEXT_MESSAGE_START"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 33023,
+              "totalTokens": 200000,
+              "usageRatio": 0.17000000178813934
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778744398359,
+            "type": "CUSTOM"
+          },
+          {
+            "delta": "根据记忆，你是一位在杭州工作的后端工程师，主要使用 **Go** 语言，并且正在学习 **Rust**。\n\n基于你的技术栈和周末项目的特点（通常要求短小精悍、有成就感且能巩固技能），我为你推荐以下三个不同方向的编程项目：\n\n### 1. Go 方向：高性能并发日志分析器\n*   **项目描述**：编写一个命令行工具，能够读取大型 Nginx 或应用日志文件，利用 Go 的 `goroutine` 和 `channel` 进行并发解析，统计出 Top 10 访问 IP、错误率分布以及响应时间百分位（P95/P99）。\n*   **技术点**：Go 并发模型、正则表达式解析、标准库 `bufio` 高效 IO、命令行参数处理（如使用 `cobra` 或 `flag`）。\n*   **推荐理由**：作为后端工程师，处理日志是高频场景。这个项目能让你深入实践 Go 最擅长的并发处理能力，且产出实用。\n\n### 2. Rust 方向：CLI 任务管理器 (Todo CLI)\n*   **项目描述**：用 Rust 实现一个类似 `todo.txt` 的命令行任务管理工具。支持添加任务、标记完成、删除、按标签过滤以及将数据持久化到本地 JSON 或 SQLite 文件中。\n*   **技术点**：Rust 所有权与借用检查、结构体与方法、错误处理 (`Result/Option`)、序列化 (`serde`)、文件 IO。\n*   **推荐理由**：CLI 工具是学习 Rust 的最佳切入点之一。它能帮你熟悉 Rust 严格的类型系统和内存安全机制，同时你能得到一个自己每天都能用到的工具。\n\n### 3. 全栈/系统方向：简易分布式键值存储\n*   **项目描述**：实现一个支持 TCP 通信的简易 Key-Value 存储服务器。客户端可以通过网络发送 `SET` 和 `GET` 命令。进阶版可以支持简单的 TTL（过期时间）或多节点数据同步。\n*   **技术点**：网络编程 (TCP Socket)、自定义应用层协议解析、数据结构设计（HashMap + Mutex/RwLock）、可选：Raft 协议基础概念。\n*   **推荐理由**：你在 ADBPG 团队工作，对数据库底层原理肯定感兴趣。从零实现一个迷你数据库能极大地加深你对存储引擎和网络交互的理解。\n\n**建议：**\n如果你想快速获得成就感并巩固主业，选 **项目 1**；如果你想挑战新语言并为简历加分，选 **项目 2**；如果你想深入底层原理，选 **项目 3**。\n\n你对哪个方向更感兴趣？或者你希望我针对某个项目提供更详细的实现步骤？",
+            "messageId": "direct-text-a13a17bd-e662-44ac-b8e2-793cafd4f2e5",
+            "timestamp": 1778744386684,
+            "type": "TEXT_MESSAGE_CONTENT"
+          },
+          {
+            "messageId": "direct-text-a13a17bd-e662-44ac-b8e2-793cafd4f2e5",
+            "timestamp": 1778744398360,
+            "type": "TEXT_MESSAGE_END"
+          },
+          {
+            "data": {
+              "answer_id": "eval-fefbc2dd-9dba-4a69-9eb5-30b154e61f88",
+              "generated_at": 1778744400733,
+              "items": [
+                {
+                  "text": "展开介绍Rust CLI任务管理器项目"
+                },
+                {
+                  "text": "提供Go日志分析器的代码骨架"
+                },
+                {
+                  "text": "推荐结合Go与Rust的混合架构项目"
+                }
+              ],
+              "status": "ready",
+              "suggestions": [
+                "展开介绍Rust CLI任务管理器项目",
+                "提供Go日志分析器的代码骨架",
+                "推荐结合Go与Rust的混合架构项目"
+              ]
+            },
+            "name": "related_questions",
+            "timestamp": 1778744400733,
+            "type": "CUSTOM"
+          },
+          {
+            "cached_tokens": 41021,
+            "completion_tokens": 1477,
+            "prompt_tokens": 98071,
+            "timestamp": 1778744411613,
+            "total_tokens": 99548,
+            "type": "USAGE"
+          },
+          {
+            "runId": "eval-fefbc2dd-9dba-4a69-9eb5-30b154e61f88",
+            "threadId": "7e5c045f-978c-4a3b-a101-5d4f527d73cb",
+            "timestamp": 1778744411613,
+            "type": "RUN_FINISHED"
+          }
+        ],
+        "tool_uses": [
+          {
+            "id": "tool_msg:1b95959e-bb61-450f-bfac-ff5333486ba5",
+            "name": "SKILL",
+            "input": {
+              "finish_time": 1778744370471,
+              "purpose": "---\nname: adbpg-memory\ndescription: >\n  ADBPG 长期记忆技能。每次新会话你没有任何上下文，必须通过 adbpg-mem 检索长期记忆。\n\n  【检索记忆 - 必须先做】下列任何一种模式出现，必须先执行 adbpg-mem search 再回答：\n  (a) 含\"我/我的/我之前/我上次/我提过/还记得/来着/记不清/那本/那个\"等回忆词；\n  (b) 询问个人偏好/身份/经历/历史决策；\n  (c) 需要个性化（推荐、建议）的请求。\n  命令格式：NODE_TLS_REJECT_UNAUTHORIZED=0 node ./scripts/adbpg-mem.mjs search \"关键词\" --agent\n  禁止在 search 之前就直接回答\"我不知道\"或\"没听你说过\"——你的当前会话上下文是空的，\n  必须从长期记忆里捞才能知道用户之前是否说过。这是硬性规则。\n\n  【存储记忆】用户说\"记住\"、提到个人信息、做出决策时，\n  执行 NODE_TLS_REJECT_UNAUTHORIZED=0 node ./scripts/adbpg-mem.mjs add \"提炼的事实\" --agent 存储。\n  提炼事实再存储，不存原文，保留用户原始语言，不存敏感信息。\n\n  【输出格式】--agent 返回 JSON，检查 status 字段（ok/error），搜索结果在 data 数组中，score 大于 0.7 视为高度相关。\n\n  【展示检索结果】检索到记忆后，在回复开头简要列出相关记忆（如\"根据记忆：你叫子华，喜欢 Python\"），\n  让用户能看到检索到了什么。如果检索到记忆但与问题无关，也简要提及\"检索到 N 条记忆但与当前问题无关\"。\n\n  不要在回复中暴露 adbpg-mem 命令细节和原始 JSON。更多用法参见 SKILL.md。\nlicense: Apache-2.0\nmetadata:\n  author: ADBPG\n  version: \"0.1.0\"\n  category: ai-memory\n  tags: \"memory, personalization, adbpg, cli, long-term-memory\"\n  dependencies:\n    apis:\n      - \"ADBPG Memory REST API (rest_base_url, configured via adbpg-mem init)\"\n      - \"ADBPG PostgreSQL endpoint (SQL mode, host/port/dbname configured via adbpg-mem init)\"\ncompatibility: >\n  Node.js 18+ (npm install) 或 Python 3.10+ (pip install)。\n  需要 adbpg-mem CLI 已安装并通过 adbpg-mem init 完成配置。\n  支持 SQL 模式（直连 ADBPG）和 REST 模式（HTTP API）。\n---",
+              "skill_name": "adbpg-memory",
+              "snippet": "adbpg-memory技能",
+              "start_time": 1778744370471,
+              "status": "completed"
+            }
+          },
+          {
+            "id": "tool_msg:eaf2cd26-7fed-41e5-9c19-a1bfe80bf0e2",
+            "name": "TERMINAL",
+            "input": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 node /Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/9d277c1e-b9cd-4979-ba5d-d255c2cbd04e/scripts/adbpg-mem.mjs search \"编程项目 兴趣 技术栈\" --agent",
+              "exit_code": 0,
+              "finish_time": 1778744377569,
+              "output": "{\"command\":\"search\",\"count\":5,\"data\":[{\"created_at\":\"2026-05-14T03:27:49.678609+00:00\",\"hash\":\"25b2d7323a3c17b485401284f7969ce7\",\"id\":\"8591c1fc-526c-4616-a8be-08b1a69a4c96\",\"memory\":\"是后端工程师\",\"metadata\":{\"categories\":[\"professional_details\"]},\"score\":0.450771474930224,\"updated_at\":\"2026-05-14T03:27:49.678609+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:27:50.293226+00:00\",\"hash\":\"92f6bc207762985a67afb4761cbc21cf\",\"id\":\"9ea9c18f-bdfa-4ec6-a578-1242e9ed1daf\",\"memory\":\"主要使用 Go 编程语言\",\"metadata\":{\"categories\":[\"technology\"]},\"score\":0.443536221981052,\"updated_at\":\"2026-05-14T06:40:58.610101+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:27:50.816582+00:00\",\"hash\":\"91cc69a8a5ccc5260337902f398498b2\",\"id\":\"9f105758-b4a3-4a2b-b4d9-72016f9415c4\",\"memory\":\"最近在学习 Rust\",\"metadata\":{\"categories\":[\"technology\"]},\"score\":0.372719488902062,\"updated_at\":\"2026-05-14T03:27:50.816582+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:27:49.037220+00:00\",\"hash\":\"b04e8594d7d487d7b1dade7748477afd\",\"id\":\"832135f7-619c-437d-83e3-70592194f4ec\",\"memory\":\"用户在杭州工作\",\"metadata\":{\"categories\":[\"professional_details\",\"travel\"]},\"score\":0.297008615910498,\"updated_at\":\"2026-05-14T05:40:56.644006+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:26:41.149155+00:00\",\"hash\":\"3926bde6c68dcc1f53ae055907ac0453\",\"id\":\"4173181d-9785-4d62-90f3-960e26ee79b0\",\"memory\":\"最喜欢的水果是芒果\",\"metadata\":{\"categories\":[\"food\"]},\"score\":0.26064084533696497,\"updated_at\":\"2026-05-14T03:26:41.149155+00:00\",\"user_id\":\"test_verify\"}],\"duration_ms\":574,\"scope\":{\"agent_id\":\"\",\"run_id\":\"\",\"user_id\":\"test_verify\"},\"status\":\"ok\"}",
+              "output_chunks": [],
+              "snippet": "检索用户关于编程兴趣和过往项目的长期记忆",
+              "start_time": 1778744376090,
+              "status": "completed",
+              "working_dir": ""
+            }
+          }
+        ],
+        "timestamp": 1778744369395
+      }
+    ]
+  },
+  "duration_seconds": 48.36938405036926
+}

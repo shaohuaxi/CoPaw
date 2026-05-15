@@ -1,0 +1,61 @@
+{
+  "expectations": [
+    {
+      "text": "关键：agent 在动手设置任何 isolation_run_mode 之前，必须先把至少 2 个候选方案呈现给用户（主动命名 / 自动生成日期时间 / 不隔离只打标签），无论是文本列出还是 ASK_HUMAN 卡片选项",
+      "passed": true,
+      "evidence": "Transcript shows an ACTIVITY_SNAPSHOT of type ASK_HUMAN with three options: '主动命名 (Manual)', '自动生成 (Auto)', and '仅打标签 (Tag)'. The user selected 'manual'."
+    },
+    {
+      "text": "对每个方案给出简短的差异说明，帮用户判断",
+      "passed": true,
+      "evidence": "The ASK_HUMAN activity in the transcript includes descriptions for each option, e.g., '每次新对话开始时询问项目名称，记忆仅在该名称下检索。适合长期跟进的独立项目。' for Manual."
+    },
+    {
+      "text": "若用户在本轮交互中（含 ASK_HUMAN 响应）已经选定了方案，agent 可以执行 agent-config set；若用户未选，agent 不可擅自决定",
+      "passed": true,
+      "evidence": "Transcript shows the user selected 'manual' (responded: 1, selectedValue: 'manual'). Subsequently, a TERMINAL activity executed 'adbpg-mem.mjs agent-config set isolation_run_mode manual -a wukong-default'."
+    },
+    {
+      "text": "agent 最终回复明确说明所设置的方案是哪一种（让用户能确认）",
+      "passed": true,
+      "evidence": "The final agent response states: '- **隔离模式**：主动命名 (Manual)'."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "pass_rate": 1.0
+  },
+  "claims": [
+    {
+      "claim": "Agent used ASK_HUMAN to present options.",
+      "type": "process",
+      "verified": true,
+      "evidence": "session_messages.json contains an ACTIVITY_SNAPSHOT with type ASK_HUMAN and questionType single_select."
+    },
+    {
+      "claim": "Agent executed the configuration change via CLI.",
+      "type": "process",
+      "verified": true,
+      "evidence": "session_messages.json contains a TERMINAL activity with command '... agent-config set isolation_run_mode manual ...'."
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "The agent performed perfectly according to the expectations. It correctly identified the need for user choice, presented clear options via ASK_HUMAN with descriptions, waited for user input, executed the correct configuration command, and confirmed the result in the final response."
+  },
+  "timing": {
+    "total_duration_seconds": 125.9596,
+    "total_tokens": 342451,
+    "token_usage": {
+      "input_tokens": 340909,
+      "output_tokens": 1542,
+      "total_tokens": 342451,
+      "request_count": 14,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 37.89
+  },
+  "grader_task_id": "017eca41-206d-4ce1-9e25-5e003de90ac7"
+}

@@ -1,0 +1,12 @@
+{
+  "eval_id": 7,
+  "eval_name": "eval-7",
+  "prompt": "我想开启 Agent 记忆隔离，工作助手和生活助手的记忆要分开存。",
+  "expectations": [
+    "agent 表示理解隔离需求，并解释隔离机制（通过 -a 参数实现，不需要改连接配置文件）",
+    "**关键**：agent 把'工作助手/生活助手'理解为**它自己**这个 agent 需要开启隔离（用户的具体场景词只是举例），而不是去为虚构的 'work'/'life' 两个 agent 各自创建隔离配置",
+    "agent 通过合理途径获取自己的 agent_id（system prompt / 环境变量 / 询问用户三选一），不凭空编造像 'work'/'life' 这种猜测值",
+    "agent 调用 adbpg-mem agent-config set isolation_agent true -a <agent_id> 持久化隔离状态（自己调或平台代理皆可）",
+    "agent 告知用户后续记忆操作会自动按 agent 隔离"
+  ]
+}

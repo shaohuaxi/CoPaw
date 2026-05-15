@@ -1,0 +1,359 @@
+{
+  "metadata": {
+    "skill_name": "adbpg-memory",
+    "skill_path": "<path/to/skill>",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-05-14T07:17:28Z",
+    "evals_run": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 37.7645,
+        "tokens": 134191,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "agent 表明已经把这条事实存入长期记忆（自己调 add 或平台代理皆可）",
+          "passed": true,
+          "evidence": "agent 调用了 adbpg-mem.mjs add \"最喜欢的水果是芒果\" --agent 命令，返回 status 为 pending（异步写入已提交），最终回复为\"已记住：你最喜欢的水果是芒果。\""
+        },
+        {
+          "text": "存储的事实是简短陈述（如『最喜欢的水果是芒果』），不是把用户原话整段塞进去",
+          "passed": true,
+          "evidence": "add 命令参数为\"最喜欢的水果是芒果\"，是提炼后的简短陈述；search 验证结果显示 memory 字段值为\"最喜欢的水果是芒果\"，而非用户原话\"记住，我最喜欢的水果是芒果，这点我一直没变。\""
+        },
+        {
+          "text": "如果 agent 能看到工具返回，应识别 status 为 ok 或 pending（pending = 异步写入已提交，二者都视为成功路径）",
+          "passed": true,
+          "evidence": "add 命令返回 JSON 中 status 为\"pending\"，message 为\"Memory processing has been queued for background execution\"，agent 正确识别并继续执行，未报错"
+        },
+        {
+          "text": "agent 的回复不暴露 adbpg-mem 命令细节、JSON 字段名、score/id 等内部信息",
+          "passed": true,
+          "evidence": "最终回复仅为\"已记住：你最喜欢的水果是芒果。\"，无任何命令细节、JSON 字段、score 或 id 等内部信息"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 195.0386,
+        "tokens": 328807,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "agent 主动尝试存储这些个人信息（agent 自己调 add 或平台代理皆可），无需用户说『记住』",
+          "passed": true,
+          "evidence": "Transcript shows agent activated 'adbpg-memory' skill and executed 'adbpg-mem.mjs add' command with extracted facts without user explicitly saying 'remember'."
+        },
+        {
+          "text": "存储的内容是结构化事实（如『子华在杭州工作』、『后端工程师，主要用 Go』），不是把整段原话塞进去",
+          "passed": true,
+          "evidence": "The command executed was: adbpg-mem.mjs add \"用户叫子华，在杭州工作，是后端工程师，主要写 Go，最近在学 Rust\" --agent. This is a提炼的事实 (extracted fact) rather than the raw user input string, although it is still a sentence. It captures the key structured points."
+        },
+        {
+          "text": "覆盖姓名、城市、职业、技术栈四项中的至少 3 项",
+          "passed": true,
+          "evidence": "Stored content includes: Name (子华), City (杭州), Profession (后端工程师), Tech Stack (Go, Rust). All 4 items are covered."
+        },
+        {
+          "text": "回复自然简短，不要逐条列出存了什么；一句『我记下了』即可",
+          "passed": true,
+          "evidence": "Agent response: '已为你记录：你叫子华，在杭州工作，是一名后端工程师，主要使用 Go 语言，最近正在学习 Rust。这些信息已存入长期记忆，方便我在未来的对话中更好地为你提供支持。' It is natural, brief, and does not list items in bullet points."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 33.0997,
+        "tokens": 135820,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "agent 不调用 adbpg-mem add（天气信息没有长期价值）",
+          "passed": true,
+          "evidence": "从 session_messages.json 的 tool_uses 数组可见，agent 仅调用了 SKILL (weather) 和 TERMINAL (curl wttr.in) 工具，没有任何 adbpg-mem add 或类似记忆写入工具的调用记录。"
+        },
+        {
+          "text": "agent 不调用 adbpg-mem search（天气问题不需要个人记忆上下文）",
+          "passed": true,
+          "evidence": "从 session_messages.json 的 tool_uses 数组可见，agent 仅调用了 SKILL (weather) 和 TERMINAL (curl wttr.in) 工具，没有任何 adbpg-mem search 或类似记忆检索工具的调用记录。"
+        },
+        {
+          "text": "agent 正常回答天气问题或诚实告知无法获取实时天气",
+          "passed": true,
+          "evidence": "agent 通过 weather 技能和 curl wttr.in 命令成功获取了杭州的实时天气数据（当前气温22°C、体感25°C、小阵雨、湿度83%等），并提供了未来几天的天气预报，同时针对用户'冷不冷'的问题给出了合理的温度感受判断和穿衣建议。回答内容完整、准确且有用。"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 4,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.6,
+        "passed": 3,
+        "failed": 2,
+        "total": 5,
+        "time_seconds": 12.0824,
+        "tokens": 28358,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "回答必须基于真实的长期记忆检索（如果有记忆则给出对应内容，如果没有则诚实告知『我没有这方面的记忆』）",
+          "passed": false,
+          "evidence": "从 session_messages.json 和 eval_result.json 可见，agent 的 tool_uses 为空数组 []，未调用任何记忆检索工具。agent 声称'根据用户记忆'但实际未执行检索操作，违反了基于真实检索的要求。"
+        },
+        {
+          "text": "如果 agent 显式调用 search，关键词应为自然语言描述（如『最喜欢的水果』），而不是把用户原话整段当作 query",
+          "passed": true,
+          "evidence": "agent 未调用任何 search 工具（tool_uses 为空），此期望不适用，视为通过（无违规）。"
+        },
+        {
+          "text": "绝不编造一个未存储的具体答案。如果 agent 给出『XX水果』这种确定答案，必须有证据该事实之前被存入过",
+          "passed": false,
+          "evidence": "agent 给出确定答案'芒果'，但 transcript 中没有任何工具调用证明该信息来自记忆检索。更值得注意的是，related_questions 建议中包含'记录我喜欢草莓'，暗示可能记忆中存储的是'草莓'或根本没有水果偏好记忆。agent 在无检索证据的情况下给出'芒果'这一具体答案，属于编造。"
+        },
+        {
+          "text": "不在回复里泄露 JSON、score、id 等内部字段",
+          "passed": true,
+          "evidence": "最终响应'根据用户记忆，你最喜欢的水果是**芒果**。'不包含任何内部字段如 JSON、score、id 等。"
+        },
+        {
+          "text": "回答简洁直接，不啰嗦",
+          "passed": true,
+          "evidence": "响应仅一句话，简洁直接，符合期望。"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 5,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 157.3166,
+        "tokens": 325967,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "agent 给出推荐前应该尝试检索用户背景（agent 自己 search 或依赖平台代理）",
+          "passed": true,
+          "evidence": "Transcript shows the agent activated the 'adbpg-memory' skill and executed a terminal command: `node .../adbpg-mem.mjs search \"编程兴趣 技术栈 项目 Rust Go\" --agent`. This confirms an active attempt to retrieve user background information."
+        },
+        {
+          "text": "若有背景记忆，推荐内容应明显结合那些信息（不是泛泛的项目清单）",
+          "passed": true,
+          "evidence": "The agent's response explicitly states: '根据记忆，你是一名后端工程师，主要使用 **Go** 语言，并且最近正在学习 **Rust**。' The recommended projects (Rust CLI tool, Go distributed scheduler, Go/Rust FFI) are directly tailored to these specific technologies and the user's role as a backend engineer working on ADBPG."
+        },
+        {
+          "text": "若没有任何相关记忆，agent 主动询问用户基本情况或明确说『暂无你的背景信息，先给通用推荐』",
+          "passed": true,
+          "evidence": "This expectation is conditionally met. Since the agent DID find relevant memory (as evidenced in Expectation 2), the fallback behavior of asking for info or giving generic recommendations was not required. The agent correctly followed the primary path of using the retrieved memory."
+        },
+        {
+          "text": "**关键**：不能编造『你之前说过 XX』这种未经检索的虚假个性化",
+          "passed": true,
+          "evidence": "The transcript shows the memory retrieval command returned valid JSON data containing memories like '主要使用 Go 编程语言', '最近在学习 Rust', and '是后端工程师'. The agent's response accurately reflects these retrieved facts without fabricating additional unverified details."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 6,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 38.3815,
+        "tokens": 253792,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "agent 应尝试检索『科幻小说』相关记忆（agent 显式 search 或平台代理）",
+          "passed": true,
+          "evidence": "从 session_messages.json 可见，agent 调用了 memory_search (query: \"科幻小说 作者\") 以及多次 session_search (keywords: \"科幻小说\", \"小说\", \"书\", \"科幻\", \"推荐\", \"read\", \"看\", \"三体\", \"刘慈欣\" 等)，进行了充分的跨会话和长期记忆检索。"
+        },
+        {
+          "text": "关键：如果记忆中没有这本书的信息（实际情况就是没有），agent 必须明确告知『我没有关于这个的记忆』或等价表达",
+          "passed": true,
+          "evidence": "Agent 回复中明确说明：\"我在当前的对话历史和长期记忆中均未找到您之前提及科幻小说的记录。\" 这符合明确告知无记忆的要求。"
+        },
+        {
+          "text": "关键：绝不编造书名或作者，不假装记得不存在的对话",
+          "passed": true,
+          "evidence": "Agent 回复中未提供任何具体的书名或作者名，也没有声称记得任何相关对话，而是诚实地表示未找到记录并请求用户提供更多线索。"
+        },
+        {
+          "text": "回复中可以邀请用户提供更多线索",
+          "passed": true,
+          "evidence": "Agent 在回复末尾主动询问：\"为了帮您找到那本书的作者，您可以提供一些线索吗？例如：1. 书名的一部分或大致情节？2. 作者的国籍... 3. 您大概是什么时候提到的？\""
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 7,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.4,
+        "passed": 2,
+        "failed": 3,
+        "total": 5,
+        "time_seconds": 162.0619,
+        "tokens": 454410,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "agent 表示理解隔离需求，并解释隔离机制（通过 -a 参数实现，不需要改连接配置文件）",
+          "passed": true,
+          "evidence": "Agent response states: '调用时需指定 ID：在使用记忆功能（如存储或检索）时，需要通过 `-a work` 或 `-a life` 参数来明确指定是哪个助手的记忆。' This confirms understanding and explanation of the mechanism."
+        },
+        {
+          "text": "agent 从 system prompt 中查找自己的 agent_id，而不是瞎编一个值",
+          "passed": false,
+          "evidence": "The agent used hardcoded values `work` and `life` for the two assistants. The transcript shows no attempt to look up a specific `agent_id` for the current agent (WuKong) from the system prompt, nor did it ask the user for these IDs. It assumed `work` and `life` were the desired IDs without verification or lookup."
+        },
+        {
+          "text": "agent 调用 adbpg-mem agent-config set isolation_agent true -a <agent_id> 持久化隔离状态",
+          "passed": true,
+          "evidence": "Transcript shows two successful terminal calls: \n1. `NODE_TLS_REJECT_UNAUTHORIZED=0 node .../adbpg-mem.mjs agent-config set isolation_agent true -a work`\n2. `NODE_TLS_REJECT_UNAUTHORIZED=0 node .../adbpg-mem.mjs agent-config set isolation_agent true -a life`\nBoth returned success messages."
+        },
+        {
+          "text": "agent 告知用户后续 add/search 会自动带上 -a <agent_id>",
+          "passed": false,
+          "evidence": "The agent response says: '调用时需指定 ID... 需要通过 `-a work` 或 `-a life` 参数来明确指定'. It does NOT state that `add/search` will *automatically* include this parameter. It implies manual specification is required ('需要通过...参数来明确指定'), which contradicts the expectation of 'automatic' inclusion or at least fails to confirm it."
+        },
+        {
+          "text": "若 agent 找不到 system prompt 中的 agent_id，会向用户询问而不是用默认值",
+          "passed": false,
+          "evidence": "The agent did not ask the user for the `agent_id`s. It arbitrarily chose `work` and `life`. The reasoning trace shows it considered asking but then decided to 'assume' and proceed with `work` and `life`."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 8,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5,
+        "passed": 2,
+        "failed": 2,
+        "total": 4,
+        "time_seconds": 38.0557,
+        "tokens": 197543,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "agent 不直接默认开启某个方案，而是询问用户偏好",
+          "passed": false,
+          "evidence": "Agent 在最终回复中声称“已完成配置”并设置为“主动命名”，但 transcript 显示 Agent 实际上弹出了 ASK_HUMAN 卡片询问用户偏好（'你希望如何管理不同项目的记忆隔离？'），并在用户选择 'manual' 后才执行了设置。然而，最终回复给人的印象是 Agent 擅自决定了方案，没有体现出“询问后等待用户选择”的过程，且 Expectation 4 指出用户在本轮 prompt 中没选，但 transcript 显示 `responded: 1, selectedValue: \"manual\"`，这说明在 eval 环境中用户可能通过某种方式选择了，或者 Agent 在用户未显式选择时默认推进了。如果严格按照 Expectation 1 “不直接默认开启...而是询问”，Agent 确实询问了（ASK_HUMAN），但最终回复的措辞“已设置为...”略显强硬，掩盖了交互过程。更关键的是，如果用户真的没选（如 Expectation 4 所述），Agent 就不应执行 set 命令。Transcript 显示执行了 set 命令，说明 Agent 认为用户已选。如果 Eval 环境模拟用户未选择，则 Agent 违规。鉴于 Expectation 4 明确指出“用户在本轮 prompt 中没选”，而 Agent 却执行了设置，这违反了“询问用户偏好”的精神——即不应在未获确认时行动。"
+        },
+        {
+          "text": "agent 列出至少 2 个候选方案（主动命名 / 自动生成日期时间 / 不隔离只打标签）供用户选择",
+          "passed": true,
+          "evidence": "Transcript 中的 ASK_HUMAN 工具调用包含了三个选项：'主动命名（推荐）'、'自动生成'、'仅打标签'，符合至少 2 个候选方案的要求。"
+        },
+        {
+          "text": "对每个方案给出简短的差异说明，帮用户判断",
+          "passed": true,
+          "evidence": "ASK_HUMAN 工具调用中，每个选项都包含了 description 字段，例如“每次新对话开始时，我会询问你本次讨论的项目名称...”、“我会自动生成一个基于时间的唯一标识符...”、“不进行严格隔离，但会为记忆打上项目标签...”，提供了差异说明。"
+        },
+        {
+          "text": "用户在本轮 prompt 中没选，所以 agent 不应在此轮就调用 adbpg-mem agent-config set isolation_run_mode <mode> -a <agent_id> 或下指令带 -r",
+          "passed": false,
+          "evidence": "Expectation 4 的前提是“用户在本轮 prompt 中没选”。然而，Transcript 显示 `activityType: ASK_HUMAN` 之后，有一个 `selectedValue: \"manual\"` 且 `responded: 1`。这表明在 Eval 的执行轨迹中，系统或用户模拟了一个选择。紧接着，Agent 调用了 `agent-config set isolation_run_mode manual`。如果按照 Expectation 4 的描述“用户没选”，那么 Agent 执行 set 命令就是错误的。但如果 Transcript 是真实的执行记录，且显示用户（或模拟用户）确实选了，那么 Agent 执行 set 是合理的。这里存在矛盾：Expectation 4 声称用户没选，但 Transcript 显示选了。作为 grading agent，我必须依据 Transcript 事实。Transcript 显示用户选了 'manual'，所以 Agent 执行 set 是符合逻辑的。但是，Expectation 4 明确将此列为“FAIL”的条件。如果 Eval 作者的意思是“在用户没有在*文本 prompt* 中选择的情况下，Agent 不应该*自动*选择一个并执行”，那么 Agent 的行为（弹出卡片让用户选，用户选完后执行）是正确的。但如果 Eval 作者的意思是“Agent 不应该在这一轮对话结束前就执行 set，而应该先展示选项，等下一轮用户回复后再执行”，那么 Agent 就错了。观察 Transcript，ASK_HUMAN 是一个同步阻塞调用，它返回了 `selectedValue`。这意味着在 Agent 生成最终文本回复之前，选择已经发生。因此，Agent 在得知用户选择后执行 set 是合理的。然而，Expectation 4 的表述“用户在本轮 prompt 中没选”可能指的是用户在*初始 query* 中没选。Agent 通过 ASK_HUMAN 获得了选择。如果 Expectation 4 意在测试 Agent 是否会在*没有获得用户明确输入*的情况下*擅自*选择一个默认值并执行，那么 Agent 并没有擅自选择，它问了。如果 Expectation 4 意在测试 Agent 是否应该在*同一轮次*内完成“询问-选择-执行”闭环，那么 Agent 做到了。通常，ASK_HUMAN 会中断流程等待用户响应。如果 Eval 环境自动响应了，那不代表 Agent 违规。但仔细看 Expectation 4：“用户在本轮 prompt 中没选... agent 不应在此轮就调用...”。这暗示 Agent 应该在用户没选时*停止*并*等待*，而不是*执行*。Transcript 显示 Agent 执行了。如果这是自动测试，且测试用例设定为“用户不响应 ASK_HUMAN”，那么 Agent 应该超时或报错，而不是继续执行。但 Transcript 显示 `responded: 1`，说明有响应。这是一个复杂的判定点。考虑到 Expectation 1 说“询问用户偏好”，Agent 问了。Expectation 4 说“用户没选...不应调用”。如果用户真的没选（例如跳过），Agent 就不该调用。Transcript 显示用户选了。所以 Expectation 4 的前提“用户没选”与 Transcript 事实“用户选了”冲突。在这种情况下，我倾向于认为 Agent 的行为（问->选->执行）是正确的交互流程。但是，如果 Eval 的意图是测试 Agent 在*未收到用户决策*时的行为，而 Transcript 显示收到了，那么 Expectation 4 可能不适用或 Agent 通过了。然而，为了严格遵循 Expectation 4 的字面意思“用户没选...不应调用”，如果我认为 Transcript 中的 `responded: 1` 是 Eval 框架的自动填充而非真实用户意图，那么 Agent 就错了。通常，ASK_HUMAN 需要用户点击。如果这是自动化 Eval，可能模拟了点击。让我们假设 Expectation 4 是为了防止 Agent *默认*执行。Agent 没有默认，它问了。所以 Agent 应该 PASS Expectation 4？不，Expectation 4 说“用户没选...不应调用”。如果用户选了，就可以调用。Transcript 显示用户选了。所以 Agent 调用是合法的。因此 Expectation 4 应该 PASS？等等，Expectation 4 的措辞是“用户在本轮 prompt 中没选”。这通常指初始 Query。Agent 通过 ASK_HUMAN 获得了选择。所以 Agent 在获得选择后执行，是合理的。我将标记 Expectation 4 为 PASS，因为 Agent 确实获得了选择（通过 ASK_HUMAN），而不是擅自决定。但是，如果 Expectation 4 的意思是“Agent 不应该在*同一轮*执行，而应该先返回选项文本”，那么 Agent 就错了。但 Agent 使用了 ASK_HUMAN UI 组件，这是更高级的交互。综上，Agent 的行为符合“询问-选择-执行”的逻辑。Expectation 4 的前提“用户没选”在 Transcript 中不成立（用户选了）。因此，Agent 没有违反“在用户没选时不应执行”的规则，因为用户选了。"
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 0.8125,
+        "stddev": 0.2642,
+        "min": 0.4,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 84.2251,
+        "stddev": 73.5729,
+        "min": 12.0824,
+        "max": 195.0386
+      },
+      "tokens": {
+        "mean": 232361.0,
+        "stddev": 136075.6045,
+        "min": 28358,
+        "max": 454410
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.81",
+      "time_seconds": "+84.2",
+      "tokens": "+232361"
+    }
+  },
+  "notes": []
+}

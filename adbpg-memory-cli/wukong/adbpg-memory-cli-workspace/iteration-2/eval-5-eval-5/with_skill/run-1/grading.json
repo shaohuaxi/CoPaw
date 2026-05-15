@@ -1,0 +1,72 @@
+{
+  "expectations": [
+    {
+      "text": "agent 在给出推荐前先调用 adbpg-mem search 检索用户背景（技术栈/职业/兴趣等）",
+      "passed": true,
+      "evidence": "从 session_messages.json 可见，agent 在回复前执行了两次 adbpg-mem search 命令：第一次搜索'编程兴趣 技术栈 项目经验'，返回了'是后端工程师'、'主要使用 Go 编程语言'、'最近在学习 Rust'等记忆；第二次搜索'周末项目 个人兴趣 业余爱好'。最终回复开头明确说明'根据记忆检索结果，我了解到你是一位后端工程师，主要使用 Go 语言，并且最近正在学习 Rust'，证明检索先于推荐。"
+    },
+    {
+      "text": "搜索使用 -u test_skill_eval scope",
+      "passed": false,
+      "evidence": "从 session_messages.json 中的终端命令输出可见，两次 adbpg-mem search 命令的 scope 字段显示 user_id 为'test_verify'而非'test_skill_eval'。例如第一次搜索结果中：'scope':{'agent_id':'','run_id':'','user_id':'test_verify'}。这表明搜索使用的是 test_verify 用户范围，而非期望中要求的 test_skill_eval。"
+    },
+    {
+      "text": "若检索到背景信息，推荐内容明显结合了那些信息（不是泛泛的项目清单）",
+      "passed": true,
+      "evidence": "检索到的核心记忆包括'是后端工程师'、'主要使用 Go 编程语言'、'最近在学习 Rust'。最终推荐的三个项目分别针对：(1)Rust 实战 CLI 工具——对应'最近在学习 Rust'；(2)Go 微服务分布式任务调度器——对应'主要使用 Go 编程语言'和'后端工程师'身份；(3)Go+Rust 混合编程——结合两者。每个项目都明确关联了检索到的技术栈信息，并在'收获'部分呼应了用户的技术背景（如'Rust 的所有权机制'、'Go 并发模型 Goroutines/Channels'），不是通用项目清单。"
+    },
+    {
+      "text": "若没有任何相关记忆，agent 主动询问用户基本情况或明确说『暂无你的背景信息，先给通用推荐』，不能编造『你之前说过 XX』",
+      "passed": true,
+      "evidence": "此期望为条件性期望（仅在无记忆时触发）。实际执行中 agent 成功检索到了相关记忆（后端工程师、Go 语言、Rust 学习），因此该期望的前置条件未满足，无需评估此分支。从另一个角度验证：agent 没有编造任何不存在的记忆，所有声称的用户信息（'你是一位后端工程师，主要使用 Go 语言，并且最近正在学习 Rust'）都能在检索结果中找到对应条目。"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 1,
+    "total": 4,
+    "pass_rate": 0.75
+  },
+  "claims": [
+    {
+      "claim": "agent 在回复前调用了两次 adbpg-mem search",
+      "type": "process",
+      "verified": true,
+      "evidence": "session_messages.json 中记录了两次 TERMINAL activity，命令分别为'NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"编程兴趣 技术栈 项目经验\" --agent'和'NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"周末项目 个人兴趣 业余爱好\" --agent'"
+    },
+    {
+      "claim": "检索到的记忆包含用户技术栈信息",
+      "type": "factual",
+      "verified": true,
+      "evidence": "第一次搜索结果返回 5 条记忆，其中 3 条与技术栈直接相关：'是后端工程师'（score:0.44）、'主要使用 Go 编程语言'（score:0.41）、'最近在学习 Rust'（score:0.37）"
+    },
+    {
+      "claim": "推荐项目与检索到的技术栈一一对应",
+      "type": "quality",
+      "verified": true,
+      "evidence": "项目 1(Rust CLI)对应'最近在学习 Rust'；项目 2(Go 微服务)对应'主要使用 Go 编程语言'和'后端工程师'；项目 3(Go+Rust 混合)结合两者。每个项目的'目标'和'收获'都明确引用了对应的技术背景。"
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "期望 2 关于'-u test_skill_eval scope'的要求可能需要调整",
+        "reason": "期望 2 要求搜索必须使用'-u test_skill_eval'scope，但实际测试环境中使用的可能是其他用户标识（如此处的'test_verify'）。如果这是一个通用的 eval 模板，建议将期望改为验证'search 命令使用了正确的--agent 参数并指定了适当的用户范围'，而不是硬编码特定的 scope 名称。或者在 eval 配置中明确说明测试环境的 user_id 应该是什么，使期望与实际测试环境一致。"
+      }
+    ],
+    "overall": "整体表现良好：agent 正确执行了记忆检索流程，推荐内容高度个性化且基于真实检索结果。唯一问题是期望 2 的 scope 验证失败，但这可能是测试环境配置问题而非 agent 行为错误。建议复查期望 2 的设定是否与实际测试环境匹配。"
+  },
+  "timing": {
+    "total_duration_seconds": 37.8675,
+    "total_tokens": 125645,
+    "token_usage": {
+      "input_tokens": 124342,
+      "output_tokens": 1303,
+      "total_tokens": 125645,
+      "request_count": 8,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 27.82
+  },
+  "grader_task_id": "f6859c8b-88f6-4cf8-b462-d78fce609c5e"
+}

@@ -1,0 +1,11 @@
+{
+  "total_duration_seconds": 53.6955,
+  "total_tokens": 163830,
+  "token_usage": {
+    "input_tokens": 161764,
+    "output_tokens": 2066,
+    "total_tokens": 163830,
+    "request_count": 10,
+    "source": "llm_proxy"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "expectations": [
+    {
+      "text": "agent 不直接默认开启某个方案，而是询问用户偏好",
+      "passed": false,
+      "evidence": "Agent response states '已为你开启**手动会话隔离模式**' (Already enabled manual session isolation mode for you), which indicates a default action was taken rather than asking for user preference first."
+    },
+    {
+      "text": "agent 列出至少 2 个候选方案（主动命名 / 自动生成日期时间 / 不隔离只打标签）供用户选择",
+      "passed": false,
+      "evidence": "The agent only describes one mode ('手动会话隔离模式') and does not present multiple candidate schemes such as auto-generated dates or tag-only approaches."
+    },
+    {
+      "text": "对每个方案给出简短的差异说明，帮用户判断",
+      "passed": false,
+      "evidence": "Since no alternative schemes were listed, no comparative differences were provided to help the user judge between options."
+    },
+    {
+      "text": "用户在本轮 prompt 中没选，所以 agent 不应在此轮就调用 adbpg-mem agent-config set isolation_run_mode <mode> -a <agent_id> 或下指令带 -r",
+      "passed": true,
+      "evidence": "The final response is text-only and does not contain any tool calls or commands setting isolation_run_mode or using the -r flag."
+    }
+  ],
+  "summary": {
+    "passed": 1,
+    "failed": 3,
+    "total": 4,
+    "pass_rate": 0.25
+  },
+  "claims": [
+    {
+      "claim": "The agent has enabled 'manual session isolation mode'.",
+      "type": "process",
+      "verified": false,
+      "evidence": "The response claims this mode is enabled, but without access to the tool transcript, it cannot be verified if any actual configuration change occurred. However, the expectation grading focuses on the interaction pattern."
+    },
+    {
+      "claim": "Different project discussions will be stored independently.",
+      "type": "quality",
+      "verified": false,
+      "evidence": "This is a promise of future behavior dependent on the unverified configuration state."
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "Expectation 4",
+        "reason": "This expectation requires reading the transcript (session_messages.json) to verify the absence of specific tool calls. It might be beneficial to explicitly note that transcript inspection is required for this pass/fail determination."
+      }
+    ],
+    "overall": "The agent failed to follow the consultative approach required by the expectations. Instead of offering choices, it unilaterally declared a mode active. The evals are clear and verifiable, though Expectation 4 depends on artifact inspection."
+  },
+  "timing": {
+    "total_duration_seconds": 996.2098,
+    "total_tokens": 221603,
+    "token_usage": {
+      "input_tokens": 220439,
+      "output_tokens": 1164,
+      "total_tokens": 221603,
+      "request_count": 11,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 28.17
+  },
+  "grader_task_id": "092ab380-bad6-4c9d-ad11-a5b544d1d496"
+}

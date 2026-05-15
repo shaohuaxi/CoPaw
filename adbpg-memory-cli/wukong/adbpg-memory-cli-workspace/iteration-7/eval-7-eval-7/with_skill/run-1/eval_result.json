@@ -1,0 +1,1090 @@
+{
+  "eval_id": 7,
+  "eval_name": "eval-7",
+  "prompt": "我想开启 Agent 记忆隔离，工作助手和生活助手的记忆要分开存。",
+  "skill_name": "adbpg-memory",
+  "target": "wukong",
+  "query_result": {
+    "query_id": "",
+    "query_text": "我想开启 Agent 记忆隔离，工作助手和生活助手的记忆要分开存。",
+    "status": "completed",
+    "response": "已为你开启 Agent 记忆隔离。\n\n*   **工作助手 (work-assistant)**：记忆已独立存储，不会与生活助手混淆。\n*   **生活助手 (life-assistant)**：记忆已独立存储，不会与工作助手混淆。\n\n今后在使用这两个助手时，它们将各自维护独立的长期记忆库。",
+    "raw_output": {
+      "execution_workspace": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-7",
+      "wukong_task_id": "2a62a834-7631-44db-b954-ea81937a9485",
+      "wukong_session_id": "2a62a834-7631-44db-b954-ea81937a9485"
+    },
+    "token_usage": {
+      "input_tokens": 484832,
+      "output_tokens": 1999,
+      "total_tokens": 486831,
+      "request_count": 18,
+      "source": "llm_proxy"
+    },
+    "duration_seconds": 229.09014201164246,
+    "error": "",
+    "eval": {},
+    "session_messages": [
+      {
+        "role": "user",
+        "content": "<skill data-id=\"9d277c1e-b9cd-4979-ba5d-d255c2cbd04e\" data-name=\"adbpg-memory\" /> 我想开启 Agent 记忆隔离，工作助手和生活助手的记忆要分开存。",
+        "events": [],
+        "tool_uses": [],
+        "timestamp": 1778744563125
+      },
+      {
+        "role": "assistant",
+        "content": "已为你开启 Agent 记忆隔离。\n\n*   **工作助手 (work-assistant)**：记忆已独立存储，不会与生活助手混淆。\n*   **生活助手 (life-assistant)**：记忆已独立存储，不会与工作助手混淆。\n\n今后在使用这两个助手时，它们将各自维护独立的长期记忆库。",
+        "events": [
+          {
+            "runId": "eval-632fc10b-994a-44af-80e0-51b9a6475f6f",
+            "threadId": "2a62a834-7631-44db-b954-ea81937a9485",
+            "timestamp": 1778744569625,
+            "type": "RUN_STARTED"
+          },
+          {
+            "e2e_ttft_ms": 6498,
+            "timestamp": 1778744569625,
+            "ttft_ms": 2777,
+            "type": "FIRST_TOKEN"
+          },
+          {
+            "activityType": "SKILL",
+            "content": {
+              "finish_time": 1778744570746,
+              "purpose": "---\nname: adbpg-memory\ndescription: >\n  ADBPG 长期记忆技能。每次新会话你没有任何上下文，必须通过 adbpg-mem 检索长期记忆。\n\n  【检索记忆 - 必须先做】下列任何一种模式出现，必须先执行 adbpg-mem search 再回答：\n  (a) 含\"我/我的/我之前/我上次/我提过/还记得/来着/记不清/那本/那个\"等回忆词；\n  (b) 询问个人偏好/身份/经历/历史决策；\n  (c) 需要个性化（推荐、建议）的请求。\n  命令格式：NODE_TLS_REJECT_UNAUTHORIZED=0 node ./scripts/adbpg-mem.mjs search \"关键词\" --agent\n  禁止在 search 之前就直接回答\"我不知道\"或\"没听你说过\"——你的当前会话上下文是空的，\n  必须从长期记忆里捞才能知道用户之前是否说过。这是硬性规则。\n\n  【存储记忆】用户说\"记住\"、提到个人信息、做出决策时，\n  执行 NODE_TLS_REJECT_UNAUTHORIZED=0 node ./scripts/adbpg-mem.mjs add \"提炼的事实\" --agent 存储。\n  提炼事实再存储，不存原文，保留用户原始语言，不存敏感信息。\n\n  【输出格式】--agent 返回 JSON，检查 status 字段（ok/error），搜索结果在 data 数组中，score 大于 0.7 视为高度相关。\n\n  【展示检索结果】检索到记忆后，在回复开头简要列出相关记忆（如\"根据记忆：你叫子华，喜欢 Python\"），\n  让用户能看到检索到了什么。如果检索到记忆但与问题无关，也简要提及\"检索到 N 条记忆但与当前问题无关\"。\n\n  不要在回复中暴露 adbpg-mem 命令细节和原始 JSON。更多用法参见 SKILL.md。\nlicense: Apache-2.0\nmetadata:\n  author: ADBPG\n  version: \"0.1.0\"\n  category: ai-memory\n  tags: \"memory, personalization, adbpg, cli, long-term-memory\"\n  dependencies:\n    apis:\n      - \"ADBPG Memory REST API (rest_base_url, configured via adbpg-mem init)\"\n      - \"ADBPG PostgreSQL endpoint (SQL mode, host/port/dbname configured via adbpg-mem init)\"\ncompatibility: >\n  Node.js 18+ (npm install) 或 Python 3.10+ (pip install)。\n  需要 adbpg-mem CLI 已安装并通过 adbpg-mem init 完成配置。\n  支持 SQL 模式（直连 ADBPG）和 REST 模式（HTTP API）。\n---",
+              "skill_name": "adbpg-memory",
+              "snippet": "adbpg-memory技能",
+              "start_time": 1778744570746,
+              "status": "completed"
+            },
+            "messageId": "tool_msg:74bd1392-1a92-4192-a686-f48f81185aea",
+            "timestamp": 1778744570746,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 23219,
+              "totalTokens": 200000,
+              "usageRatio": 0.119999997317791
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778744570746,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "find ~ -name \"SKILL.md\" -path \"*adbpg-memory*\" 2>/dev/null | head -1 | xargs dirname 2>/dev/null",
+              "exit_code": null,
+              "finish_time": 1778744640726,
+              "output": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/adbpg-memory/examples/saas-ecommerce\n",
+              "output_chunks": [],
+              "snippet": "查找 adbpg-memory skill 的根目录路径",
+              "start_time": 1778744575888,
+              "status": "completed",
+              "working_dir": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-7"
+            },
+            "messageId": "tool_msg:27f85786-971b-400d-9c01-42b364018aaa",
+            "timestamp": 1778744575888,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 31482,
+              "totalTokens": 200000,
+              "usageRatio": 0.1599999964237213
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778744575888,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "",
+              "finish_time": 1778744653375,
+              "output": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/adbpg-memory/examples/saas-ecommerce\n",
+              "output_chunks": [],
+              "snippet": "查看后台进程输出结果",
+              "start_time": 1778744643795,
+              "status": "completed",
+              "working_dir": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-7"
+            },
+            "messageId": "tool_msg:bbbbb734-8f05-47b3-acee-d84e7f83d705",
+            "timestamp": 1778744643795,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 31909,
+              "totalTokens": 200000,
+              "usageRatio": 0.1599999964237213
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778744643795,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "find ~ -name \"SKILL.md\" -path \"*adbpg-memory*\" 2>/dev/null | head -1 | xargs dirname 2>/dev/null",
+              "exit_code": null,
+              "finish_time": 1778744728718,
+              "output": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/adbpg-memory/examples/saas-ecommerce\n",
+              "output_chunks": [],
+              "snippet": "再次尝试查找 adbpg-memory skill 的根目录路径",
+              "start_time": 1778744664147,
+              "status": "completed",
+              "working_dir": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-7"
+            },
+            "messageId": "tool_msg:3bcb8e06-7584-48cb-8202-0816c9fd88b5",
+            "timestamp": 1778744664147,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 32230,
+              "totalTokens": 200000,
+              "usageRatio": 0.1599999964237213
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778744664147,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "",
+              "finish_time": 1778744742164,
+              "output": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/adbpg-memory/examples/saas-ecommerce\n",
+              "output_chunks": [],
+              "snippet": "查看后台进程输出结果",
+              "start_time": 1778744733365,
+              "status": "completed",
+              "working_dir": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-7"
+            },
+            "messageId": "tool_msg:169073b4-12bc-4cd4-a076-6f1656de5f57",
+            "timestamp": 1778744733365,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 32589,
+              "totalTokens": 200000,
+              "usageRatio": 0.1599999964237213
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778744733365,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "DIRECTORY_LIST",
+            "content": {
+              "files": [
+                {
+                  "modified": "2026-05-13T07:43:12+00:00",
+                  "name": "05dea422-337a-46eb-a388-1f6f86daf559",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:16+00:00",
+                  "name": "1a5b1681-5ae2-427c-af6f-ed0d9e59c51b",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:01+00:00",
+                  "name": "1be5d307-795a-4438-ae25-70125aa26e19",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:42+00:00",
+                  "name": "1c9c5a6b-2024-4d97-a178-f2b9f0b63f29",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:19+00:00",
+                  "name": "210457b1-e34b-42b4-b162-d7c440b4d887",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:30+00:00",
+                  "name": "2953f13a-c3d3-45c9-892a-51238c696f1b",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:37+00:00",
+                  "name": "2b91d3f8-c25e-40a1-98f6-685bbb657a3d",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:43+00:00",
+                  "name": "3f152b98-0bb5-459f-9099-a7ce16110425",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:35+00:00",
+                  "name": "4cac273b-2639-4b14-9d4b-2cb2d680a58d",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:52+00:00",
+                  "name": "52658142-827a-4034-8943-ce944e8a36f1",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:59+00:00",
+                  "name": "53b297c3-ed12-4bd8-a5a1-75ff8059c607",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:56+00:00",
+                  "name": "53d9259d-1967-4cb0-b184-4e4968f3f00b",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:13+00:00",
+                  "name": "55a66ae8-7e41-433a-9ef3-6842b6bd6c15",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:26+00:00",
+                  "name": "572fd885-54a2-42e6-89b7-92129391d22a",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:22+00:00",
+                  "name": "58e9d0cb-168e-4bc8-8e82-985b711f29d1",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:32+00:00",
+                  "name": "723ba09e-6b31-44f8-bf92-997a56cda493",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:02+00:00",
+                  "name": "8b5873be-3326-458e-9129-318715fbef22",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:44+00:00",
+                  "name": "90828a35-83c8-46ea-9cad-29e0449d4ed3",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-13T07:43:11+00:00",
+                  "name": "964055b3-3e46-4d7b-8743-0907a18ba31b",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:24+00:00",
+                  "name": "9bf9834f-57be-4c8c-b5fc-5c9e12c93292",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-14T07:32:15+00:00",
+                  "name": "9d277c1e-b9cd-4979-ba5d-d255c2cbd04e",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:33+00:00",
+                  "name": "a4282b0f-694c-4ee9-9f63-0a8427239eae",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:41+00:00",
+                  "name": "ae90c41a-7943-405f-ab18-f1c93adcf6e9",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-14T03:33:09+00:00",
+                  "name": "aoneKitSkill",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:56+00:00",
+                  "name": "bc7acd8f-9cd1-4a21-81d9-733ebb1e3e93",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-14T03:27:51+00:00",
+                  "name": "bundled",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:53+00:00",
+                  "name": "c7155f65-4379-4440-bd7a-697440425010",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-14T03:33:18+00:00",
+                  "name": "c9d5a7d4-3512-4f9b-b82c-6d72543459bb",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:39+00:00",
+                  "name": "d12df6e6-b617-4853-a3e1-4c8eda841689",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:38+00:00",
+                  "name": "d8a53270-a48c-48a0-9d91-95a63cfe29e4",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:04:04+00:00",
+                  "name": "dbefa2b5-a0b8-45f9-bc22-bca0ccd72ad2",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:20+00:00",
+                  "name": "e2e1a945-b226-4ddf-8f32-91502914b5b6",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:07+00:00",
+                  "name": "ec679c56-1858-4b8c-b9b0-fb6295bcf0f2",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:49+00:00",
+                  "name": "f5a8613e-253b-4837-851c-898fa897dcd0",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-14T07:32:15+00:00",
+                  "name": "skills.db",
+                  "size": 421888,
+                  "type": "file"
+                }
+              ],
+              "finish_time": 1778744745380,
+              "path": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills",
+              "snippet": "列出 skills 目录内容，查找 adbpg-memory skill",
+              "start_time": 1778744745380,
+              "status": "completed",
+              "total_count": 35
+            },
+            "messageId": "tool_msg:c8c80634-cf9b-4b3f-bb0a-04f55b10bee5",
+            "timestamp": 1778744745380,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 32761,
+              "totalTokens": 200000,
+              "usageRatio": 0.1599999964237213
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778744745380,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "DIRECTORY_LIST",
+            "content": {
+              "files": [
+                {
+                  "modified": "2026-05-14T07:32:15+00:00",
+                  "name": "SKILL.md",
+                  "size": 27856,
+                  "type": "file"
+                },
+                {
+                  "modified": "2026-05-14T07:32:15+00:00",
+                  "name": "TEST_PLAN.md",
+                  "size": 14150,
+                  "type": "file"
+                },
+                {
+                  "modified": "2026-05-14T07:32:15+00:00",
+                  "name": "docs",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-14T07:32:15+00:00",
+                  "name": "examples",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-14T07:32:15+00:00",
+                  "name": "node",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-14T07:32:15+00:00",
+                  "name": "python",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-14T07:32:15+00:00",
+                  "name": "scripts",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-14T07:32:15+00:00",
+                  "name": "shared",
+                  "type": "directory"
+                }
+              ],
+              "finish_time": 1778744752459,
+              "path": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/9d277c1e-b9cd-4979-ba5d-d255c2cbd04e",
+              "snippet": "列出 adbpg-memory skill 目录内容",
+              "start_time": 1778744752459,
+              "status": "completed",
+              "total_count": 8
+            },
+            "messageId": "tool_msg:9b3da4b8-7e7c-403b-aec3-ba801cdf2eb6",
+            "timestamp": 1778744752459,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 34750,
+              "totalTokens": 200000,
+              "usageRatio": 0.17000000178813934
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778744752459,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "ls -la /Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/9d277c1e-b9cd-4979-ba5d-d255c2cbd04e/scripts/",
+              "exit_code": 0,
+              "finish_time": 1778744756172,
+              "output": "total 120\ndrwxr-xr-x@  4 airfan  staff    128  5 14 15:32 .\ndrwxr-xr-x@ 10 airfan  staff    320  5 14 15:32 ..\n-rw-r--r--@  1 airfan  staff  36088  5 14 15:32 adbpg-mem.mjs\n-rw-r--r--@  1 airfan  staff  24354  5 14 15:32 adbpg-mem.test.mjs\n",
+              "output_chunks": [],
+              "snippet": "查看 adbpg-memory skill 的 scripts 目录内容",
+              "start_time": 1778744756146,
+              "status": "completed",
+              "working_dir": ""
+            },
+            "messageId": "tool_msg:69b083c5-9d2a-4e9d-8c3c-a31bb425ab1e",
+            "timestamp": 1778744756146,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 35098,
+              "totalTokens": 200000,
+              "usageRatio": 0.18000000715255737
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778744756146,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "which node",
+              "exit_code": 0,
+              "finish_time": 1778744758540,
+              "output": "/Users/airfan/.real/.bin/node/bin/node\n",
+              "output_chunks": [],
+              "snippet": "查找 node 二进制文件路径",
+              "start_time": 1778744758517,
+              "status": "completed",
+              "working_dir": ""
+            },
+            "messageId": "tool_msg:13224592-d02d-4943-aa74-39d26fa74f3f",
+            "timestamp": 1778744758517,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 35336,
+              "totalTokens": 200000,
+              "usageRatio": 0.18000000715255737
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778744758517,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 /Users/airfan/.real/.bin/node/bin/node /Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/9d277c1e-b9cd-4979-ba5d-d255c2cbd04e/scripts/adbpg-mem.mjs agent-config show -a wukong-default",
+              "exit_code": 0,
+              "finish_time": 1778744762970,
+              "output": "{\"isolation_agent\":false,\"isolation_run_mode\":\"off\"}",
+              "output_chunks": [],
+              "snippet": "查看当前 Agent 的记忆隔离配置状态",
+              "start_time": 1778744762472,
+              "status": "completed",
+              "working_dir": ""
+            },
+            "messageId": "tool_msg:f9746b63-4b99-46a9-956a-d80f5ff2f4c8",
+            "timestamp": 1778744762472,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 35537,
+              "totalTokens": 200000,
+              "usageRatio": 0.18000000715255737
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778744762472,
+            "type": "CUSTOM"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 35840,
+              "totalTokens": 200000,
+              "usageRatio": 0.18000000715255737
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778744769205,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 /Users/airfan/.real/.bin/node/bin/node /Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/9d277c1e-b9cd-4979-ba5d-d255c2cbd04e/scripts/adbpg-mem.mjs agent-config set isolation_agent true -a work-assistant",
+              "exit_code": 0,
+              "finish_time": 1778744778852,
+              "output": "Set 'isolation_agent' = true for agent work-assistant\n",
+              "output_chunks": [],
+              "snippet": "为工作助手开启 Agent 记忆隔离",
+              "start_time": 1778744777729,
+              "status": "completed",
+              "working_dir": ""
+            },
+            "messageId": "tool_msg:9edba7e9-d40d-471c-ab77-0ddc41180683",
+            "timestamp": 1778744777729,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 36041,
+              "totalTokens": 200000,
+              "usageRatio": 0.18000000715255737
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778744777730,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 /Users/airfan/.real/.bin/node/bin/node /Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/9d277c1e-b9cd-4979-ba5d-d255c2cbd04e/scripts/adbpg-mem.mjs agent-config set isolation_agent true -a life-assistant",
+              "exit_code": 0,
+              "finish_time": 1778744782880,
+              "output": "Set 'isolation_agent' = true for agent life-assistant\n",
+              "output_chunks": [],
+              "snippet": "为生活助手开启 Agent 记忆隔离",
+              "start_time": 1778744782585,
+              "status": "completed",
+              "working_dir": ""
+            },
+            "messageId": "tool_msg:3b1e5617-a849-467e-82b5-1aa808db2c23",
+            "timestamp": 1778744782585,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 36246,
+              "totalTokens": 200000,
+              "usageRatio": 0.18000000715255737
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778744782585,
+            "type": "CUSTOM"
+          },
+          {
+            "messageId": "direct-text-6d10af3c-a1e7-44e1-8895-65eea2eb527e",
+            "role": "assistant",
+            "timestamp": 1778744783897,
+            "type": "TEXT_MESSAGE_START"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 36366,
+              "totalTokens": 200000,
+              "usageRatio": 0.18000000715255737
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778744785309,
+            "type": "CUSTOM"
+          },
+          {
+            "delta": "已为你开启 Agent 记忆隔离。\n\n*   **工作助手 (work-assistant)**：记忆已独立存储，不会与生活助手混淆。\n*   **生活助手 (life-assistant)**：记忆已独立存储，不会与工作助手混淆。\n\n今后在使用这两个助手时，它们将各自维护独立的长期记忆库。",
+            "messageId": "direct-text-6d10af3c-a1e7-44e1-8895-65eea2eb527e",
+            "timestamp": 1778744783897,
+            "type": "TEXT_MESSAGE_CONTENT"
+          },
+          {
+            "messageId": "direct-text-6d10af3c-a1e7-44e1-8895-65eea2eb527e",
+            "timestamp": 1778744785309,
+            "type": "TEXT_MESSAGE_END"
+          },
+          {
+            "data": {
+              "answer_id": "eval-632fc10b-994a-44af-80e0-51b9a6475f6f",
+              "generated_at": 1778744787185,
+              "items": [
+                {
+                  "text": "验证工作助手记忆隔离效果"
+                },
+                {
+                  "text": "查看生活助手当前记忆内容"
+                },
+                {
+                  "text": "配置其他助手的独立记忆空间"
+                }
+              ],
+              "status": "ready",
+              "suggestions": [
+                "验证工作助手记忆隔离效果",
+                "查看生活助手当前记忆内容",
+                "配置其他助手的独立记忆空间"
+              ]
+            },
+            "name": "related_questions",
+            "timestamp": 1778744787185,
+            "type": "CUSTOM"
+          },
+          {
+            "cached_tokens": 306613,
+            "completion_tokens": 1799,
+            "prompt_tokens": 479516,
+            "timestamp": 1778744788216,
+            "total_tokens": 481315,
+            "type": "USAGE"
+          },
+          {
+            "runId": "eval-632fc10b-994a-44af-80e0-51b9a6475f6f",
+            "threadId": "2a62a834-7631-44db-b954-ea81937a9485",
+            "timestamp": 1778744788216,
+            "type": "RUN_FINISHED"
+          }
+        ],
+        "tool_uses": [
+          {
+            "id": "tool_msg:74bd1392-1a92-4192-a686-f48f81185aea",
+            "name": "SKILL",
+            "input": {
+              "finish_time": 1778744570746,
+              "purpose": "---\nname: adbpg-memory\ndescription: >\n  ADBPG 长期记忆技能。每次新会话你没有任何上下文，必须通过 adbpg-mem 检索长期记忆。\n\n  【检索记忆 - 必须先做】下列任何一种模式出现，必须先执行 adbpg-mem search 再回答：\n  (a) 含\"我/我的/我之前/我上次/我提过/还记得/来着/记不清/那本/那个\"等回忆词；\n  (b) 询问个人偏好/身份/经历/历史决策；\n  (c) 需要个性化（推荐、建议）的请求。\n  命令格式：NODE_TLS_REJECT_UNAUTHORIZED=0 node ./scripts/adbpg-mem.mjs search \"关键词\" --agent\n  禁止在 search 之前就直接回答\"我不知道\"或\"没听你说过\"——你的当前会话上下文是空的，\n  必须从长期记忆里捞才能知道用户之前是否说过。这是硬性规则。\n\n  【存储记忆】用户说\"记住\"、提到个人信息、做出决策时，\n  执行 NODE_TLS_REJECT_UNAUTHORIZED=0 node ./scripts/adbpg-mem.mjs add \"提炼的事实\" --agent 存储。\n  提炼事实再存储，不存原文，保留用户原始语言，不存敏感信息。\n\n  【输出格式】--agent 返回 JSON，检查 status 字段（ok/error），搜索结果在 data 数组中，score 大于 0.7 视为高度相关。\n\n  【展示检索结果】检索到记忆后，在回复开头简要列出相关记忆（如\"根据记忆：你叫子华，喜欢 Python\"），\n  让用户能看到检索到了什么。如果检索到记忆但与问题无关，也简要提及\"检索到 N 条记忆但与当前问题无关\"。\n\n  不要在回复中暴露 adbpg-mem 命令细节和原始 JSON。更多用法参见 SKILL.md。\nlicense: Apache-2.0\nmetadata:\n  author: ADBPG\n  version: \"0.1.0\"\n  category: ai-memory\n  tags: \"memory, personalization, adbpg, cli, long-term-memory\"\n  dependencies:\n    apis:\n      - \"ADBPG Memory REST API (rest_base_url, configured via adbpg-mem init)\"\n      - \"ADBPG PostgreSQL endpoint (SQL mode, host/port/dbname configured via adbpg-mem init)\"\ncompatibility: >\n  Node.js 18+ (npm install) 或 Python 3.10+ (pip install)。\n  需要 adbpg-mem CLI 已安装并通过 adbpg-mem init 完成配置。\n  支持 SQL 模式（直连 ADBPG）和 REST 模式（HTTP API）。\n---",
+              "skill_name": "adbpg-memory",
+              "snippet": "adbpg-memory技能",
+              "start_time": 1778744570746,
+              "status": "completed"
+            }
+          },
+          {
+            "id": "tool_msg:27f85786-971b-400d-9c01-42b364018aaa",
+            "name": "TERMINAL",
+            "input": {
+              "command": "find ~ -name \"SKILL.md\" -path \"*adbpg-memory*\" 2>/dev/null | head -1 | xargs dirname 2>/dev/null",
+              "exit_code": null,
+              "finish_time": 1778744640726,
+              "output": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/adbpg-memory/examples/saas-ecommerce\n",
+              "output_chunks": [],
+              "snippet": "查找 adbpg-memory skill 的根目录路径",
+              "start_time": 1778744575888,
+              "status": "completed",
+              "working_dir": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-7"
+            }
+          },
+          {
+            "id": "tool_msg:bbbbb734-8f05-47b3-acee-d84e7f83d705",
+            "name": "TERMINAL",
+            "input": {
+              "command": "",
+              "finish_time": 1778744653375,
+              "output": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/adbpg-memory/examples/saas-ecommerce\n",
+              "output_chunks": [],
+              "snippet": "查看后台进程输出结果",
+              "start_time": 1778744643795,
+              "status": "completed",
+              "working_dir": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-7"
+            }
+          },
+          {
+            "id": "tool_msg:3bcb8e06-7584-48cb-8202-0816c9fd88b5",
+            "name": "TERMINAL",
+            "input": {
+              "command": "find ~ -name \"SKILL.md\" -path \"*adbpg-memory*\" 2>/dev/null | head -1 | xargs dirname 2>/dev/null",
+              "exit_code": null,
+              "finish_time": 1778744728718,
+              "output": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/adbpg-memory/examples/saas-ecommerce\n",
+              "output_chunks": [],
+              "snippet": "再次尝试查找 adbpg-memory skill 的根目录路径",
+              "start_time": 1778744664147,
+              "status": "completed",
+              "working_dir": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-7"
+            }
+          },
+          {
+            "id": "tool_msg:169073b4-12bc-4cd4-a076-6f1656de5f57",
+            "name": "TERMINAL",
+            "input": {
+              "command": "",
+              "finish_time": 1778744742164,
+              "output": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/adbpg-memory/examples/saas-ecommerce\n",
+              "output_chunks": [],
+              "snippet": "查看后台进程输出结果",
+              "start_time": 1778744733365,
+              "status": "completed",
+              "working_dir": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-7"
+            }
+          },
+          {
+            "id": "tool_msg:c8c80634-cf9b-4b3f-bb0a-04f55b10bee5",
+            "name": "DIRECTORY_LIST",
+            "input": {
+              "files": [
+                {
+                  "modified": "2026-05-13T07:43:12+00:00",
+                  "name": "05dea422-337a-46eb-a388-1f6f86daf559",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:16+00:00",
+                  "name": "1a5b1681-5ae2-427c-af6f-ed0d9e59c51b",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:01+00:00",
+                  "name": "1be5d307-795a-4438-ae25-70125aa26e19",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:42+00:00",
+                  "name": "1c9c5a6b-2024-4d97-a178-f2b9f0b63f29",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:19+00:00",
+                  "name": "210457b1-e34b-42b4-b162-d7c440b4d887",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:30+00:00",
+                  "name": "2953f13a-c3d3-45c9-892a-51238c696f1b",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:37+00:00",
+                  "name": "2b91d3f8-c25e-40a1-98f6-685bbb657a3d",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:43+00:00",
+                  "name": "3f152b98-0bb5-459f-9099-a7ce16110425",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:35+00:00",
+                  "name": "4cac273b-2639-4b14-9d4b-2cb2d680a58d",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:52+00:00",
+                  "name": "52658142-827a-4034-8943-ce944e8a36f1",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:59+00:00",
+                  "name": "53b297c3-ed12-4bd8-a5a1-75ff8059c607",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:56+00:00",
+                  "name": "53d9259d-1967-4cb0-b184-4e4968f3f00b",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:13+00:00",
+                  "name": "55a66ae8-7e41-433a-9ef3-6842b6bd6c15",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:26+00:00",
+                  "name": "572fd885-54a2-42e6-89b7-92129391d22a",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:22+00:00",
+                  "name": "58e9d0cb-168e-4bc8-8e82-985b711f29d1",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:32+00:00",
+                  "name": "723ba09e-6b31-44f8-bf92-997a56cda493",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:02+00:00",
+                  "name": "8b5873be-3326-458e-9129-318715fbef22",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:44+00:00",
+                  "name": "90828a35-83c8-46ea-9cad-29e0449d4ed3",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-13T07:43:11+00:00",
+                  "name": "964055b3-3e46-4d7b-8743-0907a18ba31b",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:24+00:00",
+                  "name": "9bf9834f-57be-4c8c-b5fc-5c9e12c93292",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-14T07:32:15+00:00",
+                  "name": "9d277c1e-b9cd-4979-ba5d-d255c2cbd04e",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:33+00:00",
+                  "name": "a4282b0f-694c-4ee9-9f63-0a8427239eae",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:41+00:00",
+                  "name": "ae90c41a-7943-405f-ab18-f1c93adcf6e9",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-14T03:33:09+00:00",
+                  "name": "aoneKitSkill",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:56+00:00",
+                  "name": "bc7acd8f-9cd1-4a21-81d9-733ebb1e3e93",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-14T03:27:51+00:00",
+                  "name": "bundled",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:53+00:00",
+                  "name": "c7155f65-4379-4440-bd7a-697440425010",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-14T03:33:18+00:00",
+                  "name": "c9d5a7d4-3512-4f9b-b82c-6d72543459bb",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:39+00:00",
+                  "name": "d12df6e6-b617-4853-a3e1-4c8eda841689",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:38+00:00",
+                  "name": "d8a53270-a48c-48a0-9d91-95a63cfe29e4",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:04:04+00:00",
+                  "name": "dbefa2b5-a0b8-45f9-bc22-bca0ccd72ad2",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:20+00:00",
+                  "name": "e2e1a945-b226-4ddf-8f32-91502914b5b6",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:03:07+00:00",
+                  "name": "ec679c56-1858-4b8c-b9b0-fb6295bcf0f2",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-03-25T03:02:49+00:00",
+                  "name": "f5a8613e-253b-4837-851c-898fa897dcd0",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-14T07:32:15+00:00",
+                  "name": "skills.db",
+                  "size": 421888,
+                  "type": "file"
+                }
+              ],
+              "finish_time": 1778744745380,
+              "path": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills",
+              "snippet": "列出 skills 目录内容，查找 adbpg-memory skill",
+              "start_time": 1778744745380,
+              "status": "completed",
+              "total_count": 35
+            }
+          },
+          {
+            "id": "tool_msg:9b3da4b8-7e7c-403b-aec3-ba801cdf2eb6",
+            "name": "DIRECTORY_LIST",
+            "input": {
+              "files": [
+                {
+                  "modified": "2026-05-14T07:32:15+00:00",
+                  "name": "SKILL.md",
+                  "size": 27856,
+                  "type": "file"
+                },
+                {
+                  "modified": "2026-05-14T07:32:15+00:00",
+                  "name": "TEST_PLAN.md",
+                  "size": 14150,
+                  "type": "file"
+                },
+                {
+                  "modified": "2026-05-14T07:32:15+00:00",
+                  "name": "docs",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-14T07:32:15+00:00",
+                  "name": "examples",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-14T07:32:15+00:00",
+                  "name": "node",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-14T07:32:15+00:00",
+                  "name": "python",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-14T07:32:15+00:00",
+                  "name": "scripts",
+                  "type": "directory"
+                },
+                {
+                  "modified": "2026-05-14T07:32:15+00:00",
+                  "name": "shared",
+                  "type": "directory"
+                }
+              ],
+              "finish_time": 1778744752459,
+              "path": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/9d277c1e-b9cd-4979-ba5d-d255c2cbd04e",
+              "snippet": "列出 adbpg-memory skill 目录内容",
+              "start_time": 1778744752459,
+              "status": "completed",
+              "total_count": 8
+            }
+          },
+          {
+            "id": "tool_msg:69b083c5-9d2a-4e9d-8c3c-a31bb425ab1e",
+            "name": "TERMINAL",
+            "input": {
+              "command": "ls -la /Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/9d277c1e-b9cd-4979-ba5d-d255c2cbd04e/scripts/",
+              "exit_code": 0,
+              "finish_time": 1778744756172,
+              "output": "total 120\ndrwxr-xr-x@  4 airfan  staff    128  5 14 15:32 .\ndrwxr-xr-x@ 10 airfan  staff    320  5 14 15:32 ..\n-rw-r--r--@  1 airfan  staff  36088  5 14 15:32 adbpg-mem.mjs\n-rw-r--r--@  1 airfan  staff  24354  5 14 15:32 adbpg-mem.test.mjs\n",
+              "output_chunks": [],
+              "snippet": "查看 adbpg-memory skill 的 scripts 目录内容",
+              "start_time": 1778744756146,
+              "status": "completed",
+              "working_dir": ""
+            }
+          },
+          {
+            "id": "tool_msg:13224592-d02d-4943-aa74-39d26fa74f3f",
+            "name": "TERMINAL",
+            "input": {
+              "command": "which node",
+              "exit_code": 0,
+              "finish_time": 1778744758540,
+              "output": "/Users/airfan/.real/.bin/node/bin/node\n",
+              "output_chunks": [],
+              "snippet": "查找 node 二进制文件路径",
+              "start_time": 1778744758517,
+              "status": "completed",
+              "working_dir": ""
+            }
+          },
+          {
+            "id": "tool_msg:f9746b63-4b99-46a9-956a-d80f5ff2f4c8",
+            "name": "TERMINAL",
+            "input": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 /Users/airfan/.real/.bin/node/bin/node /Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/9d277c1e-b9cd-4979-ba5d-d255c2cbd04e/scripts/adbpg-mem.mjs agent-config show -a wukong-default",
+              "exit_code": 0,
+              "finish_time": 1778744762970,
+              "output": "{\"isolation_agent\":false,\"isolation_run_mode\":\"off\"}",
+              "output_chunks": [],
+              "snippet": "查看当前 Agent 的记忆隔离配置状态",
+              "start_time": 1778744762472,
+              "status": "completed",
+              "working_dir": ""
+            }
+          },
+          {
+            "id": "tool_msg:9edba7e9-d40d-471c-ab77-0ddc41180683",
+            "name": "TERMINAL",
+            "input": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 /Users/airfan/.real/.bin/node/bin/node /Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/9d277c1e-b9cd-4979-ba5d-d255c2cbd04e/scripts/adbpg-mem.mjs agent-config set isolation_agent true -a work-assistant",
+              "exit_code": 0,
+              "finish_time": 1778744778852,
+              "output": "Set 'isolation_agent' = true for agent work-assistant\n",
+              "output_chunks": [],
+              "snippet": "为工作助手开启 Agent 记忆隔离",
+              "start_time": 1778744777729,
+              "status": "completed",
+              "working_dir": ""
+            }
+          },
+          {
+            "id": "tool_msg:3b1e5617-a849-467e-82b5-1aa808db2c23",
+            "name": "TERMINAL",
+            "input": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 /Users/airfan/.real/.bin/node/bin/node /Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/9d277c1e-b9cd-4979-ba5d-d255c2cbd04e/scripts/adbpg-mem.mjs agent-config set isolation_agent true -a life-assistant",
+              "exit_code": 0,
+              "finish_time": 1778744782880,
+              "output": "Set 'isolation_agent' = true for agent life-assistant\n",
+              "output_chunks": [],
+              "snippet": "为生活助手开启 Agent 记忆隔离",
+              "start_time": 1778744782585,
+              "status": "completed",
+              "working_dir": ""
+            }
+          }
+        ],
+        "timestamp": 1778744569625
+      }
+    ]
+  },
+  "duration_seconds": 229.09211230278015
+}

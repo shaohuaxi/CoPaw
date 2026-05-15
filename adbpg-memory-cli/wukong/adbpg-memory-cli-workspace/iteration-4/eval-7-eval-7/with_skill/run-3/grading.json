@@ -1,0 +1,97 @@
+{
+  "expectations": [
+    {
+      "text": "agent 表示理解隔离需求，并解释隔离机制（通过 -a 参数实现，不需要改连接配置文件）",
+      "passed": false,
+      "evidence": "agent 的响应中完全没有提及 '-a' 参数或隔离机制的技术细节。响应仅声称'你已启用 Agent 记忆隔离'，但未解释如何通过 -a 参数实现，也未说明不需要修改连接配置文件。transcript 中无任何相关解释内容。"
+    },
+    {
+      "text": "agent 从 system prompt 中查找自己的 agent_id，而不是瞎编一个值",
+      "passed": false,
+      "evidence": "transcript 显示 agent 未执行任何查找 system prompt 的操作。agent 在响应中提到了 'work-assistant' 和 'life-assistant' 两个 agent_id，但 session_messages.json 中没有任何证据表明这些值是从 system prompt 中获取的。agent 也没有调用任何工具来查询自己的 agent_id。这两个值很可能是编造的。"
+    },
+    {
+      "text": "agent 调用 adbpg-mem agent-config set isolation_agent true -a <agent_id> 持久化隔离状态",
+      "passed": false,
+      "evidence": "session_messages.json 中的 tool_uses 仅包含 SKILL 激活和 ARTIFACT 生成，完全没有 adbpg-mem 命令的执行记录。没有看到 'adbpg-mem agent-config set' 或任何类似的命令调用。agent 声称配置已完成，但实际未执行任何持久化操作。"
+    },
+    {
+      "text": "agent 告知用户后续 add/search 会自动带上 -a <agent_id>",
+      "passed": false,
+      "evidence": "agent 的最终响应中完全没有提及后续 add/search 命令的行为。响应仅说'当前配置已满足你的需求'和'如果你需要调整隔离模式或查看当前状态，我可以帮你进一步操作'，但未说明后续命令会自动带上 -a 参数。"
+    },
+    {
+      "text": "若 agent 找不到 system prompt 中的 agent_id，会向用户询问而不是用默认值",
+      "passed": false,
+      "evidence": "agent 既没有展示查找 agent_id 的过程，也没有在找不到时向用户询问。相反，agent 直接使用了 'work-assistant' 和 'life-assistant' 这两个值，且没有证据表明这些值来自 system prompt。这违反了期望——agent 应该先尝试查找，找不到再询问用户，而不是直接使用看似合理的默认值。"
+    }
+  ],
+  "summary": {
+    "passed": 0,
+    "failed": 5,
+    "total": 5,
+    "pass_rate": 0.0
+  },
+  "claims": [
+    {
+      "claim": "agent 声称'根据记忆，你已启用 Agent 记忆隔离'",
+      "type": "factual",
+      "verified": false,
+      "evidence": "transcript 中没有任何 adbpg-mem search 或 agent-config get 的调用记录来验证这一说法。agent 激活了 adbpg-memory skill，但未执行任何检索或查询操作来确认用户的实际配置状态。这是一个无法验证的事实性声明。"
+    },
+    {
+      "claim": "工作助手 (work-assistant) 与生活助手 (life-assistant) 的记忆完全隔离，isolation_agent 均为 true",
+      "type": "factual",
+      "verified": false,
+      "evidence": "没有任何工具调用返回的配置数据支持这一说法。agent 未执行 adbpg-mem agent-config get 或其他查询命令来获取实际配置。这两个 agent_id 及其配置状态完全是 agent 编造的。"
+    },
+    {
+      "claim": "会话隔离模式为 manual",
+      "type": "factual",
+      "verified": false,
+      "evidence": "同样没有任何工具调用返回的数据支持这一说法。agent 未查询实际配置就声称隔离模式是 manual。"
+    },
+    {
+      "claim": "agent 激活了 adbpg-memory skill",
+      "type": "process",
+      "verified": true,
+      "evidence": "session_messages.json 中明确显示 tool_uses 包含 SKILL 调用，skill_name 为 'adbpg-memory'，status 为 'completed'。"
+    },
+    {
+      "claim": "agent 生成了 Artifact 'Agent 记忆隔离配置说明.md'",
+      "type": "process",
+      "verified": true,
+      "evidence": "session_messages.json 中 ARTIFACT 工具调用显示 artifactsMetadata 包含该文件，localPath 指向 '/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/Agent 记忆隔离配置说明.md'。"
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "所有 5 个期望都 FAIL，因为 agent 完全没有执行预期的操作流程",
+        "reason": "这个 eval 的核心问题是 agent 的行为与期望完全脱节。期望假设 agent 会执行一系列具体操作（查找 agent_id、调用 adbpg-mem 命令、解释机制），但实际 agent 只是激活了 skill 然后直接给出了一个看似合理但毫无依据的回答。建议增加一个期望来检测 agent 是否实际调用了 adbpg-mem 命令，或者至少检查 agent 是否有读取 system prompt 或执行查询的行为。"
+      },
+      {
+        "assertion": "期望 2 和期望 5 可以合并或改进",
+        "reason": "期望 2 要求 agent 从 system prompt 查找 agent_id，期望 5 要求找不到时询问用户。这两个期望可以合并为一个更清晰的期望：'agent 必须通过可靠来源（system prompt 或查询命令）获取 agent_id，如果无法获取则向用户询问，不得使用编造的值'。这样可以更准确地评估 agent 是否正确处理了 agent_id 的来源问题。"
+      },
+      {
+        "assertion": "缺少对 agent 是否执行 adbpg-mem search 的检查",
+        "reason": "adbpg-memory skill 的 SKILL.md 明确要求在回答前必须先执行 adbpg-mem search 来检索长期记忆。这个 eval 没有检查 agent 是否遵守了这一规则。虽然用户的请求是关于配置而非回忆个人信息，但 agent 声称'根据记忆'却未执行任何搜索，这是一个重要的行为缺陷，应该在 eval 中体现。"
+      }
+    ],
+    "overall": "agent 的表现严重不符合预期。所有 5 个期望均 FAIL，pass_rate 为 0%。agent 激活了 adbpg-memory skill，但未执行任何实际的 adbpg-mem 命令，而是直接编造了一个看似合理的回答，声称用户已经配置好了记忆隔离。这种行为属于典型的幻觉——在没有执行任何查询或配置操作的情况下，虚构了配置状态和 agent_id。eval 本身设计合理，覆盖了关键的行为点，但可能需要增加对 skill 内部规则遵守情况的检查（如是否先 search 再回答）。"
+  },
+  "timing": {
+    "total_duration_seconds": 16.8713,
+    "total_tokens": 67249,
+    "token_usage": {
+      "input_tokens": 66737,
+      "output_tokens": 512,
+      "total_tokens": 67249,
+      "request_count": 6,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 53.1
+  },
+  "grader_task_id": "95ed1145-9fba-4c2e-a72c-34f88ed43847"
+}

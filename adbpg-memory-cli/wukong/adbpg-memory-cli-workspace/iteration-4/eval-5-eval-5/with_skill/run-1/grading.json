@@ -1,0 +1,72 @@
+{
+  "expectations": [
+    {
+      "text": "agent 在给出推荐前先调用 adbpg-mem search 检索用户背景（技术栈/职业/兴趣等）",
+      "passed": true,
+      "evidence": "Transcript 显示 agent 通过 TERMINAL activity 执行了 'adbpg-mem search \"子华 兴趣 爱好 编程 Rust Go\" --agent' 命令，成功检索到 5 条记忆记录（名字、工作地点、职业、技术栈），并在最终回复中明确引用了这些信息。"
+    },
+    {
+      "text": "搜索使用 -u test_skill_eval scope",
+      "passed": false,
+      "evidence": "从 TERMINAL activity 的输出 JSON 中可见 scope 字段为 {\"agent_id\":\"\",\"run_id\":\"\",\"user_id\":\"test_verify\"}，实际使用的 user_id 是 'test_verify' 而非期望的 'test_skill_eval'。"
+    },
+    {
+      "text": "若检索到背景信息，推荐内容明显结合了那些信息（不是泛泛的项目清单）",
+      "passed": true,
+      "evidence": "Agent 回复开头明确说'根据记忆，你是杭州的后端工程师，主修 Go 且正在学习 Rust'。三个项目建议均紧密结合检索到的信息：方案1针对Go/Rust双技术栈对比学习；方案2结合ADBPG团队背景设计数据库代理；方案3针对后端工程师的系统监控需求。每个方案都解释了为何适合用户的具体情况。"
+    },
+    {
+      "text": "若没有任何相关记忆，agent 主动询问用户基本情况或明确说『暂无你的背景信息，先给通用推荐』，不能编造『你之前说过 XX』",
+      "passed": true,
+      "evidence": "此期望的条件未触发（因为确实检索到了相关记忆），但 agent 的行为符合规范：在有记忆时基于记忆推荐，没有编造不存在的记忆内容。所有引用的背景信息（杭州、后端工程师、Go、Rust）都能在检索结果中找到对应记录。"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 1,
+    "total": 4,
+    "pass_rate": 0.75
+  },
+  "claims": [
+    {
+      "claim": "Agent 声称'根据记忆，你是杭州的后端工程师，主修 Go 且正在学习 Rust'",
+      "type": "factual",
+      "verified": true,
+      "evidence": "Transcript 中 adbpg-mem search 返回的记忆数据包含：'用户在杭州工作'（id: 832135f7）、'是后端工程师'（id: 8591c1fc）、'主要使用 Go 编程语言'（id: 9ea9c18f）、'最近在学习 Rust'（id: 9f105758）。Agent 的陈述与检索结果完全一致。"
+    },
+    {
+      "claim": "Agent 在 ADBPG 团队",
+      "type": "factual",
+      "verified": true,
+      "evidence": "虽然检索到的记忆中未直接提及'ADBPG 团队'，但 user_identity 中明确显示用户部门为'云智能集团-阿里云智能-阿里云智能CTO线-数据库产品事业部-ADB产品部-AnalyticDB PostgreSQL-功能和企业级特性组'。Agent 在方案2中提到'你在 ADBPG 团队'是基于系统提供的用户身份信息，属于合理推断。"
+    },
+    {
+      "claim": "搜索命令使用了 --agent 参数",
+      "type": "process",
+      "verified": true,
+      "evidence": "TERMINAL activity 中显示的完整命令为 'NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"子华 兴趣 爱好 编程 Rust Go\" --agent'，确认使用了 --agent 标志。"
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "期望 2（搜索使用 -u test_skill_eval scope）",
+        "reason": "该期望假设测试环境会使用特定的 user_id 'test_skill_eval'，但实际执行中使用的是 'test_verify'。建议将期望改为验证 '搜索使用了正确的测试用户 scope（如 test_verify 或 test_skill_eval）'，或在测试配置中明确指定预期的 user_id 值，避免因测试环境配置差异导致误判。"
+      }
+    ],
+    "overall": "整体评估显示 agent 正确执行了记忆检索流程并基于检索结果提供了个性化推荐，但在 scope 参数上与期望存在偏差。期望 2 的失败更可能是测试配置问题而非 agent 逻辑错误。建议在 eval 配置中明确 scope 的预期值，或放宽期望以接受合理的测试用户标识。"
+  },
+  "timing": {
+    "total_duration_seconds": 53.2552,
+    "total_tokens": 167989,
+    "token_usage": {
+      "input_tokens": 166238,
+      "output_tokens": 1751,
+      "total_tokens": 167989,
+      "request_count": 10,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 63.73
+  },
+  "grader_task_id": "13d04c28-5668-4b73-891a-124fa1ec2835"
+}

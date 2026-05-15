@@ -1,0 +1,251 @@
+{
+  "eval_id": 3,
+  "eval_name": "eval-3",
+  "prompt": "今天杭州天气怎么样？外面冷不冷？",
+  "skill_name": "adbpg-memory",
+  "target": "wukong",
+  "query_result": {
+    "query_id": "",
+    "query_text": "今天杭州天气怎么样？外面冷不冷？",
+    "status": "completed",
+    "response": "我来查询一下杭州今天的天气情况。\n\n根据查询结果，今天（2026年5月14日）杭州的天气情况如下：\n\n**气温：** 18°C ~ 25°C  \n**天气状况：** 多云转阴  \n**风力：** 东风 2级  \n**湿度：** 70%  \n**空气质量：** 优（30）\n\n**关于\"冷不冷\"的问题：**\n这个温度区间对杭州来说是比较舒适的春季天气。白天最高气温25°C，体感温暖；夜间最低气温18°C，稍微有些凉意但不算冷。建议穿单层棉麻面料的短套装、T恤衫、薄牛仔衫裤等舒适的衣服。\n\n总体来说，今天杭州的天气不算冷，属于温和宜人的春末天气，适合户外活动。",
+    "raw_output": {
+      "execution_workspace": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-5",
+      "wukong_task_id": "93d408b4-4d88-4509-a494-388b8184c52d",
+      "wukong_session_id": "93d408b4-4d88-4509-a494-388b8184c52d"
+    },
+    "token_usage": {
+      "input_tokens": 57763,
+      "output_tokens": 382,
+      "total_tokens": 58145,
+      "request_count": 6,
+      "source": "llm_proxy"
+    },
+    "duration_seconds": 17.1731379032135,
+    "error": "",
+    "eval": {},
+    "session_messages": [
+      {
+        "role": "user",
+        "content": "<skill data-id=\"b9295d13-6d71-451a-9138-ddcd0974012c\" data-name=\"adbpg-memory\" /> 今天杭州天气怎么样？外面冷不冷？",
+        "events": [],
+        "tool_uses": [],
+        "timestamp": 1778740889320
+      },
+      {
+        "role": "assistant",
+        "content": "我来查询一下杭州今天的天气情况。\n\n根据查询结果，今天（2026年5月14日）杭州的天气情况如下：\n\n**气温：** 18°C ~ 25°C  \n**天气状况：** 多云转阴  \n**风力：** 东风 2级  \n**湿度：** 70%  \n**空气质量：** 优（30）\n\n**关于\"冷不冷\"的问题：**\n这个温度区间对杭州来说是比较舒适的春季天气。白天最高气温25°C，体感温暖；夜间最低气温18°C，稍微有些凉意但不算冷。建议穿单层棉麻面料的短套装、T恤衫、薄牛仔衫裤等舒适的衣服。\n\n总体来说，今天杭州的天气不算冷，属于温和宜人的春末天气，适合户外活动。",
+        "events": [
+          {
+            "runId": "eval-881b1dd2-810f-4a59-b50a-a33aafc02cb7",
+            "threadId": "93d408b4-4d88-4509-a494-388b8184c52d",
+            "timestamp": 1778740893587,
+            "type": "RUN_STARTED"
+          },
+          {
+            "e2e_ttft_ms": 4258,
+            "timestamp": 1778740893587,
+            "ttft_ms": 1567,
+            "type": "FIRST_TOKEN"
+          },
+          {
+            "messageId": "direct-text-671abcc7-9e21-4a98-81b5-2d6050d6e4c0",
+            "role": "assistant",
+            "timestamp": 1778740893622,
+            "type": "TEXT_MESSAGE_START"
+          },
+          {
+            "activityType": "SEARCH",
+            "content": {
+              "finish_time": 1778740895935,
+              "queries": [
+                "杭州今天天气 2026年5月14日 气温"
+              ],
+              "results": [
+                {
+                  "logo_url": "https://m.tianqi.com/favicon.ico",
+                  "snippet": "18~25° 多云转阴 30 优 穿衣指数：建议穿单层棉麻面料的短套装、T恤衫、薄牛仔衫裤、休闲服、职业套装等舒适的衣服。 杭州天气的关键词是“多云转阴”。今天 白天 杭州 多云转阴 ， 最高气温25℃ ， 最低气温18℃ 。风的方面，今天白天到夜间，本地有 东风 2级 ， 相对 湿度70% ，紫外线 弱 ，空气质量30。 预报信息，根据天气和气温变化调整出行时间哦！",
+                  "title": "杭州 天气 预报杭州 2026年 05月14日天气-天气网",
+                  "url": "https://m.tianqi.com/tianqi/hangzhou/20260514.html?qd=tq30"
+                },
+                {
+                  "logo_url": "https://m.tianqi.com/favicon.ico",
+                  "snippet": "2026年05月 星期日 星期一 星期二 星期三 星期四 星期五 星期六 26 27 28 29 30 1 十五 多云 11~24℃ 2 十六 小雨 15~27℃ 3 十七 小雨 18~24℃ 4 十八 阴 15~26℃ 5 十九 晴 16~29℃ 6 二十 多云转阴 17~29℃ 7 廿一 小雨转阴 19~31℃ 8 廿二 多云转阴 19~22℃ 9 廿三 阴转小雨 18~24℃ 10 廿四 小雨转阴 17~26℃ 11 廿五 小雨转阴 17~27℃ 12 廿六 中雨转小雨 19~27℃ 13 廿七 多云转晴 19~26℃ 14 廿八 多云 17~28℃ 15 廿九 多云 18~30℃ 16",
+                  "title": "2026年05月 杭州 天气 预报-天气网",
+                  "url": "https://m.tianqi.com/tianqi/hangzhou/202605.html"
+                },
+                {
+                  "logo_url": "https://m.tianqi.com/favicon.ico",
+                  "snippet": "2026年05月02日 星期六 丙午年三月十六 今日天气：杭州,晴转小雨，气温16℃~28，南风2级，当前温度20℃。 05月02日 今天 小雨 16~ 28 ℃ 05月03日 明天 小雨转阴 19~ 24 ℃ 05月04日 后天 阴转多云 16~ 23 ℃ 05月05日 星期二 晴 15~ 25 ℃ 05月06日 星期三 阴转多云 16~ 27 ℃ 05月07日 星期四 晴转小雨 18~ 29 ℃ 05月08日 星期五 小雨 19~ 26 ℃ 05月09日 星期六 中雨转小雨 20~ 26 ℃ 05月10日 星期日 小雨转多云 19~ 27 ℃ 05月11日 星期一 多云",
+                  "title": "杭州天气 预报40天-天气网",
+                  "url": "https://m.tianqi.com/zhejiang-hangzhou/32219/40"
+                },
+                {
+                  "logo_url": "https://m.weather.com.cn/favicon.ico",
+                  "snippet": "2026/05/11 ~ 2026/05/25 今天 05/11 多云 31/21℃ 周二 05/12 多云 32/22℃ 周三 05/13 多云 33/22℃ 周四 05/14 多云 33/22℃ 周五 05/15 晴 30/21℃ 周六 05/16 晴转多云 30/20℃ 周日 05/17 多云 30/21℃ 周一 05/18 多云转雨 31/22℃ 周二 05/19 雨 28/22℃ 周三 05/20 雨 27/21℃ 周四 05/21 雨 31/20℃ 周五 05/22 雨 21/15℃ 周六 05/23 雨转多云 22/15℃ 周日 05/24 多云转阴 29/18℃ 周一 05/2",
+                  "title": "杭州-中国 天气 网",
+                  "url": "https://m.weather.com.cn/mweather15d/101210101.shtml?from=singlemessage&isappinstalled=0"
+                },
+                {
+                  "logo_url": "https://www.weather.com.cn/favicon.ico",
+                  "snippet": "最新气象公告 >> 05月11日：未来三天全国天气预报 中央气象台2026年05月11日18时发布未来三天全国天气预报。 详细 05月11日：未来十天全国天气预报 中央气象台2026年05月11日10时发布未来十天全国天气趋势预报。 详细 05月11日：全国主要公路气象预报 中国气象局与交通运输部2026年05月11日20时联合发布全国主要公路气象预报。 详细 05月11日：森林火险气象预报 中央气象台2026年05月11日18时发布森林火险气象预报。 详细 05月11日：紫外线强度预报 中国气象局公共气象服务中心2026年05月11日18时发布紫外线强度预报。 详细 05月11日：全国气候舒",
+                  "title": "天气 预报-天气网",
+                  "url": "https://www.weather.com.cn/index.shtml?JC_YT_YPT_KJG"
+                }
+              ],
+              "search_type": "web",
+              "snippet": "查询杭州今天天气情况",
+              "start_time": 1778740894754,
+              "status": "completed"
+            },
+            "messageId": "tool_msg:e9978c58-7871-47a8-952d-93f5331637a2",
+            "timestamp": 1778740894754,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 24047,
+              "totalTokens": 200000,
+              "usageRatio": 0.119999997317791
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778740894754,
+            "type": "CUSTOM"
+          },
+          {
+            "delta": "我来查询一下杭州今天的天气情况。\n\n",
+            "messageId": "direct-text-671abcc7-9e21-4a98-81b5-2d6050d6e4c0",
+            "timestamp": 1778740893622,
+            "type": "TEXT_MESSAGE_CONTENT"
+          },
+          {
+            "messageId": "direct-text-671abcc7-9e21-4a98-81b5-2d6050d6e4c0",
+            "timestamp": 1778740894754,
+            "type": "TEXT_MESSAGE_END"
+          },
+          {
+            "messageId": "direct-text-4014cc33-1bcd-4b84-a5bb-6bb2d0106281",
+            "role": "assistant",
+            "timestamp": 1778740896702,
+            "type": "TEXT_MESSAGE_START"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 25542,
+              "totalTokens": 200000,
+              "usageRatio": 0.12999999523162842
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778740899545,
+            "type": "CUSTOM"
+          },
+          {
+            "delta": "根据查询结果，今天（2026年5月14日）杭州的天气情况如下：\n\n**气温：** 18°C ~ 25°C  \n**天气状况：** 多云转阴  \n**风力：** 东风 2级  \n**湿度：** 70%  \n**空气质量：** 优（30）\n\n**关于\"冷不冷\"的问题：**\n这个温度区间对杭州来说是比较舒适的春季天气。白天最高气温25°C，体感温暖；夜间最低气温18°C，稍微有些凉意但不算冷。建议穿单层棉麻面料的短套装、T恤衫、薄牛仔衫裤等舒适的衣服。\n\n总体来说，今天杭州的天气不算冷，属于温和宜人的春末天气，适合户外活动。",
+            "messageId": "direct-text-4014cc33-1bcd-4b84-a5bb-6bb2d0106281",
+            "timestamp": 1778740896702,
+            "type": "TEXT_MESSAGE_CONTENT"
+          },
+          {
+            "messageId": "direct-text-4014cc33-1bcd-4b84-a5bb-6bb2d0106281",
+            "timestamp": 1778740899545,
+            "type": "TEXT_MESSAGE_END"
+          },
+          {
+            "data": {
+              "answer_id": "eval-881b1dd2-810f-4a59-b50a-a33aafc02cb7",
+              "generated_at": 1778740901405,
+              "items": [
+                {
+                  "text": "查询杭州未来一周天气预报"
+                },
+                {
+                  "text": "推荐适合今天天气的穿搭"
+                },
+                {
+                  "text": "查看杭州实时空气质量指数"
+                }
+              ],
+              "status": "ready",
+              "suggestions": [
+                "查询杭州未来一周天气预报",
+                "推荐适合今天天气的穿搭",
+                "查看杭州实时空气质量指数"
+              ]
+            },
+            "name": "related_questions",
+            "timestamp": 1778740901405,
+            "type": "CUSTOM"
+          },
+          {
+            "cached_tokens": 21687,
+            "completion_tokens": 224,
+            "prompt_tokens": 49365,
+            "timestamp": 1778740901406,
+            "total_tokens": 49589,
+            "type": "USAGE"
+          },
+          {
+            "runId": "eval-881b1dd2-810f-4a59-b50a-a33aafc02cb7",
+            "threadId": "93d408b4-4d88-4509-a494-388b8184c52d",
+            "timestamp": 1778740901406,
+            "type": "RUN_FINISHED"
+          }
+        ],
+        "tool_uses": [
+          {
+            "id": "tool_msg:e9978c58-7871-47a8-952d-93f5331637a2",
+            "name": "SEARCH",
+            "input": {
+              "finish_time": 1778740895935,
+              "queries": [
+                "杭州今天天气 2026年5月14日 气温"
+              ],
+              "results": [
+                {
+                  "logo_url": "https://m.tianqi.com/favicon.ico",
+                  "snippet": "18~25° 多云转阴 30 优 穿衣指数：建议穿单层棉麻面料的短套装、T恤衫、薄牛仔衫裤、休闲服、职业套装等舒适的衣服。 杭州天气的关键词是“多云转阴”。今天 白天 杭州 多云转阴 ， 最高气温25℃ ， 最低气温18℃ 。风的方面，今天白天到夜间，本地有 东风 2级 ， 相对 湿度70% ，紫外线 弱 ，空气质量30。 预报信息，根据天气和气温变化调整出行时间哦！",
+                  "title": "杭州 天气 预报杭州 2026年 05月14日天气-天气网",
+                  "url": "https://m.tianqi.com/tianqi/hangzhou/20260514.html?qd=tq30"
+                },
+                {
+                  "logo_url": "https://m.tianqi.com/favicon.ico",
+                  "snippet": "2026年05月 星期日 星期一 星期二 星期三 星期四 星期五 星期六 26 27 28 29 30 1 十五 多云 11~24℃ 2 十六 小雨 15~27℃ 3 十七 小雨 18~24℃ 4 十八 阴 15~26℃ 5 十九 晴 16~29℃ 6 二十 多云转阴 17~29℃ 7 廿一 小雨转阴 19~31℃ 8 廿二 多云转阴 19~22℃ 9 廿三 阴转小雨 18~24℃ 10 廿四 小雨转阴 17~26℃ 11 廿五 小雨转阴 17~27℃ 12 廿六 中雨转小雨 19~27℃ 13 廿七 多云转晴 19~26℃ 14 廿八 多云 17~28℃ 15 廿九 多云 18~30℃ 16",
+                  "title": "2026年05月 杭州 天气 预报-天气网",
+                  "url": "https://m.tianqi.com/tianqi/hangzhou/202605.html"
+                },
+                {
+                  "logo_url": "https://m.tianqi.com/favicon.ico",
+                  "snippet": "2026年05月02日 星期六 丙午年三月十六 今日天气：杭州,晴转小雨，气温16℃~28，南风2级，当前温度20℃。 05月02日 今天 小雨 16~ 28 ℃ 05月03日 明天 小雨转阴 19~ 24 ℃ 05月04日 后天 阴转多云 16~ 23 ℃ 05月05日 星期二 晴 15~ 25 ℃ 05月06日 星期三 阴转多云 16~ 27 ℃ 05月07日 星期四 晴转小雨 18~ 29 ℃ 05月08日 星期五 小雨 19~ 26 ℃ 05月09日 星期六 中雨转小雨 20~ 26 ℃ 05月10日 星期日 小雨转多云 19~ 27 ℃ 05月11日 星期一 多云",
+                  "title": "杭州天气 预报40天-天气网",
+                  "url": "https://m.tianqi.com/zhejiang-hangzhou/32219/40"
+                },
+                {
+                  "logo_url": "https://m.weather.com.cn/favicon.ico",
+                  "snippet": "2026/05/11 ~ 2026/05/25 今天 05/11 多云 31/21℃ 周二 05/12 多云 32/22℃ 周三 05/13 多云 33/22℃ 周四 05/14 多云 33/22℃ 周五 05/15 晴 30/21℃ 周六 05/16 晴转多云 30/20℃ 周日 05/17 多云 30/21℃ 周一 05/18 多云转雨 31/22℃ 周二 05/19 雨 28/22℃ 周三 05/20 雨 27/21℃ 周四 05/21 雨 31/20℃ 周五 05/22 雨 21/15℃ 周六 05/23 雨转多云 22/15℃ 周日 05/24 多云转阴 29/18℃ 周一 05/2",
+                  "title": "杭州-中国 天气 网",
+                  "url": "https://m.weather.com.cn/mweather15d/101210101.shtml?from=singlemessage&isappinstalled=0"
+                },
+                {
+                  "logo_url": "https://www.weather.com.cn/favicon.ico",
+                  "snippet": "最新气象公告 >> 05月11日：未来三天全国天气预报 中央气象台2026年05月11日18时发布未来三天全国天气预报。 详细 05月11日：未来十天全国天气预报 中央气象台2026年05月11日10时发布未来十天全国天气趋势预报。 详细 05月11日：全国主要公路气象预报 中国气象局与交通运输部2026年05月11日20时联合发布全国主要公路气象预报。 详细 05月11日：森林火险气象预报 中央气象台2026年05月11日18时发布森林火险气象预报。 详细 05月11日：紫外线强度预报 中国气象局公共气象服务中心2026年05月11日18时发布紫外线强度预报。 详细 05月11日：全国气候舒",
+                  "title": "天气 预报-天气网",
+                  "url": "https://www.weather.com.cn/index.shtml?JC_YT_YPT_KJG"
+                }
+              ],
+              "search_type": "web",
+              "snippet": "查询杭州今天天气情况",
+              "start_time": 1778740894754,
+              "status": "completed"
+            }
+          }
+        ],
+        "timestamp": 1778740893587
+      }
+    ]
+  },
+  "duration_seconds": 17.17430830001831
+}

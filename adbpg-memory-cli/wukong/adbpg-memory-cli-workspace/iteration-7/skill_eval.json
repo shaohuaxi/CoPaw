@@ -1,0 +1,32 @@
+{
+  "success": true,
+  "errorCode": null,
+  "errorMessage": null,
+  "data": {
+    "checks": [
+      {
+        "score": 0.58,
+        "level": "L2",
+        "threshold": 0.5,
+        "suggestions": [
+          "[必须修复] 渐进式披露（0/2）— 内容过长（621行，超过500行建议拆分），且无 references/ 分层加载",
+          "[必须修复] 资源自包含（0/2）— 存在 3 个外部链接（建议将外部资源内置到目录中）",
+          "[建议改进] 退出条件（1/2）— 缺少迭代次数上限（最多N次 / max retry / 不超过N轮）；缺少错误处理逻辑（失败时 / 出错时 / if fail）"
+        ],
+        "label": "基础质量检测",
+        "metrics": {
+          "trigger_precision": 1,
+          "resource_self_contained": 0,
+          "instruction_completeness": 1,
+          "progressive_disclosure": 0,
+          "validation_mechanism": 1,
+          "exit_conditions": 0.5
+        },
+        "type": "quality",
+        "rationale": "触发条件明确含关键词和边界，指令完整覆盖检索/存储流程及输入输出格式，验证机制通过status字段和score阈值实现硬性检查，但失败处理缺迭代上限和自动回滚机制"
+      }
+    ],
+    "skill_name": "adbpg-memory"
+  },
+  "traceId": null
+}

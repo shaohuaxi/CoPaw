@@ -1,0 +1,71 @@
+{
+  "expectations": [
+    {
+      "text": "agent 在生成最终回答之前先调用了 adbpg-mem search",
+      "passed": false,
+      "evidence": "session_messages.json 显示 assistant 回复中 tool_uses 为空数组，且 events 中没有 memory_search 工具调用记录。Agent 直接生成了文本回复，未执行任何工具调用。"
+    },
+    {
+      "text": "搜索使用 -u test_skill_eval scope",
+      "passed": false,
+      "evidence": "由于未发生任何工具调用，无法验证 scope 参数。"
+    },
+    {
+      "text": "搜索关键词是自然语言描述（如『最喜欢的水果』『水果偏好』），而不是把用户原话整段当作 query",
+      "passed": false,
+      "evidence": "由于未发生任何工具调用，无法验证搜索关键词。"
+    },
+    {
+      "text": "若 search 返回结果，回答内容基于检索结果（如『芒果』）；若无结果，诚实告知『我没有这方面的记忆』",
+      "passed": false,
+      "evidence": "Agent 回复称'根据记忆记录，你最喜欢的水果是**芒果**'，但 session_messages.json 中没有任何检索过程的证据。相关建议（related_questions）中甚至包含'删除关于芒果的记忆'，暗示记忆中可能并非芒果，或者 Agent 在编造。由于缺乏工具调用证据，无法确认回答是否基于真实检索结果。"
+    },
+    {
+      "text": "不编造未存储的偏好，不在回复里泄露 search 返回的原始 JSON 或 score 字段",
+      "passed": false,
+      "evidence": "虽然没有泄露 JSON 或 score 字段，但由于 expectation 1 已失败（未调用搜索工具），Agent 极有可能是在编造'芒果'这一偏好，或者依赖于未在当前会话中体现的隐式上下文。在评估框架下，缺乏检索证据的'根据记忆'声明视为潜在的编造风险。"
+    }
+  ],
+  "summary": {
+    "passed": 0,
+    "failed": 5,
+    "total": 5,
+    "pass_rate": 0.0
+  },
+  "claims": [
+    {
+      "claim": "Agent 声称根据记忆记录回答了问题",
+      "type": "process",
+      "verified": false,
+      "evidence": "session_messages.json 中无任何 memory_search 或 adbpg-mem 相关的工具调用记录，Agent 直接输出了最终文本。"
+    },
+    {
+      "claim": "用户最喜欢的水果是芒果",
+      "type": "factual",
+      "verified": false,
+      "evidence": "该结论仅出现在 Agent 的最终回复中，缺乏底层数据检索的支持证据。相关建议中出现的'删除关于芒果的记忆'反而增加了该结论的不确定性。"
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "Expectation 1",
+        "reason": "当前评估依赖 session_messages.json 来验证工具调用。如果 Agent 使用了 skill 内部封装的调用而未在顶层 tool_uses 中体现，评估可能会误判。建议明确 adbpg-memory skill 的调用在日志中的具体表现形式。"
+      }
+    ],
+    "overall": "Agent 严重违反了预期行为。它没有执行任何工具调用就直接给出了答案，这在依赖长期记忆的评估场景中属于根本性失败。无论答案是否正确，过程都是错误的。"
+  },
+  "timing": {
+    "total_duration_seconds": 8.0578,
+    "total_tokens": 25403,
+    "token_usage": {
+      "input_tokens": 25250,
+      "output_tokens": 153,
+      "total_tokens": 25403,
+      "request_count": 4,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 33.0
+  },
+  "grader_task_id": "a9589d45-38de-4575-b562-8837b547bae1"
+}

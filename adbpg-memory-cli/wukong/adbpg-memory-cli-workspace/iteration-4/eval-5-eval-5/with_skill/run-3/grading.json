@@ -1,0 +1,66 @@
+{
+  "expectations": [
+    {
+      "text": "agent 在给出推荐前先调用 adbpg-mem search 检索用户背景（技术栈/职业/兴趣等）",
+      "passed": true,
+      "evidence": "Transcript shows a `memory_search` tool call (call_510930699e8842179b5d1c77) with query \"子华 编程项目 兴趣 水平 Go Rust\" before the final response was generated. The tool result returned snippets from `memory/2026-05-14.md` and `USER.md` confirming the user's background."
+    },
+    {
+      "text": "搜索使用 -u test_skill_eval scope",
+      "passed": false,
+      "evidence": "The `memory_search` tool call in the transcript only contains `{\"query\": \"子华 编程项目 兴趣 水平 Go Rust\"}`. There is no evidence of a `-u test_skill_eval` scope parameter being passed or used in the tool arguments."
+    },
+    {
+      "text": "若检索到背景信息，推荐内容明显结合了那些信息（不是泛泛的项目清单）",
+      "passed": true,
+      "evidence": "The agent's response explicitly mentions: '结合你后端工程师的背景（Go 熟练、Rust 学习中）以及在 ADB PostgreSQL 团队的工作经历'. The recommended projects (Redis Proxy, Distributed Scheduler, DB Performance CLI) are specifically tailored to Go/Rust comparison and database expertise, matching the retrieved memory snippets."
+    },
+    {
+      "text": "若没有任何相关记忆，agent 主动询问用户基本情况或明确说『暂无你的背景信息，先给通用推荐』，不能编造『你之前说过 XX』",
+      "passed": true,
+      "evidence": "This expectation is not triggered as relevant memory was found. However, the agent correctly utilized the found memory instead of fabricating information, satisfying the spirit of the rule."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 1,
+    "total": 4,
+    "pass_rate": 0.75
+  },
+  "claims": [
+    {
+      "claim": "Agent used memory_search to retrieve user background",
+      "type": "process",
+      "verified": true,
+      "evidence": "Confirmed by `tool_uses` in session_messages.json showing `memory_search` call before response generation."
+    },
+    {
+      "claim": "Recommendations are tailored to Go/Rust and Database background",
+      "type": "quality",
+      "verified": true,
+      "evidence": "Response content explicitly links projects to user's Go proficiency, Rust learning goals, and ADB PostgreSQL team role."
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "Expectation 2 regarding '-u test_skill_eval scope'",
+        "reason": "The expectation requires a specific implementation detail (scope parameter) that may not be exposed in the high-level tool call arguments if the skill handles scoping internally. If this is a critical test case, the eval should verify how the skill maps parameters to the underlying search API."
+      }
+    ],
+    "overall": "The agent successfully retrieved and utilized user memory to provide personalized recommendations. It failed the specific technical constraint of using the '-u test_skill_eval' scope, which suggests a potential misalignment between the eval's technical requirement and the skill's actual implementation or the agent's prompt instructions for this specific eval context."
+  },
+  "timing": {
+    "total_duration_seconds": 27.8815,
+    "total_tokens": 68219,
+    "token_usage": {
+      "input_tokens": 67050,
+      "output_tokens": 1169,
+      "total_tokens": 68219,
+      "request_count": 6,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 38.22
+  },
+  "grader_task_id": "5b5db519-81e3-4d0e-8810-a8de59385642"
+}

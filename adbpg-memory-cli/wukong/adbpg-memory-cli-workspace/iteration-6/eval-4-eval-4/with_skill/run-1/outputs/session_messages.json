@@ -1,0 +1,98 @@
+[
+  {
+    "role": "user",
+    "content": "<skill data-id=\"7bd41f83-2239-4874-bdd2-5a63075bb2cb\" data-name=\"adbpg-memory\" /> 我最喜欢的水果是什么来着？我之前跟你说过。",
+    "events": [],
+    "tool_uses": [],
+    "timestamp": 1778742408138
+  },
+  {
+    "role": "assistant",
+    "content": "根据用户记忆，你最喜欢的水果是**芒果**。",
+    "events": [
+      {
+        "runId": "eval-8e6a2dcb-7dcf-4cd5-9e7b-2d067859c555",
+        "threadId": "6318dc77-a2ea-4070-a1c9-47f75ede2ea7",
+        "timestamp": 1778742414281,
+        "type": "RUN_STARTED"
+      },
+      {
+        "e2e_ttft_ms": 6141,
+        "timestamp": 1778742414281,
+        "ttft_ms": 2650,
+        "type": "FIRST_TOKEN"
+      },
+      {
+        "messageId": "direct-text-856491a6-d607-4622-aec5-4bf26134f85c",
+        "role": "assistant",
+        "timestamp": 1778742414305,
+        "type": "TEXT_MESSAGE_START"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 20103,
+          "totalTokens": 200000,
+          "usageRatio": 0.10000000149011612
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778742414521,
+        "type": "CUSTOM"
+      },
+      {
+        "delta": "根据用户记忆，你最喜欢的水果是**芒果**。",
+        "messageId": "direct-text-856491a6-d607-4622-aec5-4bf26134f85c",
+        "timestamp": 1778742414305,
+        "type": "TEXT_MESSAGE_CONTENT"
+      },
+      {
+        "messageId": "direct-text-856491a6-d607-4622-aec5-4bf26134f85c",
+        "timestamp": 1778742414521,
+        "type": "TEXT_MESSAGE_END"
+      },
+      {
+        "data": {
+          "answer_id": "eval-8e6a2dcb-7dcf-4cd5-9e7b-2d067859c555",
+          "generated_at": 1778742415928,
+          "items": [
+            {
+              "text": "记录我喜欢草莓"
+            },
+            {
+              "text": "删除关于水果的记忆"
+            },
+            {
+              "text": "我还喜欢什么其他食物"
+            }
+          ],
+          "status": "ready",
+          "suggestions": [
+            "记录我喜欢草莓",
+            "删除关于水果的记忆",
+            "我还喜欢什么其他食物"
+          ]
+        },
+        "name": "related_questions",
+        "timestamp": 1778742415928,
+        "type": "CUSTOM"
+      },
+      {
+        "cached_tokens": 0,
+        "completion_tokens": 11,
+        "prompt_tokens": 20092,
+        "timestamp": 1778742415928,
+        "total_tokens": 20103,
+        "type": "USAGE"
+      },
+      {
+        "runId": "eval-8e6a2dcb-7dcf-4cd5-9e7b-2d067859c555",
+        "threadId": "6318dc77-a2ea-4070-a1c9-47f75ede2ea7",
+        "timestamp": 1778742415928,
+        "type": "RUN_FINISHED"
+      }
+    ],
+    "tool_uses": [],
+    "timestamp": 1778742414281
+  }
+]

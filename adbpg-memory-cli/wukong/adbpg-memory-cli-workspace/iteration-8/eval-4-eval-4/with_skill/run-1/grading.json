@@ -1,0 +1,75 @@
+{
+  "expectations": [
+    {
+      "text": "回答必须基于真实的长期记忆检索（如果有记忆则给出对应内容，如果没有则诚实告知『我没有这方面的记忆』）",
+      "passed": false,
+      "evidence": "从 session_messages.json 可见 tool_uses 为空数组 []，agent 未调用任何记忆检索工具。响应是直接生成的，没有证据表明进行了长期记忆检索。"
+    },
+    {
+      "text": "如果 agent 显式调用 search，关键词应为自然语言描述（如『最喜欢的水果』），而不是把用户原话整段当作 query",
+      "passed": true,
+      "evidence": "agent 未进行任何 search 调用（tool_uses 为空），此期望不适用，视为通过（无违规）。"
+    },
+    {
+      "text": "关键：绝不编造一个未存储的具体答案。如果 agent 给出『XX水果』这种确定答案，必须有证据该事实之前被存入过",
+      "passed": false,
+      "evidence": "agent 给出了确定性答案'芒果'，但 session_messages.json 显示没有任何记忆检索工具被调用。无法验证'芒果'是否真的曾被存储。虽然 related_questions 中出现'我上次提到芒果是什么时候'暗示可能有相关记忆，但 agent 本身未进行检索验证，属于无证据的断言。"
+    },
+    {
+      "text": "不在回复里泄露 JSON、score、id 等内部字段",
+      "passed": true,
+      "evidence": "最终响应 '你最喜欢的水果是**芒果**。' 简洁干净，未泄露任何内部字段。related_questions 中的内部数据属于事件元数据，不是回复内容本身。"
+    },
+    {
+      "text": "回答简洁直接，不啰嗦",
+      "passed": true,
+      "evidence": "响应仅一句话 '你最喜欢的水果是**芒果**。'，非常简洁。"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 2,
+    "total": 5,
+    "pass_rate": 0.6
+  },
+  "claims": [
+    {
+      "claim": "Agent 声称用户最喜欢的水果是芒果",
+      "type": "factual",
+      "verified": false,
+      "evidence": "session_messages.json 中 tool_uses 为空，无任何记忆检索调用。无法验证该声明是否有长期记忆支撑。"
+    },
+    {
+      "claim": "Agent 未使用任何工具完成此次查询",
+      "type": "process",
+      "verified": true,
+      "evidence": "session_messages.json 中 assistant 响应的 tool_uses 字段为空数组 []。"
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "期望1和期望3存在重叠",
+        "reason": "期望1要求'基于真实长期记忆检索'，期望3要求'不编造未存储的答案'，两者本质上都在验证答案的真实性来源。可以合并为一个更强的期望：'给出的确定性答案必须有对应的记忆检索工具调用作为证据'。"
+      },
+      {
+        "assertion": "缺少对技能激活状态的验证期望",
+        "reason": "用户消息中包含 <skill data-id=\"...\" data-name=\"adbpg-memory\" />，说明 adbpg-memory 技能已被激活。期望中应增加一条：'当 adbpg-memory 技能激活时，agent 应实际调用该技能进行记忆检索'。当前期望2只关注'search'调用，但本案例中应该调用的是 skill 而非通用 search。"
+      }
+    ],
+    "overall": "核心问题：agent 在激活 adbpg-memory 技能的情况下，未进行任何记忆检索就直接给出了确定性答案'芒果'。这违反了期望1和期望3。虽然响应简洁且未泄露内部信息，但缺乏证据支撑的答案属于高风险行为。建议评估框架增加对技能实际调用的验证。"
+  },
+  "timing": {
+    "total_duration_seconds": 8.1122,
+    "total_tokens": 25455,
+    "token_usage": {
+      "input_tokens": 25299,
+      "output_tokens": 156,
+      "total_tokens": 25455,
+      "request_count": 4,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 37.93
+  },
+  "grader_task_id": "17cd820a-6c46-40bd-afa4-945deb5a89b0"
+}

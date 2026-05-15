@@ -1,0 +1,181 @@
+[
+  {
+    "role": "user",
+    "content": "<skill data-id=\"48ef670a-fb35-4d9b-b811-349aca8381b7\" data-name=\"adbpg-memory\" /> 记住，我最喜欢的水果是芒果，这点我一直没变。",
+    "events": [],
+    "tool_uses": [],
+    "timestamp": 1778729186201
+  },
+  {
+    "role": "assistant",
+    "content": "好的，我已经记住了：你最喜欢的水果是芒果。",
+    "events": [
+      {
+        "runId": "eval-4d4b67ca-462c-42ab-be1e-71de46a68390",
+        "threadId": "53247ba8-f364-42fc-b0a7-8d2f806e414a",
+        "timestamp": 1778729192110,
+        "type": "RUN_STARTED"
+      },
+      {
+        "e2e_ttft_ms": 5908,
+        "timestamp": 1778729192110,
+        "ttft_ms": 2155,
+        "type": "FIRST_TOKEN"
+      },
+      {
+        "activityType": "SKILL",
+        "content": {
+          "finish_time": 1778729193387,
+          "purpose": "---\nname: adbpg-memory\ndescription: >\n  ADBPG 长期记忆技能。每次新会话你没有任何上下文，必须通过 adbpg-mem 检索长期记忆。\n\n  【检索记忆 - 必须先做】收到涉及用户身份、偏好、过往对话、个人信息的消息时，\n  必须先执行 NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"关键词\" --agent 再回答。\n  不要凭猜测说\"我不知道\"，必须先搜索。\n\n  【存储记忆】用户说\"记住\"、提到个人信息、做出决策时，\n  执行 NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"提炼的事实\" --agent 存储。\n  提炼事实再存储，不存原文，保留用户原始语言，不存敏感信息。\n\n  【输出格式】--agent 返回 JSON，检查 status 字段（ok/error），搜索结果在 data 数组中，score 大于 0.7 视为高度相关。\n\n  【展示检索结果】检索到记忆后，在回复开头简要列出相关记忆（如\"根据记忆：你叫子华，喜欢 Python\"），\n  让用户能看到检索到了什么。如果检索到记忆但与问题无关，也简要提及\"检索到 N 条记忆但与当前问题无关\"。\n\n  不要在回复中暴露 adbpg-mem 命令细节和原始 JSON。更多用法参见 SKILL.md。\nlicense: Apache-2.0\nmetadata:\n  author: ADBPG\n  version: \"0.1.0\"\n  category: ai-memory\n  tags: \"memory, personalization, adbpg, cli, long-term-memory\"\n  dependencies:\n    apis:\n      - \"ADBPG Memory REST API (rest_base_url, configured via adbpg-mem init)\"\n      - \"ADBPG PostgreSQL endpoint (SQL mode, host/port/dbname configured via adbpg-mem init)\"\ncompatibility: >\n  Node.js 18+ (npm install) 或 Python 3.10+ (pip install)。\n  需要 adbpg-mem CLI 已安装并通过 adbpg-mem init 完成配置。\n  支持 SQL 模式（直连 ADBPG）和 REST 模式（HTTP API）。\n---",
+          "skill_name": "adbpg-memory",
+          "snippet": "激活 adbpg-memory 技能以存储用户偏好",
+          "start_time": 1778729193387,
+          "status": "completed"
+        },
+        "messageId": "tool_msg:8ad576d0-3b7a-4bd6-b152-d8610582ec85",
+        "timestamp": 1778729193387,
+        "type": "ACTIVITY_SNAPSHOT"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 22237,
+          "totalTokens": 200000,
+          "usageRatio": 0.10999999940395357
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778729193387,
+        "type": "CUSTOM"
+      },
+      {
+        "activityType": "TERMINAL",
+        "content": {
+          "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"最喜欢的水果是芒果\" --agent",
+          "exit_code": 0,
+          "finish_time": 1778729197512,
+          "output": "{\"command\":\"add\",\"count\":null,\"data\":{\"results\":[{\"event\":null,\"event_id\":\"1b6ab2b0-8304-407e-b623-bbc07ed58628\",\"id\":null,\"memory\":null,\"message\":\"Memory processing has been queued for background execution\",\"status\":\"PENDING\"}]},\"duration_ms\":474,\"scope\":{\"agent_id\":\"\",\"run_id\":\"\",\"user_id\":\"test_verify\"},\"status\":\"ok\"}",
+          "output_chunks": [],
+          "snippet": "存储用户偏好：最喜欢的水果是芒果",
+          "start_time": 1778729195658,
+          "status": "completed",
+          "working_dir": ""
+        },
+        "messageId": "tool_msg:0dfb1306-982d-4985-8631-48eae463839e",
+        "timestamp": 1778729195658,
+        "type": "ACTIVITY_SNAPSHOT"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 28962,
+          "totalTokens": 200000,
+          "usageRatio": 0.14000000059604645
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778729195658,
+        "type": "CUSTOM"
+      },
+      {
+        "messageId": "direct-text-8580f12b-76d8-4801-af0c-1d022ce97a12",
+        "role": "assistant",
+        "timestamp": 1778729198320,
+        "type": "TEXT_MESSAGE_START"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 29180,
+          "totalTokens": 200000,
+          "usageRatio": 0.15000000596046448
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778729198506,
+        "type": "CUSTOM"
+      },
+      {
+        "delta": "好的，我已经记住了：你最喜欢的水果是芒果。",
+        "messageId": "direct-text-8580f12b-76d8-4801-af0c-1d022ce97a12",
+        "timestamp": 1778729198320,
+        "type": "TEXT_MESSAGE_CONTENT"
+      },
+      {
+        "messageId": "direct-text-8580f12b-76d8-4801-af0c-1d022ce97a12",
+        "timestamp": 1778729198506,
+        "type": "TEXT_MESSAGE_END"
+      },
+      {
+        "data": {
+          "answer_id": "eval-4d4b67ca-462c-42ab-be1e-71de46a68390",
+          "generated_at": 1778729200292,
+          "items": [
+            {
+              "text": "记住我不吃香菜"
+            },
+            {
+              "text": "查询我喜欢的食物"
+            },
+            {
+              "text": "删除关于芒果的记忆"
+            }
+          ],
+          "status": "ready",
+          "suggestions": [
+            "记住我不吃香菜",
+            "查询我喜欢的食物",
+            "删除关于芒果的记忆"
+          ]
+        },
+        "name": "related_questions",
+        "timestamp": 1778729200292,
+        "type": "CUSTOM"
+      },
+      {
+        "cached_tokens": 40451,
+        "completion_tokens": 185,
+        "prompt_tokens": 88622,
+        "timestamp": 1778729201148,
+        "total_tokens": 88807,
+        "type": "USAGE"
+      },
+      {
+        "runId": "eval-4d4b67ca-462c-42ab-be1e-71de46a68390",
+        "threadId": "53247ba8-f364-42fc-b0a7-8d2f806e414a",
+        "timestamp": 1778729201148,
+        "type": "RUN_FINISHED"
+      }
+    ],
+    "tool_uses": [
+      {
+        "id": "tool_msg:8ad576d0-3b7a-4bd6-b152-d8610582ec85",
+        "name": "SKILL",
+        "input": {
+          "finish_time": 1778729193387,
+          "purpose": "---\nname: adbpg-memory\ndescription: >\n  ADBPG 长期记忆技能。每次新会话你没有任何上下文，必须通过 adbpg-mem 检索长期记忆。\n\n  【检索记忆 - 必须先做】收到涉及用户身份、偏好、过往对话、个人信息的消息时，\n  必须先执行 NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"关键词\" --agent 再回答。\n  不要凭猜测说\"我不知道\"，必须先搜索。\n\n  【存储记忆】用户说\"记住\"、提到个人信息、做出决策时，\n  执行 NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"提炼的事实\" --agent 存储。\n  提炼事实再存储，不存原文，保留用户原始语言，不存敏感信息。\n\n  【输出格式】--agent 返回 JSON，检查 status 字段（ok/error），搜索结果在 data 数组中，score 大于 0.7 视为高度相关。\n\n  【展示检索结果】检索到记忆后，在回复开头简要列出相关记忆（如\"根据记忆：你叫子华，喜欢 Python\"），\n  让用户能看到检索到了什么。如果检索到记忆但与问题无关，也简要提及\"检索到 N 条记忆但与当前问题无关\"。\n\n  不要在回复中暴露 adbpg-mem 命令细节和原始 JSON。更多用法参见 SKILL.md。\nlicense: Apache-2.0\nmetadata:\n  author: ADBPG\n  version: \"0.1.0\"\n  category: ai-memory\n  tags: \"memory, personalization, adbpg, cli, long-term-memory\"\n  dependencies:\n    apis:\n      - \"ADBPG Memory REST API (rest_base_url, configured via adbpg-mem init)\"\n      - \"ADBPG PostgreSQL endpoint (SQL mode, host/port/dbname configured via adbpg-mem init)\"\ncompatibility: >\n  Node.js 18+ (npm install) 或 Python 3.10+ (pip install)。\n  需要 adbpg-mem CLI 已安装并通过 adbpg-mem init 完成配置。\n  支持 SQL 模式（直连 ADBPG）和 REST 模式（HTTP API）。\n---",
+          "skill_name": "adbpg-memory",
+          "snippet": "激活 adbpg-memory 技能以存储用户偏好",
+          "start_time": 1778729193387,
+          "status": "completed"
+        }
+      },
+      {
+        "id": "tool_msg:0dfb1306-982d-4985-8631-48eae463839e",
+        "name": "TERMINAL",
+        "input": {
+          "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"最喜欢的水果是芒果\" --agent",
+          "exit_code": 0,
+          "finish_time": 1778729197512,
+          "output": "{\"command\":\"add\",\"count\":null,\"data\":{\"results\":[{\"event\":null,\"event_id\":\"1b6ab2b0-8304-407e-b623-bbc07ed58628\",\"id\":null,\"memory\":null,\"message\":\"Memory processing has been queued for background execution\",\"status\":\"PENDING\"}]},\"duration_ms\":474,\"scope\":{\"agent_id\":\"\",\"run_id\":\"\",\"user_id\":\"test_verify\"},\"status\":\"ok\"}",
+          "output_chunks": [],
+          "snippet": "存储用户偏好：最喜欢的水果是芒果",
+          "start_time": 1778729195658,
+          "status": "completed",
+          "working_dir": ""
+        }
+      }
+    ],
+    "timestamp": 1778729192110
+  }
+]

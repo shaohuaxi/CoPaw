@@ -1,0 +1,85 @@
+{
+  "expectations": [
+    {
+      "text": "agent 表示理解隔离需求，并解释隔离机制（通过 -a 参数实现，不需要改连接配置文件）",
+      "passed": false,
+      "evidence": "最终响应中完全没有解释隔离机制，未提及 '-a' 参数的作用，也未说明不需要修改连接配置文件。响应仅汇报了配置状态。"
+    },
+    {
+      "text": "agent 从 system prompt 中查找自己的 agent_id，而不是瞎编一个值",
+      "passed": false,
+      "evidence": "从 session_messages.json 的 reasoning 内容可见，agent 从 USER.md 中读取了 'work-assistant' 和 'life-assistant' 这两个 ID，而非从 system prompt 中查找当前 agent 自己的 agent_id。"
+    },
+    {
+      "text": "agent 调用 adbpg-mem agent-config set isolation_agent true -a <agent_id> 持久化隔离状态",
+      "passed": false,
+      "evidence": "从 transcript 可见，agent 仅调用了 'agent-config show' 来检查两个助手的配置状态（exit_code: 0，返回 isolation_agent: true），但未调用 'agent-config set' 命令来执行设置操作。"
+    },
+    {
+      "text": "agent 告知用户后续 add/search 会自动带上 -a <agent_id>",
+      "passed": false,
+      "evidence": "最终响应中完全未提及后续 add/search 命令会自动带上 '-a <agent_id>' 这一行为说明。"
+    },
+    {
+      "text": "若 agent 找不到 system prompt 中的 agent_id，会向用户询问而不是用默认值",
+      "passed": false,
+      "evidence": "此期望的条件未触发——agent 从 USER.md 成功获取了 agent_id，未遇到'找不到'的情况，因此无法验证该期望是否满足。严格来说，无法证明 agent 在找不到时会询问用户。"
+    }
+  ],
+  "summary": {
+    "passed": 0,
+    "failed": 5,
+    "total": 5,
+    "pass_rate": 0.0
+  },
+  "claims": [
+    {
+      "claim": "工作助手 (work-assistant) 的记忆隔离已启用 (isolation_agent: true)，会话隔离模式为手动 (manual)",
+      "type": "factual",
+      "verified": true,
+      "evidence": "session_messages.json 中 TERMINAL 工具调用结果显示：'{\"agent_id\":\"work-assistant\",\"command\":\"agent-config-show\",\"data\":{\"isolation_agent\":true,\"isolation_run_mode\":\"manual\"},\"duration_ms\":1,\"status\":\"ok\"}'"
+    },
+    {
+      "claim": "生活助手 (life-assistant) 的记忆隔离已启用 (isolation_agent: true)，会话隔离模式为手动 (manual)",
+      "type": "factual",
+      "verified": true,
+      "evidence": "session_messages.json 中 TERMINAL 工具调用结果显示：'{\"agent_id\":\"life-assistant\",\"command\":\"agent-config-show\",\"data\":{\"isolation_agent\":true,\"isolation_run_mode\":\"manual\"},\"duration_ms\":1,\"status\":\"ok\"}'"
+    },
+    {
+      "claim": "agent 仅执行了配置查询 (show)，未执行配置设置 (set)",
+      "type": "process",
+      "verified": true,
+      "evidence": "session_messages.json 中 tool_uses 数组仅包含两次 TERMINAL 调用，命令分别为 'adbpg-mem agent-config show -a work-assistant --agent' 和 'adbpg-mem agent-config show -a life-assistant --agent'，无 'agent-config set' 调用记录。"
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "Expectation 2",
+        "reason": "该期望要求 agent 从 system prompt 查找'自己的' agent_id，但用户请求涉及的是两个不同的 agent（工作助手和生活助手）。期望应调整为验证 agent 是否正确识别并使用了目标 agent 的 ID，无论来源是 system prompt、USER.md 还是其他可信渠道。"
+      },
+      {
+        "assertion": "Expectation 3",
+        "reason": "如果配置已经处于期望状态（isolation_agent 已为 true），agent 可能选择跳过 set 操作。期望应考虑这种幂等性场景，或明确要求 agent 无论如何都执行 set 操作以确认持久化。"
+      },
+      {
+        "assertion": "Expectation 5",
+        "reason": "这是一个条件性期望（'若找不到...'），在当前执行中条件未触发，导致无法验证。建议将此期望改为独立的测试用例，专门构造 agent_id 缺失的场景来验证。"
+      }
+    ],
+    "overall": "所有 5 项期望均未通过。agent 正确查询并汇报了配置状态，但未解释隔离机制、未执行 set 操作、未说明后续行为，且 agent_id 来源不符合期望要求。评估指标本身存在可改进之处，特别是期望 2 和 5 的设计需要更精确的场景定义。"
+  },
+  "timing": {
+    "total_duration_seconds": 42.959,
+    "total_tokens": 191567,
+    "token_usage": {
+      "input_tokens": 189943,
+      "output_tokens": 1624,
+      "total_tokens": 191567,
+      "request_count": 10,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 58.38
+  },
+  "grader_task_id": "483d8d7d-8f0d-4ba2-858c-c7a33603d2b1"
+}

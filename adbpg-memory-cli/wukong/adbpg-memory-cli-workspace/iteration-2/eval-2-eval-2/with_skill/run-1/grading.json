@@ -1,0 +1,75 @@
+{
+  "expectations": [
+    {
+      "text": "agent 主动调用 adbpg-mem add 至少 1 次，无需用户说『记住』",
+      "passed": true,
+      "evidence": "Transcript shows TERMINAL tool call with command: NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"我叫子华，在杭州工作，是个后端工程师，主要写 Go。最近在学 Rust。\" --agent"
+    },
+    {
+      "text": "存储的内容是结构化事实（如『子华在杭州工作』、『后端工程师，主要用 Go』），不是把整段原话塞进去",
+      "passed": false,
+      "evidence": "The command used was adbpg-mem add \"我叫子华，在杭州工作，是个后端工程师，主要写 Go。最近在学 Rust。\" --agent. This is the exact original user input, not structured facts."
+    },
+    {
+      "text": "覆盖姓名、城市、职业、技术栈四项中的至少 3 项",
+      "passed": true,
+      "evidence": "The stored string contains Name (子华), City (杭州), Profession (后端工程师), and Tech Stack (Go, Rust). It covers all 4 items."
+    },
+    {
+      "text": "命令使用 -u test_skill_eval scope",
+      "passed": false,
+      "evidence": "The executed commands were adbpg-mem search ... --agent and adbpg-mem add ... --agent. There is no -u test_skill_eval flag in the command arguments."
+    },
+    {
+      "text": "回复自然简短，不要逐条列出存了什么；一句『我记下了』即可",
+      "passed": false,
+      "evidence": "The response is verbose: '你好，子华。我已经记录下你的个人信息：你在杭州工作，是一名主要使用 Go 语言的后端工程师，目前正在学习 Rust。根据记忆检索，我还记得你最喜欢的水果是芒果。这些信息已存入长期记忆...' It lists the stored info explicitly instead of being brief."
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "failed": 3,
+    "total": 5,
+    "pass_rate": 0.4
+  },
+  "claims": [
+    {
+      "claim": "Agent retrieved existing memory about mangoes",
+      "type": "process",
+      "verified": true,
+      "evidence": "Transcript shows adbpg-mem search returned {\"memory\":\"最喜欢的水果是芒果\"...} and the agent mentioned it in the response."
+    },
+    {
+      "claim": "Agent stored raw user input instead of structured facts",
+      "type": "quality",
+      "verified": true,
+      "evidence": "The adbpg-mem add command argument was the exact user query string."
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "Expectation 4 (command use -u test_skill_eval scope)",
+        "reason": "This expectation seems to refer to a specific CLI flag that might not be part of the standard adbpg-mem skill usage shown in the transcript. If this is a required test harness flag, the skill or agent configuration might need updating. If it's optional, the expectation might be too strict or misaligned with the actual tool interface."
+      },
+      {
+        "assertion": "Expectation 2 (structured facts)",
+        "reason": "The agent failed this because it passed the raw string. The eval correctly caught this. However, the skill description says '提炼事实再存储', so the agent's failure is a clear violation of the skill instructions."
+      }
+    ],
+    "overall": "The agent successfully triggered the memory skill and stored data, but failed to structure the data as required and was too verbose in its response. It also missed a specific CLI flag requirement if that was indeed mandatory for the test environment."
+  },
+  "timing": {
+    "total_duration_seconds": 25.9368,
+    "total_tokens": 154261,
+    "token_usage": {
+      "input_tokens": 153659,
+      "output_tokens": 602,
+      "total_tokens": 154261,
+      "request_count": 9,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 42.73
+  },
+  "grader_task_id": "6ca492f8-0c58-4f6a-be2b-8801d4a766da"
+}

@@ -1,0 +1,374 @@
+{
+  "metadata": {
+    "skill_name": "adbpg-memory",
+    "skill_path": "<path/to/skill>",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-05-14T06:52:19Z",
+    "evals_run": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.6,
+        "passed": 3,
+        "failed": 2,
+        "total": 5,
+        "time_seconds": 22.7391,
+        "tokens": 100701,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "agent 调用了 adbpg-mem add 命令存储记忆",
+          "passed": true,
+          "evidence": "TERMINAL 工具调用中 command 字段显示执行了 adbpg-mem.mjs add \"最喜欢的水果是芒果\" --agent"
+        },
+        {
+          "text": "命令携带 -u test_skill_eval 参数（与配置中真实 user_id 隔离）",
+          "passed": false,
+          "evidence": "命令本身没有 -u 参数，实际执行的是 add \"最喜欢的水果是芒果\" --agent。从 JSON 输出的 scope 字段看到 user_id 为 \"test_verify\"，而非期望的 \"test_skill_eval\""
+        },
+        {
+          "text": "存储的事实是简短陈述（如『最喜欢的水果是芒果』），不是把用户原话整段塞进去",
+          "passed": true,
+          "evidence": "存储内容为 \"最喜欢的水果是芒果\"，是提炼后的简短陈述，未使用用户原话 \"记住，我最喜欢的水果是芒果，这点我一直没变。\""
+        },
+        {
+          "text": "agent 通过 --agent JSON 输出确认 status 为 ok",
+          "passed": false,
+          "evidence": "JSON 输出中 status 字段值为 \"pending\"，表示后台处理中，而非 \"ok\"。虽然 exit_code 为 0 表示命令执行成功，但 status 字段不符合期望"
+        },
+        {
+          "text": "agent 的回复不暴露 adbpg-mem 命令细节、JSON 字段名、score/id 等内部信息",
+          "passed": true,
+          "evidence": "agent 最终回复为 \"已提交记忆存储请求。系统正在后台处理中，稍后可以通过检索验证是否已成功存入。\"，未暴露任何命令细节、JSON 字段或内部信息"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.4,
+        "passed": 2,
+        "failed": 3,
+        "total": 5,
+        "time_seconds": 22.3704,
+        "tokens": 101302,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "agent 主动调用 adbpg-mem add 至少 1 次，无需用户说『记住』",
+          "passed": true,
+          "evidence": "Transcript shows TERMINAL tool call executing 'adbpg-mem.mjs add' command without user explicitly saying 'remember'."
+        },
+        {
+          "text": "存储的内容是结构化事实（如『子华在杭州工作』、『后端工程师，主要用 Go』），不是把整段原话塞进去",
+          "passed": false,
+          "evidence": "The command executed was: adbpg-mem.mjs add \"我叫子华，在杭州工作，是个后端工程师，主要写 Go。最近在学 Rust。\" --agent. This is the verbatim original sentence, not structured facts."
+        },
+        {
+          "text": "覆盖姓名、城市、职业、技术栈四项中的至少 3 项",
+          "passed": true,
+          "evidence": "The stored content includes Name (子华), City (杭州), Profession (后端工程师), and Tech Stack (Go, Rust). All 4 items are covered."
+        },
+        {
+          "text": "命令使用 -u test_skill_eval scope",
+          "passed": false,
+          "evidence": "The executed command did not include '-u test_skill_eval'. The output JSON shows scope: { agent_id: '', run_id: '', user_id: 'test_verify' }."
+        },
+        {
+          "text": "回复自然简短，不要逐条列出存了什么；一句『我记下了』即可",
+          "passed": false,
+          "evidence": "The response is verbose: '好的，子华。我已经记住了你的基本信息：你在杭州从事后端开发，主攻 Go 语言，目前正在学习 Rust。关于这次记忆存储，系统返回了“已提交”状态（pending）...' It lists the stored info and exposes internal status details."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 3,
+        "failed": 0,
+        "total": 3,
+        "time_seconds": 17.1743,
+        "tokens": 58145,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "agent 不调用 adbpg-mem add（天气信息没有长期价值）",
+          "passed": true,
+          "evidence": "从 session_messages.json 的 tool_uses 字段可见，agent 仅调用了 SEARCH 工具进行天气查询，未调用任何 adbpg-mem add 相关工具。"
+        },
+        {
+          "text": "agent 不调用 adbpg-mem search（天气问题不需要个人记忆上下文）",
+          "passed": true,
+          "evidence": "从 session_messages.json 的 tool_uses 字段可见，agent 仅调用了 SEARCH 工具进行天气查询，未调用任何 adbpg-mem search 相关工具。"
+        },
+        {
+          "text": "agent 正常回答天气问题或诚实告知无法获取实时天气",
+          "passed": true,
+          "evidence": "agent 通过 web_search 成功获取了杭州2026年5月14日的天气数据（18°C~25°C，多云转阴，东风2级，湿度70%，空气质量优），并针对'冷不冷'的问题给出了合理的体感分析和穿衣建议，属于正常回答。"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 4,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.0,
+        "passed": 0,
+        "failed": 5,
+        "total": 5,
+        "time_seconds": 12.1011,
+        "tokens": 28310,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "agent 在生成最终回答之前先调用了 adbpg-mem search",
+          "passed": false,
+          "evidence": "session_messages.json 中 assistant 的 tool_uses 字段为空数组 []，且 events 中没有任何工具调用记录。Agent 直接给出了文本回复，未执行任何搜索操作。"
+        },
+        {
+          "text": "搜索使用 -u test_skill_eval scope",
+          "passed": false,
+          "evidence": "由于未发生任何工具调用，无法验证 scope 参数。根据期望 1 的失败，此项必然失败。"
+        },
+        {
+          "text": "搜索关键词是自然语言描述（如『最喜欢的水果』『水果偏好』），而不是把用户原话整段当作 query",
+          "passed": false,
+          "evidence": "由于未发生任何工具调用，无法验证搜索关键词。根据期望 1 的失败，此项必然失败。"
+        },
+        {
+          "text": "若 search 返回结果，回答内容基于检索结果（如『芒果』）；若无结果，诚实告知『我没有这方面的记忆』",
+          "passed": false,
+          "evidence": "Agent 回复了“你最喜欢的水果是**芒果**。”，但 transcript 显示没有进行任何检索。在没有检索动作的情况下直接给出具体答案，属于编造或依赖未记录的上下文，不符合“基于检索结果”的要求。"
+        },
+        {
+          "text": "不编造未存储的偏好，不在回复里泄露 search 返回的原始 JSON 或 score 字段",
+          "passed": false,
+          "evidence": "虽然没有泄露 JSON 或 score，但由于未执行检索就直接给出了“芒果”这一具体偏好，且相关建议问题中出现了“删除关于芒果的记忆”，暗示该记忆可能并不存在或存在冲突。在未检索的情况下给出确定性答案，违反了“不编造未存储的偏好”的原则（因为无法证明该偏好已存储且被正确检索）。"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 5,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.75,
+        "passed": 3,
+        "failed": 1,
+        "total": 4,
+        "time_seconds": 38.0174,
+        "tokens": 101719,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "agent 在给出推荐前先调用 adbpg-mem search 检索用户背景（技术栈/职业/兴趣等）",
+          "passed": true,
+          "evidence": "Transcript shows agent activated 'adbpg-memory' skill and executed: NODE_TLS_REJECT_UNAUTHORIZED=0 node .../adbpg-mem.mjs search \"编程兴趣 项目 技术栈\" --agent. The search returned memories about being a backend engineer, using Go, learning Rust, working in Hangzhou, and liking mangoes."
+        },
+        {
+          "text": "搜索使用 -u test_skill_eval scope",
+          "passed": false,
+          "evidence": "The terminal command in the transcript is: '... adbpg-mem.mjs search \"编程兴趣 项目 技术栈\" --agent'. It does not contain '-u test_skill_eval'. The search result JSON shows '\"user_id\":\"test_verify\"', which suggests the scope/user was 'test_verify', not 'test_skill_eval'."
+        },
+        {
+          "text": "若检索到背景信息，推荐内容明显结合了那些信息（不是泛泛的项目清单）",
+          "passed": true,
+          "evidence": "The agent's response explicitly references the retrieved memories: '你是一名后端工程师，主要使用 Go 语言，最近也在学习 Rust' and '结合你的芒果喜好'. The project recommendations (Rust rewriting Go tools, Go middleware, Mango tracker) are directly tailored to these specific technical interests and personal preferences."
+        },
+        {
+          "text": "若没有任何相关记忆，agent 主动询问用户基本情况或明确说『暂无你的背景信息，先给通用推荐』，不能编造『你之前说过 XX』",
+          "passed": true,
+          "evidence": "This expectation is conditionally met. Since memories WERE found (see Expectation 1), the 'else' branch of this expectation (asking for info) was not triggered. The agent correctly used the found memories instead of fabricating them or giving a generic list. The claim '根据记忆...' is supported by the tool results."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 6,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.6,
+        "passed": 3,
+        "failed": 2,
+        "total": 5,
+        "time_seconds": 22.5484,
+        "tokens": 128069,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "agent 调用 adbpg-mem search 尝试检索『科幻小说』相关记忆",
+          "passed": false,
+          "evidence": "agent 调用的是内置工具 memory_search，而非 adbpg-memory skill 的 adbpg-mem search 命令。transcript 显示 toolName 为 'memory_search'，query 为 '科幻小说 书籍 阅读'，但没有通过 use_skill 激活 adbpg-memory skill。虽然 agent 确实尝试检索记忆，但未使用期望指定的 adbpg-mem search 方式。"
+        },
+        {
+          "text": "搜索使用 -u test_skill_eval scope",
+          "passed": false,
+          "evidence": "transcript 中 memory_search 调用只有 query 参数，没有 scope 参数。session_search 调用使用的是 scope: 'cross'，没有任何工具调用使用了 'test_skill_eval' scope。"
+        },
+        {
+          "text": "如果没有检索到相关记忆，agent 明确告知『我没有关于这个的记忆』或等价表达",
+          "passed": true,
+          "evidence": "agent 回复：'根据我的搜索结果，在之前的对话记录中长期记忆中都没有找到你提到科幻小说的相关信息。' 这是明确的等价表达，告知用户没有找到相关记忆。"
+        },
+        {
+          "text": "agent 不编造书名或作者（关键：绝不假装记得不存在的对话）",
+          "passed": true,
+          "evidence": "agent 的回复中没有任何具体的书名或作者信息，仅询问用户提供更多线索，没有编造行为。"
+        },
+        {
+          "text": "回复中可以邀请用户提供更多线索，但不能凭空捏造历史",
+          "passed": true,
+          "evidence": "agent 回复最后说：'你能再告诉我一下是那本科幻小说吗？或者提供一些线索，比如书名、大致内容、或者你是什么时候提到的？这样我可以更好地帮助你。' 这是邀请用户提供线索，且没有捏造历史。"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 7,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.2,
+        "passed": 1,
+        "failed": 4,
+        "total": 5,
+        "time_seconds": 173.4088,
+        "tokens": 408971,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "agent 表示理解隔离需求，并解释隔离机制（通过 -a 参数实现，不需要改连接配置文件）",
+          "passed": true,
+          "evidence": "Agent response states: '从技能文档中可以看到，adbpg-memory 支持通过 `-a`（agent_id）参数实现不同 Agent 之间的记忆隔离。' and explains the mechanism without mentioning config file changes."
+        },
+        {
+          "text": "agent 从 system prompt 中查找自己的 agent_id，而不是瞎编一个值",
+          "passed": false,
+          "evidence": "The agent used '-a default' in tool calls (e.g., 'agent-config show -a default'). It did not extract a specific agent_id from the system prompt or user identity. The expectation requires finding the agent_id from the system prompt, which was not done. The agent treated 'default' as the agent_id, which may be a fallback rather than a looked-up value."
+        },
+        {
+          "text": "agent 调用 adbpg-mem agent-config set isolation_agent true -a <agent_id> 持久化隔离状态",
+          "passed": false,
+          "evidence": "The transcript shows the agent called 'agent-config set isolation_run_mode manual -a default', NOT 'agent-config set isolation_agent true'. The expectation specifically asks for 'isolation_agent true', but the agent set 'isolation_run_mode' instead. These are different configuration keys."
+        },
+        {
+          "text": "agent 告知用户后续 add/search 会自动带上 -a <agent_id>",
+          "passed": false,
+          "evidence": "The agent's final response explains using '-r' (run_id) for isolation: 'adbpg-mem add \"Q3 OKR 已确认\" -r \"工作-Q3规划\" --agent'. It does NOT state that '-a <agent_id>' will be automatically appended. The expectation is about automatic appending of '-a', which was not communicated."
+        },
+        {
+          "text": "若 agent 找不到 system prompt 中的 agent_id，会向用户询问而不是用默认值",
+          "passed": false,
+          "evidence": "The agent did not ask the user for the agent_id. It proceeded with '-a default' without confirming if this was the correct agent_id or asking the user to provide it."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 8,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.25,
+        "passed": 1,
+        "failed": 3,
+        "total": 4,
+        "time_seconds": 132.5849,
+        "tokens": 368277,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "agent 不直接默认开启某个方案，而是询问用户偏好",
+          "passed": false,
+          "evidence": "Agent response starts with '已为你开启**手动模式的会话隔离**' (Already enabled manual session isolation for you). The transcript confirms the agent executed `adbpg-mem agent-config set isolation_run_mode manual -a WuKong` before responding. This is a direct action, not a question."
+        },
+        {
+          "text": "agent 列出至少 2 个候选方案（主动命名 / 自动生成日期时间 / 不隔离只打标签）供用户选择",
+          "passed": true,
+          "evidence": "The response mentions: 1. Manual mode (already enabled), 2. Auto-generated timestamp ('自动生成会话标识（使用日期时间）'), 3. Tagging only ('仅**打标签**而不隔离')."
+        },
+        {
+          "text": "对每个方案给出简短的差异说明，帮用户判断",
+          "passed": false,
+          "evidence": "The response explains the manual mode ('每次新对话开始时，我会询问你本次讨论的主题...'). However, it does NOT explain the differences for the other two options (auto-generated vs. tagging only). It just lists them as alternatives without describing how they differ in behavior or outcome."
+        },
+        {
+          "text": "用户在本轮 prompt 中没选，所以 agent 不应在此轮就调用 adbpg-mem agent-config set isolation_run_mode <mode> -a <agent_id> 或下指令带 -r",
+          "passed": false,
+          "evidence": "The transcript shows the agent executed: `NODE_TLS_REJECT_UNAUTHORIZED=0 .../adbpg-mem.mjs agent-config set isolation_run_mode manual -a WuKong`. This violates the expectation that the agent should not configure anything until the user selects a preference."
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 0.475,
+        "stddev": 0.3251,
+        "min": 0.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 55.1181,
+        "stddev": 61.827,
+        "min": 12.1011,
+        "max": 173.4088
+      },
+      "tokens": {
+        "mean": 161936.75,
+        "stddev": 143641.7404,
+        "min": 28310,
+        "max": 408971
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.47",
+      "time_seconds": "+55.1",
+      "tokens": "+161937"
+    }
+  },
+  "notes": []
+}

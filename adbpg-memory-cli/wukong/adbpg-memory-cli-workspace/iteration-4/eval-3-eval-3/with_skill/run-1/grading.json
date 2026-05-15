@@ -1,0 +1,73 @@
+{
+  "expectations": [
+    {
+      "text": "agent 不调用 adbpg-mem add（天气信息没有长期价值）",
+      "passed": true,
+      "evidence": "从 session_messages.json 的工具调用记录看，agent 仅调用了 adbpg-mem search（命令：NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"杭州 天气 偏好\" --agent），未调用 adbpg-mem add。"
+    },
+    {
+      "text": "agent 不调用 adbpg-mem search（天气问题不需要个人记忆上下文）",
+      "passed": false,
+      "evidence": "从 session_messages.json 的工具调用记录看，agent 明确调用了 adbpg-mem search，命令为：NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"杭州 天气 偏好\" --agent。返回结果包含用户记忆如'用户在杭州工作'、'最喜欢的水果是芒果'等。这与期望相矛盾。"
+    },
+    {
+      "text": "agent 正常回答天气问题或诚实告知无法获取实时天气",
+      "passed": true,
+      "evidence": "agent 最终回复提供了具体天气信息：'今天（5月14日）杭州的天气为小雨转多云，气温在 20°C 到 26°C 之间 [2]'，并给出体感建议和出行提示，属于正常回答。"
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "failed": 1,
+    "total": 3,
+    "pass_rate": 0.6667
+  },
+  "claims": [
+    {
+      "claim": "agent 调用了 adbpg-mem search 检索长期记忆",
+      "type": "process",
+      "verified": true,
+      "evidence": "session_messages.json 中 TERMINAL 工具调用显示执行了 'adbpg-mem search \"杭州 天气 偏好\" --agent'，返回 5 条记忆记录。"
+    },
+    {
+      "claim": "agent 通过 web_search 获取了杭州天气信息",
+      "type": "process",
+      "verified": true,
+      "evidence": "session_messages.json 中 SEARCH 工具调用显示查询了 '杭州今天天气 气温'，返回了 weather.com.cn 等天气网站的结果。"
+    },
+    {
+      "claim": "最终回复中的天气数据（小雨转多云，20-26°C）来自 web_search 结果",
+      "type": "factual",
+      "verified": true,
+      "evidence": "web_search 结果中 weather.com.cn  snippet 显示 '14日（今天） 小雨 26 / 20℃'，与回复一致。"
+    },
+    {
+      "claim": "agent 在回复开头提到'根据长期记忆，你目前在杭州工作'",
+      "type": "factual",
+      "verified": true,
+      "evidence": "agent_response 和 session_messages.json 中的 TEXT_MESSAGE_CONTENT 均包含此语句，该信息来自 adbpg-mem search 返回的第一条记忆。"
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "期望 2",
+        "reason": "期望 2 假设天气问题不需要个人记忆上下文，但实际场景中 agent 可能出于以下原因调用 search：(1) 确认用户所在城市以提供准确天气；(2) skill 被显式激活后默认执行 search。建议将期望 2 改为更具体的约束，例如 'agent 不应为获取城市信息而调用 adbpg-mem search，应直接从 user_identity 或系统上下文中获取'，或者接受 search 调用但验证其必要性。"
+      }
+    ],
+    "overall": "期望 2 未能通过，因为 agent 确实调用了 adbpg-mem search。这表明当前 skill 行为与 eval 预期不一致：skill 被激活后默认执行了 search 操作，即使对于简单的天气查询。eval 作者可能需要重新审视是否允许 skill 在某些场景下读取位置相关的记忆，或者需要在 skill 层面优化以避免不必要的 memory 检索。"
+  },
+  "timing": {
+    "total_duration_seconds": 48.1603,
+    "total_tokens": 135552,
+    "token_usage": {
+      "input_tokens": 134051,
+      "output_tokens": 1501,
+      "total_tokens": 135552,
+      "request_count": 9,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 48.37
+  },
+  "grader_task_id": "2dbba5ed-0d60-4364-8676-f95dbc648f95"
+}

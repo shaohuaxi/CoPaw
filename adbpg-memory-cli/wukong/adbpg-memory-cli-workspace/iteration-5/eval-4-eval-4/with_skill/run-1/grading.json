@@ -1,0 +1,71 @@
+{
+  "expectations": [
+    {
+      "text": "agent 在生成最终回答之前先调用了 adbpg-mem search",
+      "passed": false,
+      "evidence": "session_messages.json 中 assistant 的 tool_uses 字段为空数组 []，且 events 中没有任何工具调用记录。Agent 直接给出了文本回复，未执行任何搜索操作。"
+    },
+    {
+      "text": "搜索使用 -u test_skill_eval scope",
+      "passed": false,
+      "evidence": "由于未发生任何工具调用，无法验证 scope 参数。根据期望 1 的失败，此项必然失败。"
+    },
+    {
+      "text": "搜索关键词是自然语言描述（如『最喜欢的水果』『水果偏好』），而不是把用户原话整段当作 query",
+      "passed": false,
+      "evidence": "由于未发生任何工具调用，无法验证搜索关键词。根据期望 1 的失败，此项必然失败。"
+    },
+    {
+      "text": "若 search 返回结果，回答内容基于检索结果（如『芒果』）；若无结果，诚实告知『我没有这方面的记忆』",
+      "passed": false,
+      "evidence": "Agent 回复了“你最喜欢的水果是**芒果**。”，但 transcript 显示没有进行任何检索。在没有检索动作的情况下直接给出具体答案，属于编造或依赖未记录的上下文，不符合“基于检索结果”的要求。"
+    },
+    {
+      "text": "不编造未存储的偏好，不在回复里泄露 search 返回的原始 JSON 或 score 字段",
+      "passed": false,
+      "evidence": "虽然没有泄露 JSON 或 score，但由于未执行检索就直接给出了“芒果”这一具体偏好，且相关建议问题中出现了“删除关于芒果的记忆”，暗示该记忆可能并不存在或存在冲突。在未检索的情况下给出确定性答案，违反了“不编造未存储的偏好”的原则（因为无法证明该偏好已存储且被正确检索）。"
+    }
+  ],
+  "summary": {
+    "passed": 0,
+    "failed": 5,
+    "total": 5,
+    "pass_rate": 0.0
+  },
+  "claims": [
+    {
+      "claim": "Agent 未调用任何工具",
+      "type": "process",
+      "verified": true,
+      "evidence": "session_messages.json 中 tool_uses 为空，且无相关工具事件。"
+    },
+    {
+      "claim": "Agent 回复内容为“你最喜欢的水果是**芒果**。\"",
+      "type": "factual",
+      "verified": true,
+      "evidence": "agent_response 标签内容及 session_messages.json 中的 delta 字段。"
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "期望 4 和 5",
+        "reason": "当前期望侧重于检索过程的合规性。如果 Agent 确实有记忆但未通过预期工具检索（例如通过其他内部机制），则判定为 FAIL 是合理的。但建议增加对“记忆是否存在”的预检期望，或者明确如果 Agent 声称有记忆但未展示检索过程是否一律视为 FAIL。目前看来，Agent 完全跳过了检索步骤，这是严重的流程违规。"
+      }
+    ],
+    "overall": "Agent 完全未执行预期的记忆检索操作，直接给出了答案。所有关于检索过程、参数、关键词的期望均未满足。这是一个典型的流程缺失案例。"
+  },
+  "timing": {
+    "total_duration_seconds": 12.1011,
+    "total_tokens": 28310,
+    "token_usage": {
+      "input_tokens": 28152,
+      "output_tokens": 158,
+      "total_tokens": 28310,
+      "request_count": 5,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 33.0
+  },
+  "grader_task_id": "1686c47f-1483-4e44-9fd6-fd618953f6a5"
+}

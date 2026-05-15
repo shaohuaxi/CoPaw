@@ -1,0 +1,61 @@
+{
+  "expectations": [
+    {
+      "text": "agent 表明已经把这条事实存入长期记忆（自己调 add 或平台代理皆可）",
+      "passed": true,
+      "evidence": "回复中明确说明“已提交记忆存储请求”，且工具调用记录显示执行了 `adbpg-mem.mjs add` 命令。"
+    },
+    {
+      "text": "存储的事实是简短陈述（如『最喜欢的水果是芒果』），不是把用户原话整段塞进去",
+      "passed": true,
+      "evidence": "终端输出显示执行的命令为：`add \"用户最喜欢的水果是芒果\" --agent`，内容已提炼为简短陈述，未包含“这点我一直没变”等冗余信息。"
+    },
+    {
+      "text": "如果 agent 能看到工具返回，应识别 status 为 ok 或 pending（pending = 异步写入已提交，二者都视为成功路径）",
+      "passed": true,
+      "evidence": "工具返回的 JSON 中 `status` 字段为 `\"pending\"`，且 `message` 为 \"Memory processing has been queued for background execution\"。Agent 在回复中准确描述了这一状态：“正在后台写入中”。"
+    },
+    {
+      "text": "agent 的回复不暴露 adbpg-mem 命令细节、JSON 字段名、score/id 等内部信息",
+      "passed": true,
+      "evidence": "最终回复仅使用自然语言描述操作结果和状态，未泄露任何命令行参数、API 响应结构或内部标识符。"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "pass_rate": 1.0
+  },
+  "claims": [
+    {
+      "claim": "Agent 成功调用了 adbpg-memory 技能的存储接口。",
+      "type": "process",
+      "verified": true,
+      "evidence": "session_messages.json 中存在 `TERMINAL` 类型的活动快照，记录了 `adbpg-mem.mjs add` 的执行过程及退出码 0。"
+    },
+    {
+      "claim": "存储的内容经过了提炼，符合技能规范中“提炼事实再存储”的要求。",
+      "type": "quality",
+      "verified": true,
+      "evidence": "输入命令中的字符串为“用户最喜欢的水果是芒果”，相较于用户原话“记住，我最喜欢的水果是芒果，这点我一直没变。”更加精炼且去除了主观强调语。"
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "评估指标设计合理，覆盖了功能实现、数据质量、状态处理和隐私安全四个关键维度。Agent 的表现完全符合预期，成功触发了长期记忆技能并正确处理了异步存储的反馈。"
+  },
+  "timing": {
+    "total_duration_seconds": 22.2336,
+    "total_tokens": 104464,
+    "token_usage": {
+      "input_tokens": 103740,
+      "output_tokens": 724,
+      "total_tokens": 104464,
+      "request_count": 8,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 32.66
+  },
+  "grader_task_id": "82a6afa4-3ff3-4dca-a67f-0163ca59b9c2"
+}

@@ -1,0 +1,61 @@
+{
+  "expectations": [
+    {
+      "text": "agent 表明已经把这条事实存入长期记忆（自己调 add 或平台代理皆可）",
+      "passed": true,
+      "evidence": "Agent response states '已提交记忆存储请求' (Memory storage request submitted). Transcript shows execution of `adbpg-mem.mjs add` command."
+    },
+    {
+      "text": "存储的事实是简短陈述（如『最喜欢的水果是芒果』），不是把用户原话整段塞进去",
+      "passed": true,
+      "evidence": "Terminal command in transcript: `add \"最喜欢的水果是芒果\" --agent`. This is a concise summary, not the original user query."
+    },
+    {
+      "text": "如果 agent 能看到工具返回，应识别 status 为 ok 或 pending（pending = 异步写入已提交，二者都视为成功路径）",
+      "passed": true,
+      "evidence": "Tool result output contains `\"status\":\"pending\"` and message `\"Memory processing has been queued for background execution\"`. Agent correctly interpreted this as a successful submission."
+    },
+    {
+      "text": "agent 的回复不暴露 adbpg-mem 命令细节、JSON 字段名、score/id 等内部信息",
+      "passed": true,
+      "evidence": "Final response is natural language: '已提交记忆存储请求。系统正在后台处理中，稍后可以通过搜索验证是否已成功存入。' No internal commands or JSON structures are exposed to the user."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "pass_rate": 1.0
+  },
+  "claims": [
+    {
+      "claim": "Agent used the adbpg-memory skill to store the preference.",
+      "type": "process",
+      "verified": true,
+      "evidence": "Transcript shows SKILL tool use for 'adbpg-memory' followed by TERMINAL execution of the add script."
+    },
+    {
+      "claim": "The memory was stored with status PENDING.",
+      "type": "factual",
+      "verified": true,
+      "evidence": "Terminal output JSON explicitly shows `\"status\":\"pending\"`."
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "The agent performed perfectly according to all expectations. The eval criteria are clear and effectively cover the key aspects of the task: intent recognition, data processing (summarization), tool execution verification, and output sanitization."
+  },
+  "timing": {
+    "total_duration_seconds": 22.4745,
+    "total_tokens": 101109,
+    "token_usage": {
+      "input_tokens": 100480,
+      "output_tokens": 629,
+      "total_tokens": 101109,
+      "request_count": 7,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 32.07
+  },
+  "grader_task_id": "4ef62cb0-f89d-41aa-bbe3-471ec2258a79"
+}

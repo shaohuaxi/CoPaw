@@ -1,0 +1,11 @@
+{
+  "eval_id": 1,
+  "eval_name": "eval-1",
+  "prompt": "记住，我最喜欢的水果是芒果，这点我一直没变。",
+  "expectations": [
+    "agent 表明已经把这条事实存入长期记忆（自己调 add 或平台代理皆可）",
+    "存储的事实是简短陈述（如『最喜欢的水果是芒果』），不是把用户原话整段塞进去",
+    "如果 agent 能看到工具返回，应识别 status 为 ok 或 pending（pending = 异步写入已提交，二者都视为成功路径）",
+    "agent 的回复不暴露 adbpg-mem 命令细节、JSON 字段名、score/id 等内部信息"
+  ]
+}

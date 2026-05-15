@@ -1,0 +1,461 @@
+{
+  "eval_id": 8,
+  "eval_name": "eval-8",
+  "prompt": "我想按项目区分记忆，开启会话隔离，以后每个项目的讨论各自独立。",
+  "skill_name": "adbpg-memory",
+  "target": "wukong",
+  "query_result": {
+    "query_id": "",
+    "query_text": "我想按项目区分记忆，开启会话隔离，以后每个项目的讨论各自独立。",
+    "status": "completed",
+    "response": "已为你开启**手动会话隔离模式**。\n\n在此模式下，每次开始新的项目讨论时，我会询问你本次对话的主题名称（例如“ADBPG 性能优化”或“Rust 学习项目”），并将该次对话产生的记忆独立存储。这样可以确保不同项目的讨论内容互不干扰，实现真正的按项目区分记忆。\n\n如果你现在就开始某个项目的讨论，请告诉我该项目的名称，我将立即为其建立独立的记忆空间。",
+    "raw_output": {
+      "execution_workspace": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-3",
+      "wukong_task_id": "8fadfdff-9d78-4d4b-9aae-e36fb725b24c",
+      "wukong_session_id": "8fadfdff-9d78-4d4b-9aae-e36fb725b24c"
+    },
+    "token_usage": {
+      "input_tokens": 220439,
+      "output_tokens": 1164,
+      "total_tokens": 221603,
+      "request_count": 11,
+      "source": "llm_proxy"
+    },
+    "duration_seconds": 996.2084519863129,
+    "error": "",
+    "eval": {},
+    "session_messages": [
+      {
+        "role": "user",
+        "content": "<skill data-id=\"f2db87c7-d4df-47bd-ad35-231a3ff7053e\" data-name=\"adbpg-memory\" /> 我想按项目区分记忆，开启会话隔离，以后每个项目的讨论各自独立。",
+        "events": [],
+        "tool_uses": [],
+        "timestamp": 1778730901665
+      },
+      {
+        "role": "assistant",
+        "content": "已为你开启**手动会话隔离模式**。\n\n在此模式下，每次开始新的项目讨论时，我会询问你本次对话的主题名称（例如“ADBPG 性能优化”或“Rust 学习项目”），并将该次对话产生的记忆独立存储。这样可以确保不同项目的讨论内容互不干扰，实现真正的按项目区分记忆。\n\n如果你现在就开始某个项目的讨论，请告诉我该项目的名称，我将立即为其建立独立的记忆空间。",
+        "events": [
+          {
+            "runId": "eval-6271f939-1796-4da0-94e0-68bdbb6e54db",
+            "threadId": "8fadfdff-9d78-4d4b-9aae-e36fb725b24c",
+            "timestamp": 1778730912383,
+            "type": "RUN_STARTED"
+          },
+          {
+            "e2e_ttft_ms": 10715,
+            "timestamp": 1778730912383,
+            "ttft_ms": 6549,
+            "type": "FIRST_TOKEN"
+          },
+          {
+            "activityType": "SKILL",
+            "content": {
+              "finish_time": 1778730913836,
+              "purpose": "---\nname: adbpg-memory\ndescription: >\n  ADBPG 长期记忆技能。每次新会话你没有任何上下文，必须通过 adbpg-mem 检索长期记忆。\n\n  【检索记忆 - 必须先做】下列任何一种模式出现，必须先执行 adbpg-mem search 再回答：\n  (a) 含\"我/我的/我之前/我上次/我提过/还记得/来着/记不清/那本/那个\"等回忆词；\n  (b) 询问个人偏好/身份/经历/历史决策；\n  (c) 需要个性化（推荐、建议）的请求。\n  命令格式：NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"关键词\" --agent\n  禁止在 search 之前就直接回答\"我不知道\"或\"没听你说过\"——你的当前会话上下文是空的，\n  必须从长期记忆里捞才能知道用户之前是否说过。这是硬性规则。\n\n  【存储记忆】用户说\"记住\"、提到个人信息、做出决策时，\n  执行 NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"提炼的事实\" --agent 存储。\n  提炼事实再存储，不存原文，保留用户原始语言，不存敏感信息。\n\n  【输出格式】--agent 返回 JSON，检查 status 字段（ok/error），搜索结果在 data 数组中，score 大于 0.7 视为高度相关。\n\n  【展示检索结果】检索到记忆后，在回复开头简要列出相关记忆（如\"根据记忆：你叫子华，喜欢 Python\"），\n  让用户能看到检索到了什么。如果检索到记忆但与问题无关，也简要提及\"检索到 N 条记忆但与当前问题无关\"。\n\n  不要在回复中暴露 adbpg-mem 命令细节和原始 JSON。更多用法参见 SKILL.md。\nlicense: Apache-2.0\nmetadata:\n  author: ADBPG\n  version: \"0.1.0\"\n  category: ai-memory\n  tags: \"memory, personalization, adbpg, cli, long-term-memory\"\n  dependencies:\n    apis:\n      - \"ADBPG Memory REST API (rest_base_url, configured via adbpg-mem init)\"\n      - \"ADBPG PostgreSQL endpoint (SQL mode, host/port/dbname configured via adbpg-mem init)\"\ncompatibility: >\n  Node.js 18+ (npm install) 或 Python 3.10+ (pip install)。\n  需要 adbpg-mem CLI 已安装并通过 adbpg-mem init 完成配置。\n  支持 SQL 模式（直连 ADBPG）和 REST 模式（HTTP API）。\n---",
+              "skill_name": "adbpg-memory",
+              "snippet": "激活 adbpg-memory 技能以配置项目级记忆隔离",
+              "start_time": 1778730913836,
+              "status": "completed"
+            },
+            "messageId": "tool_msg:e4d9f832-8b05-49be-ac02-214d9224782c",
+            "timestamp": 1778730913836,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 23260,
+              "totalTokens": 200000,
+              "usageRatio": 0.119999997317791
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778730913836,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem agent-config show -a work-assistant",
+              "exit_code": 0,
+              "finish_time": 1778730918650,
+              "output": "{\"isolation_agent\":true,\"isolation_run_mode\":\"off\"}",
+              "output_chunks": [],
+              "snippet": "查看工作助手当前的记忆隔离配置",
+              "start_time": 1778730918140,
+              "status": "completed",
+              "working_dir": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-3"
+            },
+            "messageId": "tool_msg:8ecb5a8f-7c48-446f-8164-9eb7d697098f",
+            "timestamp": 1778730918140,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 30247,
+              "totalTokens": 200000,
+              "usageRatio": 0.15000000596046448
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778730918141,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem agent-config show -a life-assistant",
+              "exit_code": 0,
+              "finish_time": 1778730922644,
+              "output": "{\"isolation_agent\":true,\"isolation_run_mode\":\"off\"}",
+              "output_chunks": [],
+              "snippet": "查看生活助手当前的记忆隔离配置",
+              "start_time": 1778730922268,
+              "status": "completed",
+              "working_dir": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-3"
+            },
+            "messageId": "tool_msg:1a47b09b-b6f2-4f43-94aa-fca1f2e7190a",
+            "timestamp": 1778730922268,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 30449,
+              "totalTokens": 200000,
+              "usageRatio": 0.15000000596046448
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778730922268,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "ASK_HUMAN",
+            "content": {
+              "options": [
+                {
+                  "description": "每次新对话开始时，我会询问你本次讨论的项目名称，并将记忆绑定到该项目。",
+                  "label": "主动命名（推荐）",
+                  "value": "manual"
+                },
+                {
+                  "description": "我会自动使用当前日期时间作为会话标识，无需你每次输入项目名称。",
+                  "label": "自动生成",
+                  "value": "auto"
+                },
+                {
+                  "description": "不开启严格隔离，但在存储记忆时打上项目标签，方便后续搜索。",
+                  "label": "仅打标签",
+                  "value": "tag"
+                }
+              ],
+              "placeholder": null,
+              "question": "请选择会话隔离模式",
+              "questionType": "single_select",
+              "responded": 1,
+              "selectedValue": "manual",
+              "sessionId": "8fadfdff-9d78-4d4b-9aae-e36fb725b24c",
+              "skippedByUser": 0,
+              "taskTitle": null,
+              "toolCallId": "94ddb157-90f3-464a-9715-c84300c6f106"
+            },
+            "messageId": "activity_ask_human:94ddb157-90f3-464a-9715-c84300c6f106",
+            "replace": true,
+            "timestamp": 1778730927071,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 30709,
+              "totalTokens": 200000,
+              "usageRatio": 0.15000000596046448
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778730927076,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem agent-config set isolation_run_mode manual -a work-assistant",
+              "exit_code": 0,
+              "finish_time": 1778730929504,
+              "output": "Set 'isolation_run_mode' = \"manual\" for agent work-assistant\n",
+              "output_chunks": [],
+              "snippet": "为工作助手开启手动会话隔离模式",
+              "start_time": 1778730929150,
+              "status": "completed",
+              "working_dir": ""
+            },
+            "messageId": "tool_msg:9af9be43-4cc0-4e45-8bfa-8934fed7cfe1",
+            "timestamp": 1778730929150,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 30710,
+              "totalTokens": 200000,
+              "usageRatio": 0.15000000596046448
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778730929150,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem agent-config set isolation_run_mode manual -a life-assistant",
+              "exit_code": 0,
+              "finish_time": 1778730932937,
+              "output": "Set 'isolation_run_mode' = \"manual\" for agent life-assistant\n",
+              "output_chunks": [],
+              "snippet": "为生活助手开启手动会话隔离模式",
+              "start_time": 1778730932615,
+              "status": "completed",
+              "working_dir": ""
+            },
+            "messageId": "tool_msg:01aa8094-7bdf-49f5-b74c-661c23239dfa",
+            "timestamp": 1778730932615,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 30747,
+              "totalTokens": 200000,
+              "usageRatio": 0.15000000596046448
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778730932615,
+            "type": "CUSTOM"
+          },
+          {
+            "messageId": "direct-text-a9fd15a3-5190-42db-8d1a-013ca629fc12",
+            "role": "assistant",
+            "timestamp": 1778730933987,
+            "type": "TEXT_MESSAGE_START"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 30895,
+              "totalTokens": 200000,
+              "usageRatio": 0.15000000596046448
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778730935737,
+            "type": "CUSTOM"
+          },
+          {
+            "delta": "已为你开启**手动会话隔离模式**。\n\n在此模式下，每次开始新的项目讨论时，我会询问你本次对话的主题名称（例如“ADBPG 性能优化”或“Rust 学习项目”），并将该次对话产生的记忆独立存储。这样可以确保不同项目的讨论内容互不干扰，实现真正的按项目区分记忆。\n\n如果你现在就开始某个项目的讨论，请告诉我该项目的名称，我将立即为其建立独立的记忆空间。",
+            "messageId": "direct-text-a9fd15a3-5190-42db-8d1a-013ca629fc12",
+            "timestamp": 1778730933987,
+            "type": "TEXT_MESSAGE_CONTENT"
+          },
+          {
+            "messageId": "direct-text-a9fd15a3-5190-42db-8d1a-013ca629fc12",
+            "timestamp": 1778730935737,
+            "type": "TEXT_MESSAGE_END"
+          },
+          {
+            "data": {
+              "answer_id": "eval-6271f939-1796-4da0-94e0-68bdbb6e54db",
+              "generated_at": 1778730937727,
+              "items": [
+                {
+                  "text": "开始 ADBPG 性能优化项目"
+                },
+                {
+                  "text": "创建 Rust 学习项目记忆空间"
+                },
+                {
+                  "text": "初始化前端重构讨论主题"
+                }
+              ],
+              "status": "ready",
+              "suggestions": [
+                "开始 ADBPG 性能优化项目",
+                "创建 Rust 学习项目记忆空间",
+                "初始化前端重构讨论主题"
+              ]
+            },
+            "name": "related_questions",
+            "timestamp": 1778730937727,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "ARTIFACT",
+            "content": {
+              "artifactsMetadata": [
+                {
+                  "artifactName": "ADBPG Memory Skill",
+                  "createdAt": 1778730328294,
+                  "deliveryUrl": null,
+                  "description": "adbpg-memory 技能文档，包含记忆隔离配置指南",
+                  "localPath": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/ADBPG Memory Skill.md",
+                  "originalSource": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/f2db87c7-d4df-47bd-ad35-231a3ff7053e/SKILL.md",
+                  "source": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/ADBPG Memory Skill.md",
+                  "sourceType": "local_path"
+                }
+              ],
+              "generatedAt": 1778730939624
+            },
+            "messageId": "tool_msg:b1b0cbd2-b4ec-4fd8-b6ed-60229e73e519",
+            "timestamp": 1778730939624,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "cached_tokens": 120929,
+            "completion_tokens": 960,
+            "prompt_tokens": 215059,
+            "timestamp": 1778730939624,
+            "total_tokens": 216019,
+            "type": "USAGE"
+          },
+          {
+            "runId": "eval-6271f939-1796-4da0-94e0-68bdbb6e54db",
+            "threadId": "8fadfdff-9d78-4d4b-9aae-e36fb725b24c",
+            "timestamp": 1778730939624,
+            "type": "RUN_FINISHED"
+          }
+        ],
+        "tool_uses": [
+          {
+            "id": "tool_msg:e4d9f832-8b05-49be-ac02-214d9224782c",
+            "name": "SKILL",
+            "input": {
+              "finish_time": 1778730913836,
+              "purpose": "---\nname: adbpg-memory\ndescription: >\n  ADBPG 长期记忆技能。每次新会话你没有任何上下文，必须通过 adbpg-mem 检索长期记忆。\n\n  【检索记忆 - 必须先做】下列任何一种模式出现，必须先执行 adbpg-mem search 再回答：\n  (a) 含\"我/我的/我之前/我上次/我提过/还记得/来着/记不清/那本/那个\"等回忆词；\n  (b) 询问个人偏好/身份/经历/历史决策；\n  (c) 需要个性化（推荐、建议）的请求。\n  命令格式：NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"关键词\" --agent\n  禁止在 search 之前就直接回答\"我不知道\"或\"没听你说过\"——你的当前会话上下文是空的，\n  必须从长期记忆里捞才能知道用户之前是否说过。这是硬性规则。\n\n  【存储记忆】用户说\"记住\"、提到个人信息、做出决策时，\n  执行 NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"提炼的事实\" --agent 存储。\n  提炼事实再存储，不存原文，保留用户原始语言，不存敏感信息。\n\n  【输出格式】--agent 返回 JSON，检查 status 字段（ok/error），搜索结果在 data 数组中，score 大于 0.7 视为高度相关。\n\n  【展示检索结果】检索到记忆后，在回复开头简要列出相关记忆（如\"根据记忆：你叫子华，喜欢 Python\"），\n  让用户能看到检索到了什么。如果检索到记忆但与问题无关，也简要提及\"检索到 N 条记忆但与当前问题无关\"。\n\n  不要在回复中暴露 adbpg-mem 命令细节和原始 JSON。更多用法参见 SKILL.md。\nlicense: Apache-2.0\nmetadata:\n  author: ADBPG\n  version: \"0.1.0\"\n  category: ai-memory\n  tags: \"memory, personalization, adbpg, cli, long-term-memory\"\n  dependencies:\n    apis:\n      - \"ADBPG Memory REST API (rest_base_url, configured via adbpg-mem init)\"\n      - \"ADBPG PostgreSQL endpoint (SQL mode, host/port/dbname configured via adbpg-mem init)\"\ncompatibility: >\n  Node.js 18+ (npm install) 或 Python 3.10+ (pip install)。\n  需要 adbpg-mem CLI 已安装并通过 adbpg-mem init 完成配置。\n  支持 SQL 模式（直连 ADBPG）和 REST 模式（HTTP API）。\n---",
+              "skill_name": "adbpg-memory",
+              "snippet": "激活 adbpg-memory 技能以配置项目级记忆隔离",
+              "start_time": 1778730913836,
+              "status": "completed"
+            }
+          },
+          {
+            "id": "tool_msg:8ecb5a8f-7c48-446f-8164-9eb7d697098f",
+            "name": "TERMINAL",
+            "input": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem agent-config show -a work-assistant",
+              "exit_code": 0,
+              "finish_time": 1778730918650,
+              "output": "{\"isolation_agent\":true,\"isolation_run_mode\":\"off\"}",
+              "output_chunks": [],
+              "snippet": "查看工作助手当前的记忆隔离配置",
+              "start_time": 1778730918140,
+              "status": "completed",
+              "working_dir": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-3"
+            }
+          },
+          {
+            "id": "tool_msg:1a47b09b-b6f2-4f43-94aa-fca1f2e7190a",
+            "name": "TERMINAL",
+            "input": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem agent-config show -a life-assistant",
+              "exit_code": 0,
+              "finish_time": 1778730922644,
+              "output": "{\"isolation_agent\":true,\"isolation_run_mode\":\"off\"}",
+              "output_chunks": [],
+              "snippet": "查看生活助手当前的记忆隔离配置",
+              "start_time": 1778730922268,
+              "status": "completed",
+              "working_dir": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-3"
+            }
+          },
+          {
+            "id": "activity_ask_human:94ddb157-90f3-464a-9715-c84300c6f106",
+            "name": "ASK_HUMAN",
+            "input": {
+              "options": [
+                {
+                  "description": "每次新对话开始时，我会询问你本次讨论的项目名称，并将记忆绑定到该项目。",
+                  "label": "主动命名（推荐）",
+                  "value": "manual"
+                },
+                {
+                  "description": "我会自动使用当前日期时间作为会话标识，无需你每次输入项目名称。",
+                  "label": "自动生成",
+                  "value": "auto"
+                },
+                {
+                  "description": "不开启严格隔离，但在存储记忆时打上项目标签，方便后续搜索。",
+                  "label": "仅打标签",
+                  "value": "tag"
+                }
+              ],
+              "placeholder": null,
+              "question": "请选择会话隔离模式",
+              "questionType": "single_select",
+              "responded": 1,
+              "selectedValue": "manual",
+              "sessionId": "8fadfdff-9d78-4d4b-9aae-e36fb725b24c",
+              "skippedByUser": 0,
+              "taskTitle": null,
+              "toolCallId": "94ddb157-90f3-464a-9715-c84300c6f106"
+            }
+          },
+          {
+            "id": "tool_msg:9af9be43-4cc0-4e45-8bfa-8934fed7cfe1",
+            "name": "TERMINAL",
+            "input": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem agent-config set isolation_run_mode manual -a work-assistant",
+              "exit_code": 0,
+              "finish_time": 1778730929504,
+              "output": "Set 'isolation_run_mode' = \"manual\" for agent work-assistant\n",
+              "output_chunks": [],
+              "snippet": "为工作助手开启手动会话隔离模式",
+              "start_time": 1778730929150,
+              "status": "completed",
+              "working_dir": ""
+            }
+          },
+          {
+            "id": "tool_msg:01aa8094-7bdf-49f5-b74c-661c23239dfa",
+            "name": "TERMINAL",
+            "input": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem agent-config set isolation_run_mode manual -a life-assistant",
+              "exit_code": 0,
+              "finish_time": 1778730932937,
+              "output": "Set 'isolation_run_mode' = \"manual\" for agent life-assistant\n",
+              "output_chunks": [],
+              "snippet": "为生活助手开启手动会话隔离模式",
+              "start_time": 1778730932615,
+              "status": "completed",
+              "working_dir": ""
+            }
+          },
+          {
+            "id": "tool_msg:b1b0cbd2-b4ec-4fd8-b6ed-60229e73e519",
+            "name": "ARTIFACT",
+            "input": {
+              "artifactsMetadata": [
+                {
+                  "artifactName": "ADBPG Memory Skill",
+                  "createdAt": 1778730328294,
+                  "deliveryUrl": null,
+                  "description": "adbpg-memory 技能文档，包含记忆隔离配置指南",
+                  "localPath": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/ADBPG Memory Skill.md",
+                  "originalSource": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/f2db87c7-d4df-47bd-ad35-231a3ff7053e/SKILL.md",
+                  "source": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/ADBPG Memory Skill.md",
+                  "sourceType": "local_path"
+                }
+              ],
+              "generatedAt": 1778730939624
+            }
+          }
+        ],
+        "timestamp": 1778730912383
+      }
+    ]
+  },
+  "duration_seconds": 996.2098481655121
+}

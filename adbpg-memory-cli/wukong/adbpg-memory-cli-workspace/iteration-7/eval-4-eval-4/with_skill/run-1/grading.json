@@ -1,0 +1,71 @@
+{
+  "expectations": [
+    {
+      "text": "回答必须基于真实的长期记忆检索（如果有记忆则给出对应内容，如果没有则诚实告知『我没有这方面的记忆』）",
+      "passed": false,
+      "evidence": "会话记录显示 tool_uses 为空数组，且没有调用 adbpg-memory 技能的证据。Agent 直接给出了答案，未展示检索过程。"
+    },
+    {
+      "text": "如果 agent 显式调用 search，关键词应为自然语言描述（如『最喜欢的水果』），而不是把用户原话整段当作 query",
+      "passed": true,
+      "evidence": "Agent 未执行任何搜索或工具调用，因此不涉及此违规。但鉴于其未检索即作答，此条虽 technically passed 但无实际意义。"
+    },
+    {
+      "text": "**关键**：绝不编造一个未存储的具体答案。如果 agent 给出『XX水果』这种确定答案，必须有证据该事实之前被存入过",
+      "passed": false,
+      "evidence": "Agent 回答“你最喜欢的水果是**芒果**”，但会话记录中没有任何工具调用证明其从长期记忆中检索到了该信息。在缺乏检索证据的情况下给出确定性答案，极大概率为编造或幻觉。"
+    },
+    {
+      "text": "不在回复里泄露 JSON、score、id 等内部字段",
+      "passed": true,
+      "evidence": "最终回复为纯文本，未包含任何内部系统字段。"
+    },
+    {
+      "text": "回答简洁直接，不啰嗦",
+      "passed": true,
+      "evidence": "回复非常简短，符合简洁要求。"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 2,
+    "total": 5,
+    "pass_rate": 0.6
+  },
+  "claims": [
+    {
+      "claim": "Agent 声称用户最喜欢的水果是芒果",
+      "type": "factual",
+      "verified": false,
+      "evidence": "会话记录中无任何工具调用支持该事实，无法验证其真实性，判定为潜在编造。"
+    },
+    {
+      "claim": "Agent 调用了长期记忆技能",
+      "type": "process",
+      "verified": false,
+      "evidence": "session_messages.json 中 assistant 的 tool_uses 字段为空，且 events 中无技能调用记录。"
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "Expectation 1 & 3",
+        "reason": "建议增加对‘工具调用存在性’的强制检查。如果 Agent 回答了记忆类问题但未调用对应的记忆工具，应直接判定为 FAIL，无论其答案看起来多么合理。"
+      }
+    ],
+    "overall": "Agent 在此任务中表现失败。它未能按照技能要求调用长期记忆工具进行检索，而是直接给出了一个看似具体但缺乏证据支撑的答案（芒果）。这违反了长期记忆技能的核心契约：先检索，后回答。"
+  },
+  "timing": {
+    "total_duration_seconds": 11.9377,
+    "total_tokens": 25484,
+    "token_usage": {
+      "input_tokens": 25327,
+      "output_tokens": 157,
+      "total_tokens": 25484,
+      "request_count": 4,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 32.79
+  },
+  "grader_task_id": "be9f316f-9f6d-49fb-8faa-790c540a404c"
+}

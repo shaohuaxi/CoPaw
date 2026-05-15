@@ -1,0 +1,316 @@
+{
+  "eval_id": 6,
+  "eval_name": "eval-6",
+  "prompt": "我上次跟你提过一本科幻小说，那本书的作者是谁？",
+  "skill_name": "adbpg-memory",
+  "target": "wukong",
+  "query_result": {
+    "query_id": "",
+    "query_text": "我上次跟你提过一本科幻小说，那本书的作者是谁？",
+    "status": "completed",
+    "response": "抱歉，我在长期记忆和跨会话历史中都没有找到你之前提到的科幻小说相关信息。这可能是以下几种情况：\n\n1. 那次对话发生在很久之前，可能没有被完整记录到长期记忆中\n2. 或者当时讨论时没有明确标记为需要记忆的内容\n\n你能再告诉我一下那本科幻小说的名字吗？或者你还记得关于它的其他细节吗？比如大致的情节、出版时间、或者是哪个国家的作品？这样我可以帮你重新记录下来，方便以后查阅。",
+    "raw_output": {
+      "execution_workspace": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-2",
+      "wukong_task_id": "8ed6f4d2-b34f-46cf-9055-c6847d205e92",
+      "wukong_session_id": "8ed6f4d2-b34f-46cf-9055-c6847d205e92"
+    },
+    "token_usage": {
+      "input_tokens": 65645,
+      "output_tokens": 336,
+      "total_tokens": 65981,
+      "request_count": 6,
+      "source": "llm_proxy"
+    },
+    "duration_seconds": 12.10781216621399,
+    "error": "",
+    "eval": {},
+    "session_messages": [
+      {
+        "role": "user",
+        "content": "<skill data-id=\"48ef670a-fb35-4d9b-b811-349aca8381b7\" data-name=\"adbpg-memory\" /> 我上次跟你提过一本科幻小说，那本书的作者是谁？",
+        "events": [],
+        "tool_uses": [],
+        "timestamp": 1778729482677
+      },
+      {
+        "role": "assistant",
+        "content": "抱歉，我在长期记忆和跨会话历史中都没有找到你之前提到的科幻小说相关信息。这可能是以下几种情况：\n\n1. 那次对话发生在很久之前，可能没有被完整记录到长期记忆中\n2. 或者当时讨论时没有明确标记为需要记忆的内容\n\n你能再告诉我一下那本科幻小说的名字吗？或者你还记得关于它的其他细节吗？比如大致的情节、出版时间、或者是哪个国家的作品？这样我可以帮你重新记录下来，方便以后查阅。",
+        "events": [
+          {
+            "runId": "eval-4d773bec-f6dd-4e74-9120-59579b68314a",
+            "threadId": "8ed6f4d2-b34f-46cf-9055-c6847d205e92",
+            "timestamp": 1778729487418,
+            "type": "RUN_STARTED"
+          },
+          {
+            "e2e_ttft_ms": 4740,
+            "timestamp": 1778729487418,
+            "ttft_ms": 2254,
+            "type": "FIRST_TOKEN"
+          },
+          {
+            "messageId": "tool_msg:37f76c93-5ed6-42dc-8d0a-f16b5947be9a",
+            "timestamp": 1778729487418,
+            "toolCallId": "call_67eb8263c1c24dbdadcb16a7",
+            "toolName": "memory_search",
+            "type": "TOOL_CALL_START"
+          },
+          {
+            "delta": "{\"query\": \"科幻小说 作者 书籍\"}",
+            "messageId": "tool_msg:37f76c93-5ed6-42dc-8d0a-f16b5947be9a",
+            "timestamp": 1778729487432,
+            "toolCallId": "call_67eb8263c1c24dbdadcb16a7",
+            "type": "TOOL_CALL_ARGS"
+          },
+          {
+            "messageId": "tool_msg:37f76c93-5ed6-42dc-8d0a-f16b5947be9a",
+            "result": {
+              "query": "科幻小说 作者 书籍"
+            },
+            "timestamp": 1778729487578,
+            "toolCallId": "call_67eb8263c1c24dbdadcb16a7",
+            "type": "TOOL_CALL_END"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 20050,
+              "totalTokens": 200000,
+              "usageRatio": 0.10000000149011612
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778729487578,
+            "type": "CUSTOM"
+          },
+          {
+            "content": "[]",
+            "is_error": false,
+            "messageId": "tool_msg:37f76c93-5ed6-42dc-8d0a-f16b5947be9a:result",
+            "role": "tool",
+            "timestamp": 1778729487943,
+            "toolCallId": "call_67eb8263c1c24dbdadcb16a7",
+            "type": "TOOL_CALL_RESULT"
+          },
+          {
+            "messageId": "tool_msg:ae7eb4e3-da7b-43c9-92d0-648a315f1eeb",
+            "timestamp": 1778729489596,
+            "toolCallId": "call_4ebe75481f374861ba59893e",
+            "toolName": "session_search",
+            "type": "TOOL_CALL_START"
+          },
+          {
+            "delta": "{\"query\": \"科幻小说 作者\", \"scope\": \"cross\", \"snippet\": \"搜索跨会话的科幻小说相关讨论\"}",
+            "messageId": "tool_msg:ae7eb4e3-da7b-43c9-92d0-648a315f1eeb",
+            "timestamp": 1778729489596,
+            "toolCallId": "call_4ebe75481f374861ba59893e",
+            "type": "TOOL_CALL_ARGS"
+          },
+          {
+            "messageId": "tool_msg:ae7eb4e3-da7b-43c9-92d0-648a315f1eeb",
+            "result": {
+              "query": "科幻小说 作者",
+              "scope": "cross",
+              "snippet": "搜索跨会话的科幻小说相关讨论"
+            },
+            "timestamp": 1778729489935,
+            "toolCallId": "call_4ebe75481f374861ba59893e",
+            "type": "TOOL_CALL_END"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 20125,
+              "totalTokens": 200000,
+              "usageRatio": 0.10000000149011612
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778729489935,
+            "type": "CUSTOM"
+          },
+          {
+            "content": "[Session search: 0 result(s) for \"科幻小说 作者\" across all sessions]\n\nNo matching turns found.",
+            "is_error": false,
+            "messageId": "tool_msg:ae7eb4e3-da7b-43c9-92d0-648a315f1eeb:result",
+            "role": "tool",
+            "timestamp": 1778729489935,
+            "toolCallId": "call_4ebe75481f374861ba59893e",
+            "type": "TOOL_CALL_RESULT"
+          },
+          {
+            "messageId": "direct-text-f38822d9-d8f9-4ae8-9a32-5ae383ef9f95",
+            "role": "assistant",
+            "timestamp": 1778729490926,
+            "type": "TEXT_MESSAGE_START"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 20264,
+              "totalTokens": 200000,
+              "usageRatio": 0.10000000149011612
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778729492027,
+            "type": "CUSTOM"
+          },
+          {
+            "delta": "抱歉，我在长期记忆和跨会话历史中都没有找到你之前提到的科幻小说相关信息。这可能是以下几种情况：\n\n1. 那次对话发生在很久之前，可能没有被完整记录到长期记忆中\n2. 或者当时讨论时没有明确标记为需要记忆的内容\n\n你能再告诉我一下那本科幻小说的名字吗？或者你还记得关于它的其他细节吗？比如大致的情节、出版时间、或者是哪个国家的作品？这样我可以帮你重新记录下来，方便以后查阅。",
+            "messageId": "direct-text-f38822d9-d8f9-4ae8-9a32-5ae383ef9f95",
+            "timestamp": 1778729490926,
+            "type": "TEXT_MESSAGE_CONTENT"
+          },
+          {
+            "messageId": "direct-text-f38822d9-d8f9-4ae8-9a32-5ae383ef9f95",
+            "timestamp": 1778729492027,
+            "type": "TEXT_MESSAGE_END"
+          },
+          {
+            "data": {
+              "answer_id": "eval-4d773bec-f6dd-4e74-9120-59579b68314a",
+              "generated_at": 1778729492893,
+              "items": [
+                {
+                  "text": "提供那本小说的情节细节"
+                },
+                {
+                  "text": "告知小说的出版年份"
+                },
+                {
+                  "text": "说明作者的国家或地区"
+                }
+              ],
+              "status": "ready",
+              "suggestions": [
+                "提供那本小说的情节细节",
+                "告知小说的出版年份",
+                "说明作者的国家或地区"
+              ]
+            },
+            "name": "related_questions",
+            "timestamp": 1778729492893,
+            "type": "CUSTOM"
+          },
+          {
+            "cached_tokens": 35396,
+            "completion_tokens": 181,
+            "prompt_tokens": 60258,
+            "timestamp": 1778729492893,
+            "total_tokens": 60439,
+            "type": "USAGE"
+          },
+          {
+            "runId": "eval-4d773bec-f6dd-4e74-9120-59579b68314a",
+            "threadId": "8ed6f4d2-b34f-46cf-9055-c6847d205e92",
+            "timestamp": 1778729492893,
+            "type": "RUN_FINISHED"
+          }
+        ],
+        "tool_uses": [
+          {
+            "id": "call_67eb8263c1c24dbdadcb16a7",
+            "name": "memory_search",
+            "input": {
+              "messageId": "tool_msg:37f76c93-5ed6-42dc-8d0a-f16b5947be9a",
+              "timestamp": 1778729487418,
+              "toolCallId": "call_67eb8263c1c24dbdadcb16a7",
+              "toolName": "memory_search",
+              "type": "TOOL_CALL_START"
+            }
+          },
+          {
+            "id": "call_67eb8263c1c24dbdadcb16a7",
+            "name": null,
+            "input": {
+              "delta": "{\"query\": \"科幻小说 作者 书籍\"}",
+              "messageId": "tool_msg:37f76c93-5ed6-42dc-8d0a-f16b5947be9a",
+              "timestamp": 1778729487432,
+              "toolCallId": "call_67eb8263c1c24dbdadcb16a7",
+              "type": "TOOL_CALL_ARGS"
+            }
+          },
+          {
+            "id": "call_67eb8263c1c24dbdadcb16a7",
+            "name": null,
+            "input": {
+              "messageId": "tool_msg:37f76c93-5ed6-42dc-8d0a-f16b5947be9a",
+              "result": {
+                "query": "科幻小说 作者 书籍"
+              },
+              "timestamp": 1778729487578,
+              "toolCallId": "call_67eb8263c1c24dbdadcb16a7",
+              "type": "TOOL_CALL_END"
+            }
+          },
+          {
+            "id": "call_67eb8263c1c24dbdadcb16a7",
+            "name": null,
+            "input": {
+              "content": "[]",
+              "is_error": false,
+              "messageId": "tool_msg:37f76c93-5ed6-42dc-8d0a-f16b5947be9a:result",
+              "role": "tool",
+              "timestamp": 1778729487943,
+              "toolCallId": "call_67eb8263c1c24dbdadcb16a7",
+              "type": "TOOL_CALL_RESULT"
+            }
+          },
+          {
+            "id": "call_4ebe75481f374861ba59893e",
+            "name": "session_search",
+            "input": {
+              "messageId": "tool_msg:ae7eb4e3-da7b-43c9-92d0-648a315f1eeb",
+              "timestamp": 1778729489596,
+              "toolCallId": "call_4ebe75481f374861ba59893e",
+              "toolName": "session_search",
+              "type": "TOOL_CALL_START"
+            }
+          },
+          {
+            "id": "call_4ebe75481f374861ba59893e",
+            "name": null,
+            "input": {
+              "delta": "{\"query\": \"科幻小说 作者\", \"scope\": \"cross\", \"snippet\": \"搜索跨会话的科幻小说相关讨论\"}",
+              "messageId": "tool_msg:ae7eb4e3-da7b-43c9-92d0-648a315f1eeb",
+              "timestamp": 1778729489596,
+              "toolCallId": "call_4ebe75481f374861ba59893e",
+              "type": "TOOL_CALL_ARGS"
+            }
+          },
+          {
+            "id": "call_4ebe75481f374861ba59893e",
+            "name": null,
+            "input": {
+              "messageId": "tool_msg:ae7eb4e3-da7b-43c9-92d0-648a315f1eeb",
+              "result": {
+                "query": "科幻小说 作者",
+                "scope": "cross",
+                "snippet": "搜索跨会话的科幻小说相关讨论"
+              },
+              "timestamp": 1778729489935,
+              "toolCallId": "call_4ebe75481f374861ba59893e",
+              "type": "TOOL_CALL_END"
+            }
+          },
+          {
+            "id": "call_4ebe75481f374861ba59893e",
+            "name": null,
+            "input": {
+              "content": "[Session search: 0 result(s) for \"科幻小说 作者\" across all sessions]\n\nNo matching turns found.",
+              "is_error": false,
+              "messageId": "tool_msg:ae7eb4e3-da7b-43c9-92d0-648a315f1eeb:result",
+              "role": "tool",
+              "timestamp": 1778729489935,
+              "toolCallId": "call_4ebe75481f374861ba59893e",
+              "type": "TOOL_CALL_RESULT"
+            }
+          }
+        ],
+        "timestamp": 1778729487418
+      }
+    ]
+  },
+  "duration_seconds": 12.109408140182495
+}

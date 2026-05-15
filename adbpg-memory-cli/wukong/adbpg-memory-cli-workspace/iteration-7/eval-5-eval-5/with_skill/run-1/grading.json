@@ -1,0 +1,73 @@
+{
+  "expectations": [
+    {
+      "text": "agent 给出推荐前应该尝试检索用户背景（agent 自己 search 或依赖平台代理）",
+      "passed": true,
+      "evidence": "从 session_messages.json 可见，agent 激活了 adbpg-memory skill 并执行了 TERMINAL 命令：`node .../adbpg-mem.mjs search \"编程项目 兴趣 技术栈\" --agent`，返回了5条记忆结果（包括'是后端工程师'、'主要使用 Go 编程语言'、'最近在学习 Rust'、'用户在杭州工作'等）。"
+    },
+    {
+      "text": "若有背景记忆，推荐内容应明显结合那些信息（不是泛泛的项目清单）",
+      "passed": true,
+      "evidence": "最终响应中，项目1（Go 日志分析器）结合了检索到的'主要使用 Go'和'后端工程师'身份；项目2（Rust CLI）结合了'正在学习 Rust'；项目3（分布式 KV 存储）结合了数据库相关背景。三个项目都针对用户的技术栈，不是泛泛的通用推荐。"
+    },
+    {
+      "text": "若没有任何相关记忆，agent 主动询问用户基本情况或明确说『暂无你的背景信息，先给通用推荐』",
+      "passed": true,
+      "evidence": "此期望的前提条件是'若没有任何相关记忆'。实际执行中 agent 检索到了相关记忆（Go、Rust、后端工程师、杭州），因此该条件性期望不适用，未被违反。"
+    },
+    {
+      "text": "**关键**：不能编造『你之前说过 XX』这种未经检索的虚假个性化",
+      "passed": true,
+      "evidence": "agent 在响应开头明确说'根据记忆，你是一位在杭州工作的后端工程师，主要使用 Go 语言，并且正在学习 Rust'，这三点均可从记忆检索结果中验证（记忆内容分别为'用户在杭州工作'、'是后端工程师'、'主要使用 Go 编程语言'、'最近在学习 Rust'）。项目3推荐理由中提到'你在 ADBPG 团队工作'，该信息来自系统提供的 <user_identity> 元数据（部门字段包含'ADB产品部-AnalyticDB PostgreSQL'），并非编造。agent 未声称这是从记忆中检索的，也未虚构任何用户未提及的信息。"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "pass_rate": 1.0
+  },
+  "claims": [
+    {
+      "claim": "agent 执行了记忆检索命令 search \"编程项目 兴趣 技术栈\"",
+      "type": "process",
+      "verified": true,
+      "evidence": "session_messages.json 中 TERMINAL tool_use 显示 command 为 `node .../adbpg-mem.mjs search \"编程项目 兴趣 技术栈\" --agent`，exit_code 为 0。"
+    },
+    {
+      "claim": "检索返回的记忆包含'是后端工程师'、'主要使用 Go 编程语言'、'最近在学习 Rust'、'用户在杭州工作'",
+      "type": "factual",
+      "verified": true,
+      "evidence": "session_messages.json 中 TERMINAL tool_result 的 output 字段包含 JSON，data 数组中有这4条记忆记录。"
+    },
+    {
+      "claim": "agent 推荐的三个项目分别对应 Go、Rust 和数据库方向",
+      "type": "factual",
+      "verified": true,
+      "evidence": "最终响应中明确列出：项目1为'Go 方向：高性能并发日志分析器'，项目2为'Rust 方向：CLI 任务管理器'，项目3为'全栈/系统方向：简易分布式键值存储'。"
+    },
+    {
+      "claim": "'ADBPG 团队工作'信息来自用户身份元数据而非记忆检索",
+      "type": "factual",
+      "verified": true,
+      "evidence": "记忆检索结果的5条记录中无 ADBPG 相关内容；但 <user_identity> 中 Department 字段为'云智能集团-阿里云智能-...-ADB产品部-AnalyticDB PostgreSQL-...'，证实该信息真实存在且可被 agent 访问。"
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [],
+    "overall": "四个期望均通过。agent 正确执行了记忆检索，并基于检索结果和用户身份元数据给出了个性化推荐。未发现编造虚假信息的情况。eval 设计合理，覆盖了关键的个性化和真实性检查点。"
+  },
+  "timing": {
+    "total_duration_seconds": 48.3694,
+    "total_tokens": 105282,
+    "token_usage": {
+      "input_tokens": 103618,
+      "output_tokens": 1664,
+      "total_tokens": 105282,
+      "request_count": 7,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 79.35
+  },
+  "grader_task_id": "50d541c9-7a43-4038-bce4-af6709587377"
+}

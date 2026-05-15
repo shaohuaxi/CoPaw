@@ -1,0 +1,65 @@
+{
+  "expectations": [
+    {
+      "text": "agent 调用了 adbpg-mem add 命令存储记忆",
+      "passed": true,
+      "evidence": "在 session_messages.json 中，TERMINAL 工具调用显示命令为：NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"最喜欢的水果是芒果\" --agent"
+    },
+    {
+      "text": "命令携带 -u test_skill_eval 参数（与配置中真实 user_id 隔离）",
+      "passed": false,
+      "evidence": "在 session_messages.json 的 TERMINAL 输出中，scope.user_id 显示为 \"test_verify\"，而非期望的 \"test_skill_eval\"。命令本身也未显式包含 -u 参数。"
+    },
+    {
+      "text": "存储的事实是简短陈述（如『最喜欢的水果是芒果』），不是把用户原话整段塞进去",
+      "passed": true,
+      "evidence": "命令参数为 \"最喜欢的水果是芒果\"，这是对用户原话“记住，我最喜欢的水果是芒果，这点我一直没变。”的提炼，符合简短陈述的要求。"
+    },
+    {
+      "text": "agent 通过 --agent JSON 输出确认 status 为 ok",
+      "passed": true,
+      "evidence": "TERMINAL 输出的 JSON 中包含 \"status\":\"ok\""
+    },
+    {
+      "text": "agent 的回复不暴露 adbpg-mem 命令细节、JSON 字段名、score/id 等内部信息",
+      "passed": true,
+      "evidence": "Agent 的最终回复仅为：“已记住：你最喜欢的水果是芒果。”，未包含任何内部技术细节。"
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  },
+  "claims": [
+    {
+      "claim": "Agent 使用了 adbpg-memory skill",
+      "type": "process",
+      "verified": true,
+      "evidence": "session_messages.json 中包含 SKILL 工具调用，skill_name 为 \"adbpg-memory\""
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "Expectation 2: 命令携带 -u test_skill_eval 参数",
+        "reason": "实际执行中使用的 user_id 是 \"test_verify\"（见 scope.user_id）。如果 \"test_skill_eval\" 是预期的隔离 ID，需要确认测试环境的配置是否正确传递了该参数，或者期望本身是否应调整为匹配实际配置的隔离 ID。"
+      }
+    ],
+    "overall": "Agent 正确触发了记忆存储技能并提炼了事实，但 user_id 隔离参数与期望不符。"
+  },
+  "timing": {
+    "total_duration_seconds": 22.3984,
+    "total_tokens": 99804,
+    "token_usage": {
+      "input_tokens": 99246,
+      "output_tokens": 558,
+      "total_tokens": 99804,
+      "request_count": 8,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 32.59
+  },
+  "grader_task_id": "b2f78ab2-2091-4bef-9ce1-ad709e43f106"
+}

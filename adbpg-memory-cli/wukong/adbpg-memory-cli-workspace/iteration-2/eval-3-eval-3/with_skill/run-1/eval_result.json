@@ -1,0 +1,311 @@
+{
+  "eval_id": 3,
+  "eval_name": "eval-3",
+  "prompt": "今天杭州天气怎么样？外面冷不冷？",
+  "skill_name": "adbpg-memory",
+  "target": "wukong",
+  "query_result": {
+    "query_id": "",
+    "query_text": "今天杭州天气怎么样？外面冷不冷？",
+    "status": "completed",
+    "response": "我来帮你查询杭州今天的天气情况。今天杭州天气**晴朗少云** ☀️，气温情况如下：\n\n- **当前温度**：27°C（体感温度约 30°C）\n- **风力**：西北风 4 公里/小时\n- **湿度**：54%\n- **能见度**：10 公里\n- **降水**：无降水\n\n关于你问的\"外面冷不冷\"——现在杭州的气温比较舒适温暖，27°C 的温度穿单衣即可，不会觉得冷。体感温度稍高一些（30°C），如果户外活动可能会感觉稍微有点热，但总体来说是宜人的天气。",
+    "raw_output": {
+      "execution_workspace": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-2",
+      "wukong_task_id": "5445852b-bb99-45f1-9e11-ce365e3e8510",
+      "wukong_session_id": "5445852b-bb99-45f1-9e11-ce365e3e8510"
+    },
+    "token_usage": {
+      "input_tokens": 128531,
+      "output_tokens": 623,
+      "total_tokens": 129154,
+      "request_count": 9,
+      "source": "llm_proxy"
+    },
+    "duration_seconds": 22.610373973846436,
+    "error": "",
+    "eval": {},
+    "session_messages": [
+      {
+        "role": "user",
+        "content": "<skill data-id=\"48ef670a-fb35-4d9b-b811-349aca8381b7\" data-name=\"adbpg-memory\" /> 今天杭州天气怎么样？外面冷不冷？",
+        "events": [],
+        "tool_uses": [],
+        "timestamp": 1778729310153
+      },
+      {
+        "role": "assistant",
+        "content": "我来帮你查询杭州今天的天气情况。今天杭州天气**晴朗少云** ☀️，气温情况如下：\n\n- **当前温度**：27°C（体感温度约 30°C）\n- **风力**：西北风 4 公里/小时\n- **湿度**：54%\n- **能见度**：10 公里\n- **降水**：无降水\n\n关于你问的\"外面冷不冷\"——现在杭州的气温比较舒适温暖，27°C 的温度穿单衣即可，不会觉得冷。体感温度稍高一些（30°C），如果户外活动可能会感觉稍微有点热，但总体来说是宜人的天气。",
+        "events": [
+          {
+            "runId": "eval-c3499a29-281a-4721-92a2-f63201c053ea",
+            "threadId": "5445852b-bb99-45f1-9e11-ce365e3e8510",
+            "timestamp": 1778729313907,
+            "type": "RUN_STARTED"
+          },
+          {
+            "e2e_ttft_ms": 3753,
+            "timestamp": 1778729313907,
+            "ttft_ms": 2366,
+            "type": "FIRST_TOKEN"
+          },
+          {
+            "messageId": "direct-text-a66e47c6-1ef2-4a7a-9f41-c6d314a7ec02",
+            "role": "assistant",
+            "timestamp": 1778729313907,
+            "type": "TEXT_MESSAGE_START"
+          },
+          {
+            "activityType": "SKILL",
+            "content": {
+              "skill_name": "weather",
+              "snippet": "weather技能",
+              "start_time": 1778729314459,
+              "status": "activating"
+            },
+            "messageId": "tool_msg:c83b01f8-276c-4be0-bd06-63d2b0c782ae",
+            "timestamp": 1778729314459,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 24025,
+              "totalTokens": 200000,
+              "usageRatio": 0.119999997317791
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778729314459,
+            "type": "CUSTOM"
+          },
+          {
+            "delta": "我来帮你查询杭州今天的天气情况。",
+            "messageId": "direct-text-a66e47c6-1ef2-4a7a-9f41-c6d314a7ec02",
+            "timestamp": 1778729313907,
+            "type": "TEXT_MESSAGE_CONTENT"
+          },
+          {
+            "messageId": "direct-text-a66e47c6-1ef2-4a7a-9f41-c6d314a7ec02",
+            "timestamp": 1778729314459,
+            "type": "TEXT_MESSAGE_END"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "curl -s \"wttr.in/杭州？format=%l:+%c+%t+(feels+like+%f),+%w+wind,+%h+humidity\"",
+              "exit_code": 0,
+              "finish_time": 1778729319838,
+              "output": "400 Bad Request",
+              "output_chunks": [],
+              "snippet": "查询杭州当前天气情况",
+              "start_time": 1778729317322,
+              "status": "completed",
+              "working_dir": ""
+            },
+            "messageId": "tool_msg:46708af7-09ff-451e-8302-3780efa18c0e",
+            "timestamp": 1778729317322,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 23779,
+              "totalTokens": 200000,
+              "usageRatio": 0.119999997317791
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778729317322,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "curl -s \"wttr.in/Hangzhou?format=%l:+%c+%t+(feels+like+%f),+%w+wind,+%h+humidity\"",
+              "exit_code": 0,
+              "finish_time": 1778729322218,
+              "output": "hangzhou: 🌤️  +27°C (feels like +30°C), ↖4km/h wind, 54% humidity",
+              "output_chunks": [],
+              "snippet": "使用英文名查询杭州天气",
+              "start_time": 1778729321345,
+              "status": "completed",
+              "working_dir": ""
+            },
+            "messageId": "tool_msg:459f1eee-9b41-4c28-91c5-d98f4571e9af",
+            "timestamp": 1778729321345,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 23900,
+              "totalTokens": 200000,
+              "usageRatio": 0.119999997317791
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778729321345,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "curl -s \"wttr.in/Hangzhou?0\"",
+              "exit_code": 0,
+              "finish_time": 1778729327670,
+              "output": "Weather report: Hangzhou\n\n  \u001b[38;5;226m   \\  /\u001b[0m       Partly cloudy\n  \u001b[38;5;226m _ /\"\"\u001b[38;5;250m.-.    \u001b[0m \u001b[38;5;220m+27\u001b[0m(\u001b[38;5;214m30\u001b[0m) °C\u001b[0m\n  \u001b[38;5;226m   \\_\u001b[38;5;250m(   ).  \u001b[0m \u001b[1m↖\u001b[0m \u001b[38;5;118m4\u001b[0m km/h\u001b[0m\n  \u001b[38;5;226m   /\u001b[38;5;250m(___(__) \u001b[0m 10 km\u001b[0m\n                0.0 mm\u001b[0m\n",
+              "output_chunks": [],
+              "snippet": "获取杭州天气详细信息",
+              "start_time": 1778729326225,
+              "status": "completed",
+              "working_dir": ""
+            },
+            "messageId": "tool_msg:730f74fa-9e49-4c40-a90d-e111f5b88b68",
+            "timestamp": 1778729326225,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 24024,
+              "totalTokens": 200000,
+              "usageRatio": 0.119999997317791
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778729326225,
+            "type": "CUSTOM"
+          },
+          {
+            "messageId": "direct-text-780a8180-f193-4add-84c7-5aa750f30760",
+            "role": "assistant",
+            "timestamp": 1778729329336,
+            "type": "TEXT_MESSAGE_START"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 24531,
+              "totalTokens": 200000,
+              "usageRatio": 0.119999997317791
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778729330613,
+            "type": "CUSTOM"
+          },
+          {
+            "delta": "今天杭州天气**晴朗少云** ☀️，气温情况如下：\n\n- **当前温度**：27°C（体感温度约 30°C）\n- **风力**：西北风 4 公里/小时\n- **湿度**：54%\n- **能见度**：10 公里\n- **降水**：无降水\n\n关于你问的\"外面冷不冷\"——现在杭州的气温比较舒适温暖，27°C 的温度穿单衣即可，不会觉得冷。体感温度稍高一些（30°C），如果户外活动可能会感觉稍微有点热，但总体来说是宜人的天气。",
+            "messageId": "direct-text-780a8180-f193-4add-84c7-5aa750f30760",
+            "timestamp": 1778729329337,
+            "type": "TEXT_MESSAGE_CONTENT"
+          },
+          {
+            "messageId": "direct-text-780a8180-f193-4add-84c7-5aa750f30760",
+            "timestamp": 1778729330613,
+            "type": "TEXT_MESSAGE_END"
+          },
+          {
+            "data": {
+              "answer_id": "eval-c3499a29-281a-4721-92a2-f63201c053ea",
+              "generated_at": 1778729331521,
+              "items": [
+                {
+                  "text": "查询杭州未来三天的天气预报"
+                },
+                {
+                  "text": "推荐适合27度天气的穿搭"
+                },
+                {
+                  "text": "查看杭州明天的空气质量指数"
+                }
+              ],
+              "status": "ready",
+              "suggestions": [
+                "查询杭州未来三天的天气预报",
+                "推荐适合27度天气的穿搭",
+                "查看杭州明天的空气质量指数"
+              ]
+            },
+            "name": "related_questions",
+            "timestamp": 1778729331521,
+            "type": "CUSTOM"
+          },
+          {
+            "cached_tokens": 62063,
+            "completion_tokens": 465,
+            "prompt_tokens": 123200,
+            "timestamp": 1778729331596,
+            "total_tokens": 123665,
+            "type": "USAGE"
+          },
+          {
+            "runId": "eval-c3499a29-281a-4721-92a2-f63201c053ea",
+            "threadId": "5445852b-bb99-45f1-9e11-ce365e3e8510",
+            "timestamp": 1778729331596,
+            "type": "RUN_FINISHED"
+          }
+        ],
+        "tool_uses": [
+          {
+            "id": "tool_msg:c83b01f8-276c-4be0-bd06-63d2b0c782ae",
+            "name": "SKILL",
+            "input": {
+              "skill_name": "weather",
+              "snippet": "weather技能",
+              "start_time": 1778729314459,
+              "status": "activating"
+            }
+          },
+          {
+            "id": "tool_msg:46708af7-09ff-451e-8302-3780efa18c0e",
+            "name": "TERMINAL",
+            "input": {
+              "command": "curl -s \"wttr.in/杭州？format=%l:+%c+%t+(feels+like+%f),+%w+wind,+%h+humidity\"",
+              "exit_code": 0,
+              "finish_time": 1778729319838,
+              "output": "400 Bad Request",
+              "output_chunks": [],
+              "snippet": "查询杭州当前天气情况",
+              "start_time": 1778729317322,
+              "status": "completed",
+              "working_dir": ""
+            }
+          },
+          {
+            "id": "tool_msg:459f1eee-9b41-4c28-91c5-d98f4571e9af",
+            "name": "TERMINAL",
+            "input": {
+              "command": "curl -s \"wttr.in/Hangzhou?format=%l:+%c+%t+(feels+like+%f),+%w+wind,+%h+humidity\"",
+              "exit_code": 0,
+              "finish_time": 1778729322218,
+              "output": "hangzhou: 🌤️  +27°C (feels like +30°C), ↖4km/h wind, 54% humidity",
+              "output_chunks": [],
+              "snippet": "使用英文名查询杭州天气",
+              "start_time": 1778729321345,
+              "status": "completed",
+              "working_dir": ""
+            }
+          },
+          {
+            "id": "tool_msg:730f74fa-9e49-4c40-a90d-e111f5b88b68",
+            "name": "TERMINAL",
+            "input": {
+              "command": "curl -s \"wttr.in/Hangzhou?0\"",
+              "exit_code": 0,
+              "finish_time": 1778729327670,
+              "output": "Weather report: Hangzhou\n\n  \u001b[38;5;226m   \\  /\u001b[0m       Partly cloudy\n  \u001b[38;5;226m _ /\"\"\u001b[38;5;250m.-.    \u001b[0m \u001b[38;5;220m+27\u001b[0m(\u001b[38;5;214m30\u001b[0m) °C\u001b[0m\n  \u001b[38;5;226m   \\_\u001b[38;5;250m(   ).  \u001b[0m \u001b[1m↖\u001b[0m \u001b[38;5;118m4\u001b[0m km/h\u001b[0m\n  \u001b[38;5;226m   /\u001b[38;5;250m(___(__) \u001b[0m 10 km\u001b[0m\n                0.0 mm\u001b[0m\n",
+              "output_chunks": [],
+              "snippet": "获取杭州天气详细信息",
+              "start_time": 1778729326225,
+              "status": "completed",
+              "working_dir": ""
+            }
+          }
+        ],
+        "timestamp": 1778729313907
+      }
+    ]
+  },
+  "duration_seconds": 22.61391305923462
+}

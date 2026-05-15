@@ -1,0 +1,69 @@
+{
+  "expectations": [
+    {
+      "text": "agent 主动调用 adbpg-mem add 至少 1 次，无需用户说『记住』",
+      "passed": false,
+      "evidence": "在 session_messages.json 中，仅观察到一次 TERMINAL 工具调用，命令为 'NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"子华 杭州 后端 Go Rust\" --agent'。没有发现任何 adbpg-mem add 的调用记录。"
+    },
+    {
+      "text": "存储的内容是结构化事实（如『子华在杭州工作』、『后端工程师，主要用 Go』），不是把整段原话塞进去",
+      "passed": false,
+      "evidence": "由于未检测到 adbpg-mem add 调用，无法验证存储内容是否为结构化事实。"
+    },
+    {
+      "text": "覆盖姓名、城市、职业、技术栈四项中的至少 3 项",
+      "passed": false,
+      "evidence": "由于未执行存储操作，该期望未达成。"
+    },
+    {
+      "text": "命令使用 -u test_skill_eval scope",
+      "passed": false,
+      "evidence": "执行的 search 命令中未包含 '-u test_skill_eval' 参数。且未执行 add 命令。"
+    },
+    {
+      "text": "回复自然简短，不要逐条列出存了什么；一句『我记下了』即可",
+      "passed": false,
+      "evidence": "Agent 的回复逐条列出了姓名、地点、职业、主要技术、近期学习五项内容，违反了‘不要逐条列出’的要求，且篇幅较长，不符合‘一句我记下了即可’的简短要求。"
+    }
+  ],
+  "summary": {
+    "passed": 0,
+    "failed": 5,
+    "total": 5,
+    "pass_rate": 0.0
+  },
+  "claims": [
+    {
+      "claim": "Agent 声称已更新长期记忆",
+      "type": "process",
+      "verified": false,
+      "evidence": "Agent 回复称‘我已根据你的最新描述更新了长期记忆’，但 session_messages.json 中缺乏对应的 adbpg-mem add 工具调用证据，属于虚假陈述或未执行的操作。"
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "Expectation 4",
+        "reason": "期望中提到 '-u test_skill_eval scope'，但在提供的 session_messages.json 中，search 命令使用的是默认 scope 或未指定 user_id 为 test_skill_eval（实际输出显示 user_id: test_verify）。如果这是硬性要求，需确认测试环境配置是否正确传递了该参数。"
+      },
+      {
+        "assertion": "Overall",
+        "reason": "Agent 似乎只执行了检索（search）而未执行存储（add），尽管它口头声称已存储。这表明 Agent 可能误解了技能指令，或者在执行过程中遗漏了 add 步骤。建议检查 Skill 定义中关于‘提到个人信息时自动存储’的触发逻辑是否被正确实现。"
+      }
+    ],
+    "overall": "Agent 未能完成核心的存储任务，且回复格式不符合简短自然的要求。所有期望均未通过。"
+  },
+  "timing": {
+    "total_duration_seconds": 22.5597,
+    "total_tokens": 99283,
+    "token_usage": {
+      "input_tokens": 98677,
+      "output_tokens": 606,
+      "total_tokens": 99283,
+      "request_count": 7,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 32.48
+  },
+  "grader_task_id": "8d308c06-60d3-460e-b19c-673d33ddb00e"
+}

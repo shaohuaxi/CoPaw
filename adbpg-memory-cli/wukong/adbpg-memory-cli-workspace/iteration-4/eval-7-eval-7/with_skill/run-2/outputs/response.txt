@@ -1,0 +1,7 @@
+已确认，你的“工作助手”（`work-assistant`）和“生活助手”（`life-assistant`）的 Agent 记忆隔离功能均已开启。
+
+当前配置状态如下：
+- **工作助手 (`work-assistant`)**：记忆隔离已启用 (`isolation_agent: true`)，会话隔离模式为手动 (`manual`)。
+- **生活助手 (`life-assistant`)**：记忆隔离已启用 (`isolation_agent: true`)，会话隔离模式为手动 (`manual`)。
+
+这意味着两个助手的记忆现在是完全分开存储的，互不干扰。如果你需要调整会话隔离模式（例如改为自动 `auto` 或关闭 `off`），或者有其他配置需求，请随时告诉我。

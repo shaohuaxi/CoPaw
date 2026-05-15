@@ -1,0 +1,254 @@
+{
+  "eval_id": 2,
+  "eval_name": "eval-2",
+  "prompt": "我叫子华，在杭州工作，是个后端工程师，主要写 Go。最近在学 Rust。",
+  "skill_name": "adbpg-memory",
+  "target": "wukong",
+  "query_result": {
+    "query_id": "",
+    "query_text": "我叫子华，在杭州工作，是个后端工程师，主要写 Go。最近在学 Rust。",
+    "status": "completed",
+    "response": "你好，子华。我已经记录下你的基本信息：你在杭州工作，是一名主要使用 Go 语言的后端工程师，目前正在学习 Rust。\n\n根据长期记忆检索，我之前也存储过关于你的这些信息（名字、职业、地点、技术栈）。如果你有任何关于 Go 或 Rust 的技术问题，或者需要协助处理后端开发任务，随时告诉我。",
+    "raw_output": {
+      "execution_workspace": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-4",
+      "wukong_task_id": "288df3be-4d3b-440b-a369-0c2d5698a517",
+      "wukong_session_id": "288df3be-4d3b-440b-a369-0c2d5698a517"
+    },
+    "token_usage": {
+      "input_tokens": 133441,
+      "output_tokens": 616,
+      "total_tokens": 134057,
+      "request_count": 9,
+      "source": "llm_proxy"
+    },
+    "duration_seconds": 27.782063007354736,
+    "error": "",
+    "eval": {},
+    "session_messages": [
+      {
+        "role": "user",
+        "content": "<skill data-id=\"c8a036b9-5afc-4cbe-8912-fd74772287e7\" data-name=\"adbpg-memory\" /> 我叫子华，在杭州工作，是个后端工程师，主要写 Go。最近在学 Rust。",
+        "events": [],
+        "tool_uses": [],
+        "timestamp": 1778737373599
+      },
+      {
+        "role": "assistant",
+        "content": "你好，子华。我已经记录下你的基本信息：你在杭州工作，是一名主要使用 Go 语言的后端工程师，目前正在学习 Rust。\n\n根据长期记忆检索，我之前也存储过关于你的这些信息（名字、职业、地点、技术栈）。如果你有任何关于 Go 或 Rust 的技术问题，或者需要协助处理后端开发任务，随时告诉我。",
+        "events": [
+          {
+            "runId": "eval-34895c42-04d8-4cb9-bac2-911f6959db75",
+            "threadId": "288df3be-4d3b-440b-a369-0c2d5698a517",
+            "timestamp": 1778737377901,
+            "type": "RUN_STARTED"
+          },
+          {
+            "e2e_ttft_ms": 4299,
+            "timestamp": 1778737377901,
+            "ttft_ms": 1500,
+            "type": "FIRST_TOKEN"
+          },
+          {
+            "activityType": "SKILL",
+            "content": {
+              "finish_time": 1778737379247,
+              "purpose": "---\nname: adbpg-memory\ndescription: >\n  ADBPG 长期记忆技能。每次新会话你没有任何上下文，必须通过 adbpg-mem 检索长期记忆。\n\n  【检索记忆 - 必须先做】下列任何一种模式出现，必须先执行 adbpg-mem search 再回答：\n  (a) 含\"我/我的/我之前/我上次/我提过/还记得/来着/记不清/那本/那个\"等回忆词；\n  (b) 询问个人偏好/身份/经历/历史决策；\n  (c) 需要个性化（推荐、建议）的请求。\n  命令格式：NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"关键词\" --agent\n  禁止在 search 之前就直接回答\"我不知道\"或\"没听你说过\"——你的当前会话上下文是空的，\n  必须从长期记忆里捞才能知道用户之前是否说过。这是硬性规则。\n\n  【存储记忆】用户说\"记住\"、提到个人信息、做出决策时，\n  执行 NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"提炼的事实\" --agent 存储。\n  提炼事实再存储，不存原文，保留用户原始语言，不存敏感信息。\n\n  【输出格式】--agent 返回 JSON，检查 status 字段（ok/error），搜索结果在 data 数组中，score 大于 0.7 视为高度相关。\n\n  【展示检索结果】检索到记忆后，在回复开头简要列出相关记忆（如\"根据记忆：你叫子华，喜欢 Python\"），\n  让用户能看到检索到了什么。如果检索到记忆但与问题无关，也简要提及\"检索到 N 条记忆但与当前问题无关\"。\n\n  不要在回复中暴露 adbpg-mem 命令细节和原始 JSON。更多用法参见 SKILL.md。\nlicense: Apache-2.0\nmetadata:\n  author: ADBPG\n  version: \"0.1.0\"\n  category: ai-memory\n  tags: \"memory, personalization, adbpg, cli, long-term-memory\"\n  dependencies:\n    apis:\n      - \"ADBPG Memory REST API (rest_base_url, configured via adbpg-mem init)\"\n      - \"ADBPG PostgreSQL endpoint (SQL mode, host/port/dbname configured via adbpg-mem init)\"\ncompatibility: >\n  Node.js 18+ (npm install) 或 Python 3.10+ (pip install)。\n  需要 adbpg-mem CLI 已安装并通过 adbpg-mem init 完成配置。\n  支持 SQL 模式（直连 ADBPG）和 REST 模式（HTTP API）。\n---",
+              "skill_name": "adbpg-memory",
+              "snippet": "激活 ADBPG 长期记忆技能以存储用户个人信息",
+              "start_time": 1778737379247,
+              "status": "completed"
+            },
+            "messageId": "tool_msg:a83c2a34-4f0d-4a0c-b691-b3a375362f6d",
+            "timestamp": 1778737379247,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 23023,
+              "totalTokens": 200000,
+              "usageRatio": 0.119999997317791
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778737379247,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"子华 后端工程师 Go Rust\" --agent",
+              "exit_code": 0,
+              "finish_time": 1778737384223,
+              "output": "{\"command\":\"search\",\"count\":5,\"data\":[{\"created_at\":\"2026-05-14T03:27:48.438488+00:00\",\"hash\":\"e65e54ad94c2d48fb7e18c26bee25b83\",\"id\":\"815a7941-0fdb-41a9-a500-4038d99e8db4\",\"memory\":\"名字是子华\",\"metadata\":{\"categories\":[\"personal_details\"]},\"score\":0.5512287616729781,\"updated_at\":\"2026-05-14T03:27:48.438488+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:27:49.678609+00:00\",\"hash\":\"25b2d7323a3c17b485401284f7969ce7\",\"id\":\"8591c1fc-526c-4616-a8be-08b1a69a4c96\",\"memory\":\"是后端工程师\",\"metadata\":{\"categories\":[\"professional_details\"]},\"score\":0.541288738404362,\"updated_at\":\"2026-05-14T03:27:49.678609+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:27:50.816582+00:00\",\"hash\":\"91cc69a8a5ccc5260337902f398498b2\",\"id\":\"9f105758-b4a3-4a2b-b4d9-72016f9415c4\",\"memory\":\"最近在学习 Rust\",\"metadata\":{\"categories\":[\"technology\"]},\"score\":0.515401215279176,\"updated_at\":\"2026-05-14T03:27:50.816582+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:27:50.293226+00:00\",\"hash\":\"92f6bc207762985a67afb4761cbc21cf\",\"id\":\"9ea9c18f-bdfa-4ec6-a578-1242e9ed1daf\",\"memory\":\"主要使用 Go 编程语言\",\"metadata\":{\"categories\":[\"technology\"]},\"score\":0.459150612354282,\"updated_at\":\"2026-05-14T03:27:50.293226+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:27:49.037220+00:00\",\"hash\":\"b04e8594d7d487d7b1dade7748477afd\",\"id\":\"832135f7-619c-437d-83e3-70592194f4ec\",\"memory\":\"用户在杭州工作\",\"metadata\":{\"categories\":[\"professional_details\",\"travel\"]},\"score\":0.36986926973645895,\"updated_at\":\"2026-05-14T05:40:56.644006+00:00\",\"user_id\":\"test_verify\"}],\"duration_ms\":485,\"scope\":{\"agent_id\":\"\",\"run_id\":\"\",\"user_id\":\"test_verify\"},\"status\":\"ok\"}",
+              "output_chunks": [],
+              "snippet": "检索长期记忆中关于用户“子华”的已有信息",
+              "start_time": 1778737383105,
+              "status": "completed",
+              "working_dir": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-4"
+            },
+            "messageId": "tool_msg:1b84e6f6-216d-41f9-8065-6852b6747227",
+            "timestamp": 1778737383105,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 29988,
+              "totalTokens": 200000,
+              "usageRatio": 0.15000000596046448
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778737383106,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"我叫子华，在杭州工作，是个后端工程师，主要写 Go。最近在学 Rust。\" --agent",
+              "exit_code": 0,
+              "finish_time": 1778737392430,
+              "output": "{\"command\":\"add\",\"count\":null,\"data\":{\"results\":[{\"event\":null,\"event_id\":\"5f730a1f-9aa2-4515-a8ec-a6c944bc3a37\",\"id\":null,\"memory\":null,\"message\":\"Memory processing has been queued for background execution\",\"status\":\"PENDING\"}]},\"duration_ms\":226,\"scope\":{\"agent_id\":\"\",\"run_id\":\"\",\"user_id\":\"test_verify\"},\"status\":\"ok\"}",
+              "output_chunks": [],
+              "snippet": "存储用户提供的个人基本信息到长期记忆",
+              "start_time": 1778737391869,
+              "status": "completed",
+              "working_dir": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-4"
+            },
+            "messageId": "tool_msg:7e5b1ded-4a0d-42c0-ac58-f25764f48b8d",
+            "timestamp": 1778737391869,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 31182,
+              "totalTokens": 200000,
+              "usageRatio": 0.1599999964237213
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778737391870,
+            "type": "CUSTOM"
+          },
+          {
+            "messageId": "direct-text-e6c5479c-fcfc-4bd6-921c-be8512c2083b",
+            "role": "assistant",
+            "timestamp": 1778737394080,
+            "type": "TEXT_MESSAGE_START"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 31462,
+              "totalTokens": 200000,
+              "usageRatio": 0.1599999964237213
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778737395316,
+            "type": "CUSTOM"
+          },
+          {
+            "delta": "你好，子华。我已经记录下你的基本信息：你在杭州工作，是一名主要使用 Go 语言的后端工程师，目前正在学习 Rust。\n\n根据长期记忆检索，我之前也存储过关于你的这些信息（名字、职业、地点、技术栈）。如果你有任何关于 Go 或 Rust 的技术问题，或者需要协助处理后端开发任务，随时告诉我。",
+            "messageId": "direct-text-e6c5479c-fcfc-4bd6-921c-be8512c2083b",
+            "timestamp": 1778737394080,
+            "type": "TEXT_MESSAGE_CONTENT"
+          },
+          {
+            "messageId": "direct-text-e6c5479c-fcfc-4bd6-921c-be8512c2083b",
+            "timestamp": 1778737395316,
+            "type": "TEXT_MESSAGE_END"
+          },
+          {
+            "data": {
+              "answer_id": "eval-34895c42-04d8-4cb9-bac2-911f6959db75",
+              "generated_at": 1778737396925,
+              "items": [
+                {
+                  "text": "分享Go与Rust的语法差异对比"
+                },
+                {
+                  "text": "推荐Rust后端学习路径"
+                },
+                {
+                  "text": "解析Rust所有权机制"
+                }
+              ],
+              "status": "ready",
+              "suggestions": [
+                "分享Go与Rust的语法差异对比",
+                "推荐Rust后端学习路径",
+                "解析Rust所有权机制"
+              ]
+            },
+            "name": "related_questions",
+            "timestamp": 1778737396925,
+            "type": "CUSTOM"
+          },
+          {
+            "cached_tokens": 60890,
+            "completion_tokens": 443,
+            "prompt_tokens": 125145,
+            "timestamp": 1778737396925,
+            "total_tokens": 125588,
+            "type": "USAGE"
+          },
+          {
+            "runId": "eval-34895c42-04d8-4cb9-bac2-911f6959db75",
+            "threadId": "288df3be-4d3b-440b-a369-0c2d5698a517",
+            "timestamp": 1778737396925,
+            "type": "RUN_FINISHED"
+          }
+        ],
+        "tool_uses": [
+          {
+            "id": "tool_msg:a83c2a34-4f0d-4a0c-b691-b3a375362f6d",
+            "name": "SKILL",
+            "input": {
+              "finish_time": 1778737379247,
+              "purpose": "---\nname: adbpg-memory\ndescription: >\n  ADBPG 长期记忆技能。每次新会话你没有任何上下文，必须通过 adbpg-mem 检索长期记忆。\n\n  【检索记忆 - 必须先做】下列任何一种模式出现，必须先执行 adbpg-mem search 再回答：\n  (a) 含\"我/我的/我之前/我上次/我提过/还记得/来着/记不清/那本/那个\"等回忆词；\n  (b) 询问个人偏好/身份/经历/历史决策；\n  (c) 需要个性化（推荐、建议）的请求。\n  命令格式：NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"关键词\" --agent\n  禁止在 search 之前就直接回答\"我不知道\"或\"没听你说过\"——你的当前会话上下文是空的，\n  必须从长期记忆里捞才能知道用户之前是否说过。这是硬性规则。\n\n  【存储记忆】用户说\"记住\"、提到个人信息、做出决策时，\n  执行 NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"提炼的事实\" --agent 存储。\n  提炼事实再存储，不存原文，保留用户原始语言，不存敏感信息。\n\n  【输出格式】--agent 返回 JSON，检查 status 字段（ok/error），搜索结果在 data 数组中，score 大于 0.7 视为高度相关。\n\n  【展示检索结果】检索到记忆后，在回复开头简要列出相关记忆（如\"根据记忆：你叫子华，喜欢 Python\"），\n  让用户能看到检索到了什么。如果检索到记忆但与问题无关，也简要提及\"检索到 N 条记忆但与当前问题无关\"。\n\n  不要在回复中暴露 adbpg-mem 命令细节和原始 JSON。更多用法参见 SKILL.md。\nlicense: Apache-2.0\nmetadata:\n  author: ADBPG\n  version: \"0.1.0\"\n  category: ai-memory\n  tags: \"memory, personalization, adbpg, cli, long-term-memory\"\n  dependencies:\n    apis:\n      - \"ADBPG Memory REST API (rest_base_url, configured via adbpg-mem init)\"\n      - \"ADBPG PostgreSQL endpoint (SQL mode, host/port/dbname configured via adbpg-mem init)\"\ncompatibility: >\n  Node.js 18+ (npm install) 或 Python 3.10+ (pip install)。\n  需要 adbpg-mem CLI 已安装并通过 adbpg-mem init 完成配置。\n  支持 SQL 模式（直连 ADBPG）和 REST 模式（HTTP API）。\n---",
+              "skill_name": "adbpg-memory",
+              "snippet": "激活 ADBPG 长期记忆技能以存储用户个人信息",
+              "start_time": 1778737379247,
+              "status": "completed"
+            }
+          },
+          {
+            "id": "tool_msg:1b84e6f6-216d-41f9-8065-6852b6747227",
+            "name": "TERMINAL",
+            "input": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem search \"子华 后端工程师 Go Rust\" --agent",
+              "exit_code": 0,
+              "finish_time": 1778737384223,
+              "output": "{\"command\":\"search\",\"count\":5,\"data\":[{\"created_at\":\"2026-05-14T03:27:48.438488+00:00\",\"hash\":\"e65e54ad94c2d48fb7e18c26bee25b83\",\"id\":\"815a7941-0fdb-41a9-a500-4038d99e8db4\",\"memory\":\"名字是子华\",\"metadata\":{\"categories\":[\"personal_details\"]},\"score\":0.5512287616729781,\"updated_at\":\"2026-05-14T03:27:48.438488+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:27:49.678609+00:00\",\"hash\":\"25b2d7323a3c17b485401284f7969ce7\",\"id\":\"8591c1fc-526c-4616-a8be-08b1a69a4c96\",\"memory\":\"是后端工程师\",\"metadata\":{\"categories\":[\"professional_details\"]},\"score\":0.541288738404362,\"updated_at\":\"2026-05-14T03:27:49.678609+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:27:50.816582+00:00\",\"hash\":\"91cc69a8a5ccc5260337902f398498b2\",\"id\":\"9f105758-b4a3-4a2b-b4d9-72016f9415c4\",\"memory\":\"最近在学习 Rust\",\"metadata\":{\"categories\":[\"technology\"]},\"score\":0.515401215279176,\"updated_at\":\"2026-05-14T03:27:50.816582+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:27:50.293226+00:00\",\"hash\":\"92f6bc207762985a67afb4761cbc21cf\",\"id\":\"9ea9c18f-bdfa-4ec6-a578-1242e9ed1daf\",\"memory\":\"主要使用 Go 编程语言\",\"metadata\":{\"categories\":[\"technology\"]},\"score\":0.459150612354282,\"updated_at\":\"2026-05-14T03:27:50.293226+00:00\",\"user_id\":\"test_verify\"},{\"created_at\":\"2026-05-14T03:27:49.037220+00:00\",\"hash\":\"b04e8594d7d487d7b1dade7748477afd\",\"id\":\"832135f7-619c-437d-83e3-70592194f4ec\",\"memory\":\"用户在杭州工作\",\"metadata\":{\"categories\":[\"professional_details\",\"travel\"]},\"score\":0.36986926973645895,\"updated_at\":\"2026-05-14T05:40:56.644006+00:00\",\"user_id\":\"test_verify\"}],\"duration_ms\":485,\"scope\":{\"agent_id\":\"\",\"run_id\":\"\",\"user_id\":\"test_verify\"},\"status\":\"ok\"}",
+              "output_chunks": [],
+              "snippet": "检索长期记忆中关于用户“子华”的已有信息",
+              "start_time": 1778737383105,
+              "status": "completed",
+              "working_dir": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-4"
+            }
+          },
+          {
+            "id": "tool_msg:7e5b1ded-4a0d-42c0-ac58-f25764f48b8d",
+            "name": "TERMINAL",
+            "input": {
+              "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 adbpg-mem add \"我叫子华，在杭州工作，是个后端工程师，主要写 Go。最近在学 Rust。\" --agent",
+              "exit_code": 0,
+              "finish_time": 1778737392430,
+              "output": "{\"command\":\"add\",\"count\":null,\"data\":{\"results\":[{\"event\":null,\"event_id\":\"5f730a1f-9aa2-4515-a8ec-a6c944bc3a37\",\"id\":null,\"memory\":null,\"message\":\"Memory processing has been queued for background execution\",\"status\":\"PENDING\"}]},\"duration_ms\":226,\"scope\":{\"agent_id\":\"\",\"run_id\":\"\",\"user_id\":\"test_verify\"},\"status\":\"ok\"}",
+              "output_chunks": [],
+              "snippet": "存储用户提供的个人基本信息到长期记忆",
+              "start_time": 1778737391869,
+              "status": "completed",
+              "working_dir": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-4"
+            }
+          }
+        ],
+        "timestamp": 1778737377901
+      }
+    ]
+  },
+  "duration_seconds": 27.784167051315308
+}

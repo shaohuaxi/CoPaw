@@ -1,0 +1,66 @@
+{
+  "expectations": [
+    {
+      "text": "agent 主动尝试存储这些个人信息（agent 自己调 add 或平台代理皆可），无需用户说『记住』",
+      "passed": true,
+      "evidence": "Transcript shows agent activated 'adbpg-memory' skill and executed terminal command: 'NODE_TLS_REJECT_UNAUTHORIZED=0 node .../adbpg-mem.mjs add \"用户叫子华，在杭州工作，是后端工程师，主要写 Go，最近在学 Rust\" --agent'. This confirms active storage attempt without user prompt."
+    },
+    {
+      "text": "存储的内容是结构化事实（如『子华在杭州工作』、『后端工程师，主要用 Go』），不是把整段原话塞进去",
+      "passed": true,
+      "evidence": "The stored string in the terminal command is '用户叫子华，在杭州工作，是后端工程师，主要写 Go，最近在学 Rust', which is a提炼的事实 (extracted fact) rather than the raw user query '我叫子华，在杭州工作，是个后端工程师，主要写 Go。最近在学 Rust。'. It removes conversational filler and presents key attributes."
+    },
+    {
+      "text": "覆盖姓名、城市、职业、技术栈四项中的至少 3 项",
+      "passed": true,
+      "evidence": "The final response explicitly lists: 姓名 (子华), 地点 (杭州), 职业 (后端工程师), 技术栈 (Go, Rust). All 4 items are covered."
+    },
+    {
+      "text": "回复自然简短，不要逐条列出存了什么；一句『我记下了』即可",
+      "passed": false,
+      "evidence": "The agent response uses a bulleted list to explicitly detail what was stored: '- **姓名**：子华\\n- **地点**：杭州...'. The expectation specifically requested NOT to list items bullet-by-bullet and preferred a simple 'I've noted it down' style. The current response is more verbose and structured than requested."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 1,
+    "total": 4,
+    "pass_rate": 0.75
+  },
+  "claims": [
+    {
+      "claim": "Agent used adbpg-memory skill to store information",
+      "type": "process",
+      "verified": true,
+      "evidence": "Session transcript contains SKILL activity for 'adbpg-memory' and TERMINAL activity executing 'adbpg-mem.mjs add'."
+    },
+    {
+      "claim": "Stored content includes name, location, profession, and tech stack",
+      "type": "factual",
+      "verified": true,
+      "evidence": "The command argument in the transcript includes all four elements: '子华', '杭州', '后端工程师', 'Go/Rust'."
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "Expectation 4 (Reply style)",
+        "reason": "The expectation asks for a very brief, non-list response. However, for memory confirmation tasks, users often benefit from verifying exactly what was captured. The current 'list' format might actually be higher quality for user trust, even if it violates the strict 'brevity' constraint of this specific eval. Consider relaxing this expectation or splitting it into 'brevity' vs 'verification' metrics."
+      }
+    ],
+    "overall": "The agent successfully performed the core task of proactive memory storage with structured facts. It failed only on the stylistic constraint of the response format (using a list instead of a simple sentence). The functional outcome is strong."
+  },
+  "timing": {
+    "total_duration_seconds": 22.3721,
+    "total_tokens": 102243,
+    "token_usage": {
+      "input_tokens": 101487,
+      "output_tokens": 756,
+      "total_tokens": 102243,
+      "request_count": 7,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 32.86
+  },
+  "grader_task_id": "7c4600e0-64c4-4a9c-b19f-b396b571cfd6"
+}

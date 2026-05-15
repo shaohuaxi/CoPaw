@@ -1,0 +1,483 @@
+[
+  {
+    "role": "user",
+    "content": "<skill data-id=\"7bd41f83-2239-4874-bdd2-5a63075bb2cb\" data-name=\"adbpg-memory\" /> 我叫子华，在杭州工作，是个后端工程师，主要写 Go。最近在学 Rust。",
+    "events": [],
+    "tool_uses": [],
+    "timestamp": 1778742104343
+  },
+  {
+    "role": "assistant",
+    "content": "已为你记录：你叫子华，在杭州工作，是一名后端工程师，主要使用 Go 语言，最近正在学习 Rust。这些信息已存入长期记忆，方便我在未来的对话中更好地为你提供支持。",
+    "events": [
+      {
+        "runId": "eval-e7c97471-be72-4a8b-b822-c5db10dd768a",
+        "threadId": "61696978-ad3a-4fab-96bd-bcd5db4e8b6f",
+        "timestamp": 1778742110113,
+        "type": "RUN_STARTED"
+      },
+      {
+        "e2e_ttft_ms": 5766,
+        "timestamp": 1778742110113,
+        "ttft_ms": 1463,
+        "type": "FIRST_TOKEN"
+      },
+      {
+        "activityType": "SKILL",
+        "content": {
+          "finish_time": 1778742111363,
+          "purpose": "---\nname: adbpg-memory\ndescription: >\n  ADBPG 长期记忆技能。每次新会话你没有任何上下文，必须通过 adbpg-mem 检索长期记忆。\n\n  【检索记忆 - 必须先做】下列任何一种模式出现，必须先执行 adbpg-mem search 再回答：\n  (a) 含\"我/我的/我之前/我上次/我提过/还记得/来着/记不清/那本/那个\"等回忆词；\n  (b) 询问个人偏好/身份/经历/历史决策；\n  (c) 需要个性化（推荐、建议）的请求。\n  命令格式：NODE_TLS_REJECT_UNAUTHORIZED=0 node ./scripts/adbpg-mem.mjs search \"关键词\" --agent\n  禁止在 search 之前就直接回答\"我不知道\"或\"没听你说过\"——你的当前会话上下文是空的，\n  必须从长期记忆里捞才能知道用户之前是否说过。这是硬性规则。\n\n  【存储记忆】用户说\"记住\"、提到个人信息、做出决策时，\n  执行 NODE_TLS_REJECT_UNAUTHORIZED=0 node ./scripts/adbpg-mem.mjs add \"提炼的事实\" --agent 存储。\n  提炼事实再存储，不存原文，保留用户原始语言，不存敏感信息。\n\n  【输出格式】--agent 返回 JSON，检查 status 字段（ok/error），搜索结果在 data 数组中，score 大于 0.7 视为高度相关。\n\n  【展示检索结果】检索到记忆后，在回复开头简要列出相关记忆（如\"根据记忆：你叫子华，喜欢 Python\"），\n  让用户能看到检索到了什么。如果检索到记忆但与问题无关，也简要提及\"检索到 N 条记忆但与当前问题无关\"。\n\n  不要在回复中暴露 adbpg-mem 命令细节和原始 JSON。更多用法参见 SKILL.md。\nlicense: Apache-2.0\nmetadata:\n  author: ADBPG\n  version: \"0.1.0\"\n  category: ai-memory\n  tags: \"memory, personalization, adbpg, cli, long-term-memory\"\n  dependencies:\n    apis:\n      - \"ADBPG Memory REST API (rest_base_url, configured via adbpg-mem init)\"\n      - \"ADBPG PostgreSQL endpoint (SQL mode, host/port/dbname configured via adbpg-mem init)\"\ncompatibility: >\n  Node.js 18+ (npm install) 或 Python 3.10+ (pip install)。\n  需要 adbpg-mem CLI 已安装并通过 adbpg-mem init 完成配置。\n  支持 SQL 模式（直连 ADBPG）和 REST 模式（HTTP API）。\n---",
+          "skill_name": "adbpg-memory",
+          "snippet": "激活长期记忆技能以存储用户个人信息",
+          "start_time": 1778742111362,
+          "status": "completed"
+        },
+        "messageId": "tool_msg:b2d624b0-1b6d-4901-b74f-04496bee9853",
+        "timestamp": 1778742111362,
+        "type": "ACTIVITY_SNAPSHOT"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 22984,
+          "totalTokens": 200000,
+          "usageRatio": 0.10999999940395357
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778742111362,
+        "type": "CUSTOM"
+      },
+      {
+        "activityType": "TERMINAL",
+        "content": {
+          "command": "find ~ -name \"SKILL.md\" -path \"*adbpg-memory*\" 2>/dev/null | head -1 | xargs dirname 2>/dev/null",
+          "exit_code": null,
+          "finish_time": 1778742180234,
+          "output": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/adbpg-memory/examples/saas-ecommerce\n",
+          "output_chunks": [],
+          "snippet": "查找 adbpg-memory skill 的根目录",
+          "start_time": 1778742115721,
+          "status": "completed",
+          "working_dir": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-6"
+        },
+        "messageId": "tool_msg:bb03479d-958f-4229-a48a-f370de64d685",
+        "timestamp": 1778742115721,
+        "type": "ACTIVITY_SNAPSHOT"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 31076,
+          "totalTokens": 200000,
+          "usageRatio": 0.1599999964237213
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778742115721,
+        "type": "CUSTOM"
+      },
+      {
+        "activityType": "TERMINAL",
+        "content": {
+          "command": "",
+          "finish_time": 1778742190294,
+          "output": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/adbpg-memory/examples/saas-ecommerce\n",
+          "output_chunks": [],
+          "snippet": "查看后台进程输出",
+          "start_time": 1778742182148,
+          "status": "completed",
+          "working_dir": ""
+        },
+        "messageId": "tool_msg:8c0c9547-2d58-41de-8738-45f1713f228c",
+        "timestamp": 1778742182148,
+        "type": "ACTIVITY_SNAPSHOT"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 31450,
+          "totalTokens": 200000,
+          "usageRatio": 0.1599999964237213
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778742182148,
+        "type": "CUSTOM"
+      },
+      {
+        "activityType": "TERMINAL",
+        "content": {
+          "command": "find ~ -name \"SKILL.md\" -path \"*adbpg-memory*\" 2>/dev/null | grep -v \"examples\" | head -1 | xargs dirname",
+          "exit_code": null,
+          "finish_time": 1778742253607,
+          "output": "",
+          "output_chunks": [],
+          "snippet": "查找 adbpg-memory skill 的根目录（排除 examples）",
+          "start_time": 1778742193603,
+          "status": "completed",
+          "working_dir": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-6"
+        },
+        "messageId": "tool_msg:cd96420a-80db-4de6-bd3b-63aae5d32b52",
+        "timestamp": 1778742193603,
+        "type": "ACTIVITY_SNAPSHOT"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 31764,
+          "totalTokens": 200000,
+          "usageRatio": 0.1599999964237213
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778742193603,
+        "type": "CUSTOM"
+      },
+      {
+        "activityType": "TERMINAL",
+        "content": {
+          "command": "",
+          "finish_time": 1778742268644,
+          "output": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/adbpg-memory\n",
+          "output_chunks": [],
+          "snippet": "查看后台进程输出",
+          "start_time": 1778742256017,
+          "status": "completed",
+          "working_dir": ""
+        },
+        "messageId": "tool_msg:41842589-8729-4fe3-a5bc-d2ab1c135ce3",
+        "timestamp": 1778742256017,
+        "type": "ACTIVITY_SNAPSHOT"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 32032,
+          "totalTokens": 200000,
+          "usageRatio": 0.1599999964237213
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778742256017,
+        "type": "CUSTOM"
+      },
+      {
+        "activityType": "TERMINAL",
+        "content": {
+          "command": "",
+          "finish_time": 1778742278853,
+          "output": "{\"ok\":true,\"processId\":\"bg_9be85557ff98\",\"status\":\"killed\"}",
+          "output_chunks": [],
+          "snippet": "停止后台进程",
+          "start_time": 1778742278853,
+          "status": "completed",
+          "working_dir": ""
+        },
+        "messageId": "tool_msg:baf96272-230e-4016-9cb9-024c40e505ee",
+        "timestamp": 1778742278853,
+        "type": "ACTIVITY_SNAPSHOT"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 32229,
+          "totalTokens": 200000,
+          "usageRatio": 0.1599999964237213
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778742278853,
+        "type": "CUSTOM"
+      },
+      {
+        "activityType": "TERMINAL",
+        "content": {
+          "command": "ls -la /Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/ | grep adbpg",
+          "exit_code": 1,
+          "finish_time": 1778742281372,
+          "output": "",
+          "output_chunks": [],
+          "snippet": "查找 adbpg-memory skill 目录",
+          "start_time": 1778742281275,
+          "status": "completed",
+          "working_dir": ""
+        },
+        "messageId": "tool_msg:839506a1-01fb-421d-b46b-8163b1dfa2df",
+        "timestamp": 1778742281275,
+        "type": "ACTIVITY_SNAPSHOT"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 32311,
+          "totalTokens": 200000,
+          "usageRatio": 0.1599999964237213
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778742281275,
+        "type": "CUSTOM"
+      },
+      {
+        "activityType": "TERMINAL",
+        "content": {
+          "command": "find /Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf -name \"adbpg-mem.mjs\" 2>/dev/null",
+          "exit_code": 0,
+          "finish_time": 1778742284205,
+          "output": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/7bd41f83-2239-4874-bdd2-5a63075bb2cb/scripts/adbpg-mem.mjs\n",
+          "output_chunks": [],
+          "snippet": "查找 adbpg-mem.mjs 脚本路径",
+          "start_time": 1778742284086,
+          "status": "completed",
+          "working_dir": ""
+        },
+        "messageId": "tool_msg:6222bd3a-517d-472e-b0f3-907d55a02428",
+        "timestamp": 1778742284086,
+        "type": "ACTIVITY_SNAPSHOT"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 32411,
+          "totalTokens": 200000,
+          "usageRatio": 0.1599999964237213
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778742284087,
+        "type": "CUSTOM"
+      },
+      {
+        "activityType": "TERMINAL",
+        "content": {
+          "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 /Users/airfan/.real/.bin/node/bin/node /Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/7bd41f83-2239-4874-bdd2-5a63075bb2cb/scripts/adbpg-mem.mjs add \"用户叫子华，在杭州工作，是后端工程师，主要写 Go，最近在学 Rust\" --agent",
+          "exit_code": 0,
+          "finish_time": 1778742288798,
+          "output": "{\"command\":\"add\",\"data\":{\"results\":[{\"event\":null,\"event_id\":\"8463d778-e8c3-4657-ae6e-21f50cdb2416\",\"id\":null,\"memory\":null,\"message\":\"Memory processing has been queued for background execution\",\"status\":\"PENDING\"}]},\"duration_ms\":302,\"scope\":{\"agent_id\":\"\",\"run_id\":\"\",\"user_id\":\"test_verify\"},\"status\":\"pending\"}",
+          "output_chunks": [],
+          "snippet": "存储用户个人信息到长期记忆",
+          "start_time": 1778742287895,
+          "status": "completed",
+          "working_dir": ""
+        },
+        "messageId": "tool_msg:bd7f82bc-3b9f-4d0a-aad8-0935999732d3",
+        "timestamp": 1778742287895,
+        "type": "ACTIVITY_SNAPSHOT"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 32657,
+          "totalTokens": 200000,
+          "usageRatio": 0.1599999964237213
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778742287895,
+        "type": "CUSTOM"
+      },
+      {
+        "messageId": "direct-text-49f89d89-099a-43be-b839-f4c18eac1712",
+        "role": "assistant",
+        "timestamp": 1778742291287,
+        "type": "TEXT_MESSAGE_START"
+      },
+      {
+        "data": {
+          "compactEnabled": false,
+          "compactHint": "会话内容较短，暂无需压缩",
+          "currentTokens": 32903,
+          "totalTokens": 200000,
+          "usageRatio": 0.1599999964237213
+        },
+        "name": "session_context_stats",
+        "timestamp": 1778742291837,
+        "type": "CUSTOM"
+      },
+      {
+        "delta": "已为你记录：你叫子华，在杭州工作，是一名后端工程师，主要使用 Go 语言，最近正在学习 Rust。这些信息已存入长期记忆，方便我在未来的对话中更好地为你提供支持。",
+        "messageId": "direct-text-49f89d89-099a-43be-b839-f4c18eac1712",
+        "timestamp": 1778742291287,
+        "type": "TEXT_MESSAGE_CONTENT"
+      },
+      {
+        "messageId": "direct-text-49f89d89-099a-43be-b839-f4c18eac1712",
+        "timestamp": 1778742291837,
+        "type": "TEXT_MESSAGE_END"
+      },
+      {
+        "data": {
+          "answer_id": "eval-e7c97471-be72-4a8b-b822-c5db10dd768a",
+          "generated_at": 1778742293757,
+          "items": [
+            {
+              "text": "分享一段 Go 代码进行 Rust 重构"
+            },
+            {
+              "text": "推荐 Rust 后端学习路线"
+            },
+            {
+              "text": "对比 Go 与 Rust 并发模型"
+            }
+          ],
+          "status": "ready",
+          "suggestions": [
+            "分享一段 Go 代码进行 Rust 重构",
+            "推荐 Rust 后端学习路线",
+            "对比 Go 与 Rust 并发模型"
+          ]
+        },
+        "name": "related_questions",
+        "timestamp": 1778742293757,
+        "type": "CUSTOM"
+      },
+      {
+        "cached_tokens": 180071,
+        "completion_tokens": 1123,
+        "prompt_tokens": 322233,
+        "timestamp": 1778742296334,
+        "total_tokens": 323356,
+        "type": "USAGE"
+      },
+      {
+        "runId": "eval-e7c97471-be72-4a8b-b822-c5db10dd768a",
+        "threadId": "61696978-ad3a-4fab-96bd-bcd5db4e8b6f",
+        "timestamp": 1778742296334,
+        "type": "RUN_FINISHED"
+      }
+    ],
+    "tool_uses": [
+      {
+        "id": "tool_msg:b2d624b0-1b6d-4901-b74f-04496bee9853",
+        "name": "SKILL",
+        "input": {
+          "finish_time": 1778742111363,
+          "purpose": "---\nname: adbpg-memory\ndescription: >\n  ADBPG 长期记忆技能。每次新会话你没有任何上下文，必须通过 adbpg-mem 检索长期记忆。\n\n  【检索记忆 - 必须先做】下列任何一种模式出现，必须先执行 adbpg-mem search 再回答：\n  (a) 含\"我/我的/我之前/我上次/我提过/还记得/来着/记不清/那本/那个\"等回忆词；\n  (b) 询问个人偏好/身份/经历/历史决策；\n  (c) 需要个性化（推荐、建议）的请求。\n  命令格式：NODE_TLS_REJECT_UNAUTHORIZED=0 node ./scripts/adbpg-mem.mjs search \"关键词\" --agent\n  禁止在 search 之前就直接回答\"我不知道\"或\"没听你说过\"——你的当前会话上下文是空的，\n  必须从长期记忆里捞才能知道用户之前是否说过。这是硬性规则。\n\n  【存储记忆】用户说\"记住\"、提到个人信息、做出决策时，\n  执行 NODE_TLS_REJECT_UNAUTHORIZED=0 node ./scripts/adbpg-mem.mjs add \"提炼的事实\" --agent 存储。\n  提炼事实再存储，不存原文，保留用户原始语言，不存敏感信息。\n\n  【输出格式】--agent 返回 JSON，检查 status 字段（ok/error），搜索结果在 data 数组中，score 大于 0.7 视为高度相关。\n\n  【展示检索结果】检索到记忆后，在回复开头简要列出相关记忆（如\"根据记忆：你叫子华，喜欢 Python\"），\n  让用户能看到检索到了什么。如果检索到记忆但与问题无关，也简要提及\"检索到 N 条记忆但与当前问题无关\"。\n\n  不要在回复中暴露 adbpg-mem 命令细节和原始 JSON。更多用法参见 SKILL.md。\nlicense: Apache-2.0\nmetadata:\n  author: ADBPG\n  version: \"0.1.0\"\n  category: ai-memory\n  tags: \"memory, personalization, adbpg, cli, long-term-memory\"\n  dependencies:\n    apis:\n      - \"ADBPG Memory REST API (rest_base_url, configured via adbpg-mem init)\"\n      - \"ADBPG PostgreSQL endpoint (SQL mode, host/port/dbname configured via adbpg-mem init)\"\ncompatibility: >\n  Node.js 18+ (npm install) 或 Python 3.10+ (pip install)。\n  需要 adbpg-mem CLI 已安装并通过 adbpg-mem init 完成配置。\n  支持 SQL 模式（直连 ADBPG）和 REST 模式（HTTP API）。\n---",
+          "skill_name": "adbpg-memory",
+          "snippet": "激活长期记忆技能以存储用户个人信息",
+          "start_time": 1778742111362,
+          "status": "completed"
+        }
+      },
+      {
+        "id": "tool_msg:bb03479d-958f-4229-a48a-f370de64d685",
+        "name": "TERMINAL",
+        "input": {
+          "command": "find ~ -name \"SKILL.md\" -path \"*adbpg-memory*\" 2>/dev/null | head -1 | xargs dirname 2>/dev/null",
+          "exit_code": null,
+          "finish_time": 1778742180234,
+          "output": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/adbpg-memory/examples/saas-ecommerce\n",
+          "output_chunks": [],
+          "snippet": "查找 adbpg-memory skill 的根目录",
+          "start_time": 1778742115721,
+          "status": "completed",
+          "working_dir": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-6"
+        }
+      },
+      {
+        "id": "tool_msg:8c0c9547-2d58-41de-8738-45f1713f228c",
+        "name": "TERMINAL",
+        "input": {
+          "command": "",
+          "finish_time": 1778742190294,
+          "output": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/adbpg-memory/examples/saas-ecommerce\n",
+          "output_chunks": [],
+          "snippet": "查看后台进程输出",
+          "start_time": 1778742182148,
+          "status": "completed",
+          "working_dir": ""
+        }
+      },
+      {
+        "id": "tool_msg:cd96420a-80db-4de6-bd3b-63aae5d32b52",
+        "name": "TERMINAL",
+        "input": {
+          "command": "find ~ -name \"SKILL.md\" -path \"*adbpg-memory*\" 2>/dev/null | grep -v \"examples\" | head -1 | xargs dirname",
+          "exit_code": null,
+          "finish_time": 1778742253607,
+          "output": "",
+          "output_chunks": [],
+          "snippet": "查找 adbpg-memory skill 的根目录（排除 examples）",
+          "start_time": 1778742193603,
+          "status": "completed",
+          "working_dir": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-6"
+        }
+      },
+      {
+        "id": "tool_msg:41842589-8729-4fe3-a5bc-d2ab1c135ce3",
+        "name": "TERMINAL",
+        "input": {
+          "command": "",
+          "finish_time": 1778742268644,
+          "output": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/workspace/projects/default/artifacts/adbpg-memory\n",
+          "output_chunks": [],
+          "snippet": "查看后台进程输出",
+          "start_time": 1778742256017,
+          "status": "completed",
+          "working_dir": ""
+        }
+      },
+      {
+        "id": "tool_msg:baf96272-230e-4016-9cb9-024c40e505ee",
+        "name": "TERMINAL",
+        "input": {
+          "command": "",
+          "finish_time": 1778742278853,
+          "output": "{\"ok\":true,\"processId\":\"bg_9be85557ff98\",\"status\":\"killed\"}",
+          "output_chunks": [],
+          "snippet": "停止后台进程",
+          "start_time": 1778742278853,
+          "status": "completed",
+          "working_dir": ""
+        }
+      },
+      {
+        "id": "tool_msg:839506a1-01fb-421d-b46b-8163b1dfa2df",
+        "name": "TERMINAL",
+        "input": {
+          "command": "ls -la /Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/ | grep adbpg",
+          "exit_code": 1,
+          "finish_time": 1778742281372,
+          "output": "",
+          "output_chunks": [],
+          "snippet": "查找 adbpg-memory skill 目录",
+          "start_time": 1778742281275,
+          "status": "completed",
+          "working_dir": ""
+        }
+      },
+      {
+        "id": "tool_msg:6222bd3a-517d-472e-b0f3-907d55a02428",
+        "name": "TERMINAL",
+        "input": {
+          "command": "find /Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf -name \"adbpg-mem.mjs\" 2>/dev/null",
+          "exit_code": 0,
+          "finish_time": 1778742284205,
+          "output": "/Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/7bd41f83-2239-4874-bdd2-5a63075bb2cb/scripts/adbpg-mem.mjs\n",
+          "output_chunks": [],
+          "snippet": "查找 adbpg-mem.mjs 脚本路径",
+          "start_time": 1778742284086,
+          "status": "completed",
+          "working_dir": ""
+        }
+      },
+      {
+        "id": "tool_msg:bd7f82bc-3b9f-4d0a-aad8-0935999732d3",
+        "name": "TERMINAL",
+        "input": {
+          "command": "NODE_TLS_REJECT_UNAUTHORIZED=0 /Users/airfan/.real/.bin/node/bin/node /Users/airfan/.real/users/user-90e1aabc9d87cabd9094203109f5d6cf/.skills/7bd41f83-2239-4874-bdd2-5a63075bb2cb/scripts/adbpg-mem.mjs add \"用户叫子华，在杭州工作，是后端工程师，主要写 Go，最近在学 Rust\" --agent",
+          "exit_code": 0,
+          "finish_time": 1778742288798,
+          "output": "{\"command\":\"add\",\"data\":{\"results\":[{\"event\":null,\"event_id\":\"8463d778-e8c3-4657-ae6e-21f50cdb2416\",\"id\":null,\"memory\":null,\"message\":\"Memory processing has been queued for background execution\",\"status\":\"PENDING\"}]},\"duration_ms\":302,\"scope\":{\"agent_id\":\"\",\"run_id\":\"\",\"user_id\":\"test_verify\"},\"status\":\"pending\"}",
+          "output_chunks": [],
+          "snippet": "存储用户个人信息到长期记忆",
+          "start_time": 1778742287895,
+          "status": "completed",
+          "working_dir": ""
+        }
+      }
+    ],
+    "timestamp": 1778742110113
+  }
+]

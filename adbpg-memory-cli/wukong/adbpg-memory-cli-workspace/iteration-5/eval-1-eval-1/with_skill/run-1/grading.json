@@ -1,0 +1,81 @@
+{
+  "expectations": [
+    {
+      "text": "agent 调用了 adbpg-mem add 命令存储记忆",
+      "passed": true,
+      "evidence": "TERMINAL 工具调用中 command 字段显示执行了 adbpg-mem.mjs add \"最喜欢的水果是芒果\" --agent"
+    },
+    {
+      "text": "命令携带 -u test_skill_eval 参数（与配置中真实 user_id 隔离）",
+      "passed": false,
+      "evidence": "命令本身没有 -u 参数，实际执行的是 add \"最喜欢的水果是芒果\" --agent。从 JSON 输出的 scope 字段看到 user_id 为 \"test_verify\"，而非期望的 \"test_skill_eval\""
+    },
+    {
+      "text": "存储的事实是简短陈述（如『最喜欢的水果是芒果』），不是把用户原话整段塞进去",
+      "passed": true,
+      "evidence": "存储内容为 \"最喜欢的水果是芒果\"，是提炼后的简短陈述，未使用用户原话 \"记住，我最喜欢的水果是芒果，这点我一直没变。\""
+    },
+    {
+      "text": "agent 通过 --agent JSON 输出确认 status 为 ok",
+      "passed": false,
+      "evidence": "JSON 输出中 status 字段值为 \"pending\"，表示后台处理中，而非 \"ok\"。虽然 exit_code 为 0 表示命令执行成功，但 status 字段不符合期望"
+    },
+    {
+      "text": "agent 的回复不暴露 adbpg-mem 命令细节、JSON 字段名、score/id 等内部信息",
+      "passed": true,
+      "evidence": "agent 最终回复为 \"已提交记忆存储请求。系统正在后台处理中，稍后可以通过检索验证是否已成功存入。\"，未暴露任何命令细节、JSON 字段或内部信息"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 2,
+    "total": 5,
+    "pass_rate": 0.6
+  },
+  "claims": [
+    {
+      "claim": "agent 使用了 adbpg-memory skill 来存储记忆",
+      "type": "process",
+      "verified": true,
+      "evidence": "session_messages.json 中显示 SKILL 工具调用激活了 adbpg-memory skill，随后 TERMINAL 工具执行了 adbpg-mem.mjs add 命令"
+    },
+    {
+      "claim": "记忆存储采用异步后台处理模式",
+      "type": "factual",
+      "verified": true,
+      "evidence": "JSON 输出中 message 字段显示 \"Memory processing has been queued for background execution\"，status 为 \"pending\"，表明采用异步处理"
+    },
+    {
+      "claim": "agent 对用户的回复准确反映了后台处理的实际情况",
+      "type": "quality",
+      "verified": true,
+      "evidence": "agent 回复 \"已提交记忆存储请求。系统正在后台处理中\" 与实际的 pending 状态一致，回复诚实且准确"
+    }
+  ],
+  "eval_feedback": {
+    "suggestions": [
+      {
+        "assertion": "期望2：命令携带 -u test_skill_eval 参数",
+        "reason": "该期望假设命令会使用 -u 参数指定 user_id，但实际实现中 user_id 可能通过其他方式配置（如环境变量或配置文件）。建议明确说明 user_id 应该如何传递，或者改为验证 scope.user_id 字段的值是否符合预期隔离要求"
+      },
+      {
+        "assertion": "期望4：agent 通过 --agent JSON 输出确认 status 为 ok",
+        "reason": "该期望假设 status 必须为 \"ok\"，但异步处理场景下 \"pending\" 也是合法的成功状态。建议将期望改为 \"status 为 ok 或 pending，表示命令被成功接受\"，以更准确反映异步处理的实际情况"
+      }
+    ],
+    "overall": "评估期望整体合理，但对异步处理机制的理解存在偏差。期望2和期望4的失败更多是因为期望与实际实现方式不匹配，而非 agent 行为错误。agent 正确调用了存储命令、提炼了事实、保护了内部信息，核心功能完成良好。建议调整期望以更好地适配异步处理模式。"
+  },
+  "timing": {
+    "total_duration_seconds": 22.7391,
+    "total_tokens": 100701,
+    "token_usage": {
+      "input_tokens": 100061,
+      "output_tokens": 640,
+      "total_tokens": 100701,
+      "request_count": 7,
+      "source": "llm_proxy"
+    },
+    "grader_duration_seconds": 53.66
+  },
+  "grader_task_id": "11c838e8-9603-4722-984a-9dd418e08a89"
+}

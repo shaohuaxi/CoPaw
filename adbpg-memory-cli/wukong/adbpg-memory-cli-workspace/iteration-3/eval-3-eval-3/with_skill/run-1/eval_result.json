@@ -1,0 +1,294 @@
+{
+  "eval_id": 3,
+  "eval_name": "eval-3",
+  "prompt": "今天杭州天气怎么样？外面冷不冷？",
+  "skill_name": "adbpg-memory",
+  "target": "wukong",
+  "query_result": {
+    "query_id": "",
+    "query_text": "今天杭州天气怎么样？外面冷不冷？",
+    "status": "completed",
+    "response": "今天杭州的天气是**多云**，气温约为 **27°C**，体感温度略高，约 **30°C**。\n\n目前的风速较慢（4km/h），湿度为 54%。这个温度在五月属于比较暖和甚至偏热的天气，外面**不冷**，建议穿着短袖、衬衫等轻薄透气的夏装。如果长时间在户外活动，注意适当补充水分和防晒。",
+    "raw_output": {
+      "execution_workspace": "/private/var/folders/rv/6f40jc2942l6tfpxd29nd0jm0000gp/T/adbpg-memory-iteration-3",
+      "wukong_task_id": "fbbad887-9fa4-41d4-8715-52da453fab11",
+      "wukong_session_id": "fbbad887-9fa4-41d4-8715-52da453fab11"
+    },
+    "token_usage": {
+      "input_tokens": 130919,
+      "output_tokens": 650,
+      "total_tokens": 131569,
+      "request_count": 10,
+      "source": "llm_proxy"
+    },
+    "duration_seconds": 27.52844500541687,
+    "error": "",
+    "eval": {},
+    "session_messages": [
+      {
+        "role": "user",
+        "content": "<skill data-id=\"f2db87c7-d4df-47bd-ad35-231a3ff7053e\" data-name=\"adbpg-memory\" /> 今天杭州天气怎么样？外面冷不冷？",
+        "events": [],
+        "tool_uses": [],
+        "timestamp": 1778730449388
+      },
+      {
+        "role": "assistant",
+        "content": "今天杭州的天气是**多云**，气温约为 **27°C**，体感温度略高，约 **30°C**。\n\n目前的风速较慢（4km/h），湿度为 54%。这个温度在五月属于比较暖和甚至偏热的天气，外面**不冷**，建议穿着短袖、衬衫等轻薄透气的夏装。如果长时间在户外活动，注意适当补充水分和防晒。",
+        "events": [
+          {
+            "runId": "eval-7e564e3d-5c7b-482d-b591-1a54f6afb55a",
+            "threadId": "fbbad887-9fa4-41d4-8715-52da453fab11",
+            "timestamp": 1778730454052,
+            "type": "RUN_STARTED"
+          },
+          {
+            "e2e_ttft_ms": 4663,
+            "timestamp": 1778730454052,
+            "ttft_ms": 1806,
+            "type": "FIRST_TOKEN"
+          },
+          {
+            "activityType": "SKILL",
+            "content": {
+              "skill_name": "weather",
+              "snippet": "weather技能",
+              "start_time": 1778730454347,
+              "status": "activating"
+            },
+            "messageId": "tool_msg:4ca435cf-d5a4-40ac-a57d-669da2e24292",
+            "timestamp": 1778730454347,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 24021,
+              "totalTokens": 200000,
+              "usageRatio": 0.119999997317791
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778730454347,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "curl -s \"wttr.in/杭州?format=%l:+%c+%t+(体感+%f),+%w, 湿度+%h\"",
+              "exit_code": 3,
+              "finish_time": 1778730458344,
+              "output": "",
+              "output_chunks": [],
+              "snippet": "查询杭州当前天气状况",
+              "start_time": 1778730458275,
+              "status": "completed",
+              "working_dir": ""
+            },
+            "messageId": "tool_msg:367d8ca2-2fd3-490a-ac3b-8d6c4a768b09",
+            "timestamp": 1778730458275,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 23771,
+              "totalTokens": 200000,
+              "usageRatio": 0.119999997317791
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778730458275,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "curl -s \"wttr.in/Hangzhou?format=%l:+%c+%t+(feels+like+%f),+%w, humidity+%h\"",
+              "exit_code": 3,
+              "finish_time": 1778730460991,
+              "output": "",
+              "output_chunks": [],
+              "snippet": "查询杭州当前天气状况（英文地名）",
+              "start_time": 1778730460960,
+              "status": "completed",
+              "working_dir": ""
+            },
+            "messageId": "tool_msg:6eff549e-7295-4d73-a9fb-dae1a80a7604",
+            "timestamp": 1778730460960,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 23887,
+              "totalTokens": 200000,
+              "usageRatio": 0.119999997317791
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778730460960,
+            "type": "CUSTOM"
+          },
+          {
+            "activityType": "TERMINAL",
+            "content": {
+              "command": "curl -s \"wttr.in/Hangzhou?format=j1\" | python3 -c \"import sys, json; data = json.load(sys.stdin); current = data['current_condition'][0]; print(f'天气: {current[\\\"weatherDesc\\\"][0][\\\"value\\\"]}, 温度: {current[\\\"temp_C\\\"]}°C, 体感: {current[\\\"FeelsLikeC\\\"]}°C, 风速: {current[\\\"windspeedKmph\\\"]}km/h, 湿度: {current[\\\"humidity\\\"]}%')\"",
+              "exit_code": 0,
+              "finish_time": 1778730467239,
+              "output": "天气: Partly cloudy, 温度: 27°C, 体感: 30°C, 风速: 4km/h, 湿度: 54%\n",
+              "output_chunks": [],
+              "snippet": "通过 JSON 格式获取杭州详细天气信息",
+              "start_time": 1778730464899,
+              "status": "completed",
+              "working_dir": ""
+            },
+            "messageId": "tool_msg:a0e529bf-2dfd-4e50-a517-1d25f889e201",
+            "timestamp": 1778730464899,
+            "type": "ACTIVITY_SNAPSHOT"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 24088,
+              "totalTokens": 200000,
+              "usageRatio": 0.119999997317791
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778730464899,
+            "type": "CUSTOM"
+          },
+          {
+            "messageId": "direct-text-3422c32c-f4ab-4c8b-b0d5-a2229df870ce",
+            "role": "assistant",
+            "timestamp": 1778730468241,
+            "type": "TEXT_MESSAGE_START"
+          },
+          {
+            "data": {
+              "compactEnabled": false,
+              "compactHint": "会话内容较短，暂无需压缩",
+              "currentTokens": 24252,
+              "totalTokens": 200000,
+              "usageRatio": 0.119999997317791
+            },
+            "name": "session_context_stats",
+            "timestamp": 1778730469731,
+            "type": "CUSTOM"
+          },
+          {
+            "delta": "今天杭州的天气是**多云**，气温约为 **27°C**，体感温度略高，约 **30°C**。\n\n目前的风速较慢（4km/h），湿度为 54%。这个温度在五月属于比较暖和甚至偏热的天气，外面**不冷**，建议穿着短袖、衬衫等轻薄透气的夏装。如果长时间在户外活动，注意适当补充水分和防晒。",
+            "messageId": "direct-text-3422c32c-f4ab-4c8b-b0d5-a2229df870ce",
+            "timestamp": 1778730468241,
+            "type": "TEXT_MESSAGE_CONTENT"
+          },
+          {
+            "messageId": "direct-text-3422c32c-f4ab-4c8b-b0d5-a2229df870ce",
+            "timestamp": 1778730469731,
+            "type": "TEXT_MESSAGE_END"
+          },
+          {
+            "data": {
+              "answer_id": "eval-7e564e3d-5c7b-482d-b591-1a54f6afb55a",
+              "generated_at": 1778730471223,
+              "items": [
+                {
+                  "text": "查询杭州未来一周天气预报"
+                },
+                {
+                  "text": "推荐适合27度天气的穿搭"
+                },
+                {
+                  "text": "查看杭州今日空气质量指数"
+                }
+              ],
+              "status": "ready",
+              "suggestions": [
+                "查询杭州未来一周天气预报",
+                "推荐适合27度天气的穿搭",
+                "查看杭州今日空气质量指数"
+              ]
+            },
+            "name": "related_questions",
+            "timestamp": 1778730471223,
+            "type": "CUSTOM"
+          },
+          {
+            "cached_tokens": 62078,
+            "completion_tokens": 500,
+            "prompt_tokens": 122625,
+            "timestamp": 1778730472490,
+            "total_tokens": 123125,
+            "type": "USAGE"
+          },
+          {
+            "runId": "eval-7e564e3d-5c7b-482d-b591-1a54f6afb55a",
+            "threadId": "fbbad887-9fa4-41d4-8715-52da453fab11",
+            "timestamp": 1778730472490,
+            "type": "RUN_FINISHED"
+          }
+        ],
+        "tool_uses": [
+          {
+            "id": "tool_msg:4ca435cf-d5a4-40ac-a57d-669da2e24292",
+            "name": "SKILL",
+            "input": {
+              "skill_name": "weather",
+              "snippet": "weather技能",
+              "start_time": 1778730454347,
+              "status": "activating"
+            }
+          },
+          {
+            "id": "tool_msg:367d8ca2-2fd3-490a-ac3b-8d6c4a768b09",
+            "name": "TERMINAL",
+            "input": {
+              "command": "curl -s \"wttr.in/杭州?format=%l:+%c+%t+(体感+%f),+%w, 湿度+%h\"",
+              "exit_code": 3,
+              "finish_time": 1778730458344,
+              "output": "",
+              "output_chunks": [],
+              "snippet": "查询杭州当前天气状况",
+              "start_time": 1778730458275,
+              "status": "completed",
+              "working_dir": ""
+            }
+          },
+          {
+            "id": "tool_msg:6eff549e-7295-4d73-a9fb-dae1a80a7604",
+            "name": "TERMINAL",
+            "input": {
+              "command": "curl -s \"wttr.in/Hangzhou?format=%l:+%c+%t+(feels+like+%f),+%w, humidity+%h\"",
+              "exit_code": 3,
+              "finish_time": 1778730460991,
+              "output": "",
+              "output_chunks": [],
+              "snippet": "查询杭州当前天气状况（英文地名）",
+              "start_time": 1778730460960,
+              "status": "completed",
+              "working_dir": ""
+            }
+          },
+          {
+            "id": "tool_msg:a0e529bf-2dfd-4e50-a517-1d25f889e201",
+            "name": "TERMINAL",
+            "input": {
+              "command": "curl -s \"wttr.in/Hangzhou?format=j1\" | python3 -c \"import sys, json; data = json.load(sys.stdin); current = data['current_condition'][0]; print(f'天气: {current[\\\"weatherDesc\\\"][0][\\\"value\\\"]}, 温度: {current[\\\"temp_C\\\"]}°C, 体感: {current[\\\"FeelsLikeC\\\"]}°C, 风速: {current[\\\"windspeedKmph\\\"]}km/h, 湿度: {current[\\\"humidity\\\"]}%')\"",
+              "exit_code": 0,
+              "finish_time": 1778730467239,
+              "output": "天气: Partly cloudy, 温度: 27°C, 体感: 30°C, 风速: 4km/h, 湿度: 54%\n",
+              "output_chunks": [],
+              "snippet": "通过 JSON 格式获取杭州详细天气信息",
+              "start_time": 1778730464899,
+              "status": "completed",
+              "working_dir": ""
+            }
+          }
+        ],
+        "timestamp": 1778730454052
+      }
+    ]
+  },
+  "duration_seconds": 27.529325008392334
+}
