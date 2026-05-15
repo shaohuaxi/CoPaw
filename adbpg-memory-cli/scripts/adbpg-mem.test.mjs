@@ -112,6 +112,38 @@ const SAMPLE_CONFIG = {
 };
 
 // ---------------------------------------------------------------------------
+// Node version preflight
+// ---------------------------------------------------------------------------
+
+describe('checkNodeVersion', () => {
+  test('accepts Node 18 (where built-in fetch first landed)', () => {
+    assert.deepEqual(T.checkNodeVersion('18.0.0'), { ok: true });
+  });
+  test('accepts modern Node releases (20.x, 22.x)', () => {
+    assert.deepEqual(T.checkNodeVersion('20.5.0'), { ok: true });
+    assert.deepEqual(T.checkNodeVersion('22.1.3'), { ok: true });
+  });
+  test('rejects Node 17 and below with actionable error citing the version', () => {
+    const r17 = T.checkNodeVersion('17.9.1');
+    assert.equal(r17.ok, false);
+    assert.match(r17.error, /requires Node 18\+/);
+    assert.match(r17.error, /17\.9\.1/);
+    assert.match(r17.error, /fetch/);
+    assert.equal(T.checkNodeVersion('14.21.3').ok, false);
+    assert.equal(T.checkNodeVersion('10.0.0').ok, false);
+  });
+  test('rejects unparsable version strings rather than crashing', () => {
+    assert.equal(T.checkNodeVersion('garbage').ok, false);
+    assert.equal(T.checkNodeVersion('').ok, false);
+  });
+  test('uses process.versions.node when no argument is provided', () => {
+    // The host running this test is necessarily ≥18 (we use built-in node:test),
+    // so the default-arg path must succeed.
+    assert.deepEqual(T.checkNodeVersion(), { ok: true });
+  });
+});
+
+// ---------------------------------------------------------------------------
 // argv parsing
 // ---------------------------------------------------------------------------
 

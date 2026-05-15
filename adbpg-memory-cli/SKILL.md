@@ -32,9 +32,11 @@ metadata:
       - "ADBPG Memory REST API (rest_base_url, configured via adbpg-mem init)"
       - "ADBPG PostgreSQL endpoint (SQL mode, host/port/dbname configured via adbpg-mem init)"
 compatibility: >
-  Node.js 18+ (npm install) 或 Python 3.10+ (pip install)。
-  需要 adbpg-mem CLI 已安装并通过 adbpg-mem init 完成配置。
-  支持 SQL 模式（直连 ADBPG）和 REST 模式（HTTP API）。
+  必须 Node.js 18+（脚本启动时会校验，低于 18 会立刻报错退出，因为依赖内置 fetch）。
+  本地终端可选用 Python 3.10+ 实现。
+  沙箱环境（Wukong / 钉钉助手等）：直接使用 skill 自带的 scripts/adbpg-mem.mjs，无需 npm install；
+  本地环境：可全局 `npm install -g adbpg-memory-cli` 用 adbpg-mem 命令，或同样跑自带 .mjs。
+  支持 REST 模式（HTTP API），SQL 模式仅在装了完整 Node CLI 的本地环境可用。
 ---
 
 # ADBPG 长期记忆

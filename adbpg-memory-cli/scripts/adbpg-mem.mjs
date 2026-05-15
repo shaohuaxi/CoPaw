@@ -21,6 +21,19 @@ import process from 'node:process';
 // Constants
 // ---------------------------------------------------------------------------
 
+const MIN_NODE_MAJOR = 18; // built-in fetch + AbortController landed in 18
+
+function checkNodeVersion(version = process.versions.node) {
+  const major = parseInt(String(version).split('.')[0], 10);
+  if (Number.isNaN(major) || major < MIN_NODE_MAJOR) {
+    return {
+      ok: false,
+      error: `adbpg-mem.mjs requires Node ${MIN_NODE_MAJOR}+ (got v${version}). Built-in fetch is needed for REST mode.`,
+    };
+  }
+  return { ok: true };
+}
+
 const ISOLATION_RUN_MODES = ['off', 'manual', 'auto', 'tag'];
 
 const AGENT_CONFIG_SCHEMA = {
@@ -1129,6 +1142,8 @@ export async function run(argv, ctxOverrides = {}) {
 
 // Also export the internal pieces so the test file can exercise them in isolation.
 export const __test = {
+  checkNodeVersion,
+  MIN_NODE_MAJOR,
   parseArgv,
   loadConfig,
   saveConfigAtCwd,
@@ -1155,6 +1170,16 @@ export const __test = {
 
 const isMain = import.meta.url === `file://${process.argv[1]}`;
 if (isMain) {
+  const vc = checkNodeVersion();
+  if (!vc.ok) {
+    process.stderr.write(JSON.stringify({
+      status: 'error',
+      command: 'startup',
+      error: vc.error,
+      data: null,
+    }) + '\n');
+    process.exit(1);
+  }
   run(process.argv.slice(2)).then(
     (code) => process.exit(code || 0),
     (e) => {
