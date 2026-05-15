@@ -272,7 +272,7 @@ describe('ADBPGMemoryCLIClient REST mode', () => {
     global.fetch = originalFetch;
   });
 
-  test('add posts to /mem/memories', async () => {
+  test('add posts to /memories', async () => {
     const client = makeClient();
     global.fetch = mockFetch({ result: 'ok' });
 
@@ -283,10 +283,10 @@ describe('ADBPGMemoryCLIClient REST mode', () => {
     expect(result).toEqual({ result: 'ok' });
     expect(global.fetch).toHaveBeenCalledTimes(1);
     const callUrl = global.fetch.mock.calls[0][0];
-    expect(callUrl).toContain('/mem/memories');
+    expect(callUrl).toContain('/memories');
   });
 
-  test('search posts to /mem/search', async () => {
+  test('search posts to /search', async () => {
     const client = makeClient();
     global.fetch = mockFetch({
       results: [{ id: '1', memory: 'test' }],
@@ -295,7 +295,7 @@ describe('ADBPGMemoryCLIClient REST mode', () => {
     const results = await client.search('query', { userId: 'alice' });
     expect(results).toHaveLength(1);
     const callUrl = global.fetch.mock.calls[0][0];
-    expect(callUrl).toContain('/mem/search');
+    expect(callUrl).toContain('/search');
   });
 
   test('search respects limit', async () => {
@@ -311,7 +311,7 @@ describe('ADBPGMemoryCLIClient REST mode', () => {
     expect(results).toHaveLength(2);
   });
 
-  test('listAll gets /mem/memories', async () => {
+  test('listAll gets /memories', async () => {
     const client = makeClient();
     global.fetch = mockFetch({
       results: [{ id: '1' }, { id: '2' }],
@@ -320,12 +320,12 @@ describe('ADBPGMemoryCLIClient REST mode', () => {
     const results = await client.listAll({ userId: 'alice' });
     expect(results).toHaveLength(2);
     const callUrl = global.fetch.mock.calls[0][0];
-    expect(callUrl).toContain('/mem/memories');
+    expect(callUrl).toContain('/memories');
     const callOpts = global.fetch.mock.calls[0][1];
     expect(callOpts.method).toBe('GET');
   });
 
-  test('deleteAll deletes /mem/memories', async () => {
+  test('deleteAll deletes /memories', async () => {
     const client = makeClient();
     global.fetch = mockFetch({ deleted: 5 });
 
@@ -355,22 +355,22 @@ describe('ADBPGMemoryCLIClient REST mode', () => {
 
   test('REST URL construction with trailing slash', () => {
     const client = makeClient({ rest_base_url: 'https://api.example.com/' });
-    expect(client._restUrl('/mem/memories')).toBe(
-      'https://api.example.com/mem/memories'
+    expect(client._restUrl('/memories')).toBe(
+      'https://api.example.com/memories'
     );
   });
 
   test('REST URL construction without trailing slash', () => {
     const client = makeClient({ rest_base_url: 'https://api.example.com' });
-    expect(client._restUrl('/mem/memories')).toBe(
-      'https://api.example.com/mem/memories'
+    expect(client._restUrl('/memories')).toBe(
+      'https://api.example.com/memories'
     );
   });
 
   test('REST headers include auth', () => {
     const client = makeClient({ rest_api_key: 'mykey' });
     const headers = client._restHeaders();
-    expect(headers['X-Auth-Token']).toBe('static:mykey');
+    expect(headers['Authorization']).toBe('Bearer mykey');
     expect(headers['Content-Type']).toBe('application/json');
   });
 });

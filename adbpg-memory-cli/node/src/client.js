@@ -375,7 +375,7 @@ class ADBPGMemoryCLIClient {
 
   /**
    * Build a full REST URL from a path.
-   * @param {string} urlPath
+   * @param {string} urlPath e.g. '/memories', '/search'
    * @returns {string}
    */
   _restUrl(urlPath) {
@@ -384,12 +384,12 @@ class ADBPGMemoryCLIClient {
   }
 
   /**
-   * Build REST headers including auth token.
+   * Build REST headers with Bearer auth.
    * @returns {object}
    */
   _restHeaders() {
     return {
-      'X-Auth-Token': `static:${this._config.rest_api_key || ''}`,
+      'Authorization': `Bearer ${this._config.rest_api_key || ''}`,
       'Content-Type': 'application/json',
     };
   }
@@ -417,7 +417,7 @@ class ADBPGMemoryCLIClient {
     if (runId) body.run_id = runId;
     if (metadata) body.metadata = metadata;
 
-    const url = this._restUrl('/mem/memories');
+    const url = this._restUrl('/memories');
     const timeoutMs = Math.max(this._restTimeoutMs(), 30000);
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), timeoutMs);
@@ -459,7 +459,7 @@ class ADBPGMemoryCLIClient {
     if (agentId) body.agent_id = agentId;
     if (runId) body.run_id = runId;
 
-    const url = this._restUrl('/mem/search');
+    const url = this._restUrl('/search');
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), this._restTimeoutMs());
 
@@ -505,7 +505,7 @@ class ADBPGMemoryCLIClient {
     if (runId) params.set('run_id', runId);
 
     const qs = params.toString();
-    const url = this._restUrl('/mem/memories') + (qs ? `?${qs}` : '');
+    const url = this._restUrl('/memories') + (qs ? `?${qs}` : '');
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), this._restTimeoutMs());
 
@@ -545,7 +545,7 @@ class ADBPGMemoryCLIClient {
     if (runId) params.set('run_id', runId);
 
     const qs = params.toString();
-    const url = this._restUrl('/mem/memories') + (qs ? `?${qs}` : '');
+    const url = this._restUrl('/memories') + (qs ? `?${qs}` : '');
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), this._restTimeoutMs());
 
@@ -573,7 +573,7 @@ class ADBPGMemoryCLIClient {
    * @returns {Promise<{success: boolean, message: string}>}
    */
   async _restTestConnection() {
-    const url = this._restUrl('/mem/health');
+    const url = this._restUrl('/health');
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 10000);
 
